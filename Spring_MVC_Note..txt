@@ -1,0 +1,85 @@
+Steps to donload and run the application:
+-> clone the application to your local system.
+-> do maven clean
+-> do maven update
+-> do maven build
+-> deploye the munsiji-service on the server
+-> if you will get error like "Caused by: java.lang.ClassNotFoundException: org.springframework.web.servlet.DispatcherServlet"
+---> follow the below steps to fix it:
+------> right click on the project module "munsiji-service" -> click on  "properties" -> in the filter box type "Deployment Assembly" and select it
+------> in right side opened window click "Add" -> select "Java Build Path Entries" and click "Next" -> select "Maven Dependecies" and click "finish"
+        and click "apply" and "ok"
+-> if you will get error like "java.lang.ClassNotFoundException: org.munsiji.hibernateUtil.HibernateCfg", 
+---> then it is because of war file Munsiji-service.war, is
+     not having munsiji-persistance.jar file which is deployed to the server, So add the jar file in war file manually and then start the server. 
+     it will work but it is temporary sol. still looking into it.
+-> now again do maven build and deploy ""munsiji-service"" to the server(here i am using jboss server)
+-> once deployed successfully. hit the below URL from the browser or postman:
+    http://localhost:8080/munsiji-service/myapp/test
+-> you will get a response "welcome". means set up is created successfully
+--> enjoy your learning :)
+========================================================= Version =====================================================
+-> Spring MVC 4.0.6.RELEASE
+-> hibernate-core 5.0.0.Final
+-> mysql-connector-java 6.0.4
+-> mySql DB  8.4
+
+========================================================== Link =======================================================
+Spring MVC 4 example link in xml:
+http://websystique.com/springmvc/spring-4-mvc-helloworld-tutorial-full-example/
+Spring Hibernate cfg link:
+https://www.journaldev.com/3524/spring-hibernate-integration-example-tutorial
+
+=========================================================== Note ======================================================
+-> Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. 
+The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
+
+===== Exception Handling in Spring MVC:
+-> 1. Using HTTP Status Codes: @ResponseStatus
+		   ex: 
+		   @ResponseStatus(value=HttpStatus.NOT_FOUND, reason="No such Order")  // 404
+		   public class OrderNotFoundException extends RuntimeException {
+			 // ...
+		   }
+-> 2. Controller Based Exception Handling: We can define exception handler methods in our controller classes. All we need is to annotate these methods with 
+	  @ExceptionHandler annotation.
+	  Ex: 
+	  @ExceptionHandler({SQLException.class,DataAccessException.class})
+	  public String databaseError() {
+		return "databaseError";
+	  }
+-> 3. Global Exception Handler: Exception Handling is a cross-cutting concern,Spring provides @ControllerAdvice annotation that we can use with any class 
+	to define our global exception handler. The handler methods in Global Controller Advice is same as Controller based exception handler methods and used when 
+	controller class is not able to handle the exception.
+    Ex:
+	@ControllerAdvice
+	class GlobalControllerExceptionHandler {
+		@ResponseStatus(HttpStatus.CONFLICT)  // 409
+		@ExceptionHandler(DataIntegrityViolationException.class)
+		public void handleConflict() {
+			// Nothing to do
+		}
+	}
+--> HandlerExceptionResolver:
+	Any Spring bean declared in the DispatcherServlet’s application context that implements HandlerExceptionResolver will be used to intercept and process any 
+	exception raised in the MVC system and not handled by a Controller.
+    Behind the scenes, MVC creates three such resolvers by default. It is these resolvers that implement the behaviours discussed above:
+--> 1. ExceptionHandlerExceptionResolver matches uncaught exceptions against for suitable @ExceptionHandler methods on both the handler (controller) and on any controller-advices.
+--> 2. ResponseStatusExceptionResolver looks for uncaught exceptions annotated by @ResponseStatus (as described in Section 1)
+--> 3. DefaultHandlerExceptionResolver converts standard Spring exceptions and converts them
+	   to HTTP Status Codes (I have not mentioned this above as it is internal to Spring MVC).
+	
+========================================================== Error-Sol ==================================================
+Error 1: Caused by: java.lang.NoSuchMethodError: org.hibernate.cfg.annotations.reflection.JPAMetadataProvider
+Solution: There is dependencies' conflict between hibernate-core and hibernate-annotations
+So I've corrected my maven pom.xml by commenting the artifact giving the conflict :
+<!--Hibernate-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.hibernate</groupId>-->
+            <!--<artifactId>hibernate-annotations</artifactId>-->
+        <!--</dependency>-->
+ 

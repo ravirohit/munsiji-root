@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.social</groupId>
+    <artifactId>munsiji-root</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <groupId>com.social</groupId>
+  <artifactId>munsiji-report</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>munsiji-report</name>
+  <properties>
+    <jersey.version>2.16</jersey.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+ 
+  <dependencies>
+     <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+		<dependency>
+	    <groupId>javax.mail</groupId>
+	    <artifactId>javax.mail-api</artifactId>
+	    <version>1.5.5</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.sun.mail</groupId>
+	    <artifactId>javax.mail</artifactId>
+	    <version>1.5.5</version>
+	</dependency>
+	     
+  </dependencies>
+  <build>
+    <finalName>munsiji-report</finalName>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.5.1</version>
+        <inherited>true</inherited>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

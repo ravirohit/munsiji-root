@@ -1,0 +1,46 @@
+<div  *ngIf="!isSignup" id="loginFormCont" class="login-cont" [style.font-size.px]="size">
+  <!-- <button  class="btn btn-primary" (click) ="resize(-1)" > - </button>
+  <button  class="btn btn-primary" (click) ="resize(1)" > + </button> -->
+  <div class="form-group">
+    <label for="userId">User Name:</label>
+    <input type="text" class="form-control" id="userId">
+  </div>
+  <div class="form-group">
+    <label for="pwd">Password:</label>
+    <input type="password" class="form-control" id="pwd">
+  </div>
+  <!-- <div class="checkbox">
+    <label><input type="checkbox"> Remember me</label>
+  </div> -->
+  <div class="form-group">
+  <button  class="btn btn-primary pull-right" (click) ="loginFn($event)" >Submit</button>
+</div>
+  <a class="signup" id="signup" (click)="isSignup = !isSignup">Signup</a>
+</div>
+
+
+<!-- <div class="well add-container" *ngIf="isSignup"> -->
+  <div  *ngIf="isSignup" class="login-cont">
+  <div class="form-group">
+    <span class="error-msg text-center" [ngClass]="signupErrorModel.commonMessage ? 'show-msg' :'hide-msg'"> Password is missmatch. </span> 
+    <label for="s_name"><sup>*</sup>Account Name:</label>
+    <input type="text" id="usr_name" class="form-control" [(ngModel)]="signupModel.name"/>    
+  </div>
+  <div class="form-group">
+    <label for="s_email"><sup>*</sup>Email:</label>
+    <input rewuired type="email" id="s_email" class="form-control" [(ngModel)]="signupModel.email"/>    
+  </div>
+  <div class="form-group">
+    <label for="s_pwd"><sup>*</sup>Password:</label>
+    <input type="password" id="s_pwd" class="form-control" [(ngModel)]="signupModel.pwd1"/>    
+  </div>
+  <div class="form-group">
+    <label for="s_re_pwd"><sup>*</sup>Re-enter Password:</label>
+    <input type="password" id="s_re_pwd" class="form-control" [(ngModel)]="signupModel.pwd2"/>    
+  </div>
+  <div class="form-group pull-right">
+    <button class="btn btn-default" (click)="isSignup = !isSignup">Cancel</button>
+    <button class="btn btn-primary" (click)="signUp()">Signup</button>
+    
+  </div>
+</div>

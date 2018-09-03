@@ -1,0 +1,18 @@
+{
+    "/munsiji-service/rest/myapp/registeruser": {
+      "target": "http://192.168.1.8:8080",
+      "secure": false
+    },
+    "munsiji-service/rest/myapp/getexpense":{
+      "target": "http://192.168.1.8:8080",
+      "secure": false
+    },
+    "munsiji-service/rest/myapp/addexpense":{
+      "target": "http://192.168.1.8:8080",
+      "secure": false
+    },
+    "munsiji-service/rest/myapp/createaccount": {
+      "target": "http://192.168.1.8:8080/",
+      "secure": false
+    }
+}

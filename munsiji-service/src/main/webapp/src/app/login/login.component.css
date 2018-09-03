@@ -1,0 +1,14 @@
+.login-cont{
+    position: absolute;
+    margin: auto;
+    width: 400px;
+    box-shadow: 5px 5px 15px lightgrey;
+    padding: 23px;
+    left: 50%;
+    top: 48%;
+    transform: translate(-50%,-50%);
+}
+a#signup.signup{
+    color: lightcoral;
+    cursor: pointer;
+}

@@ -1,0 +1,37 @@
+<div class="well add-container" >
+  
+<div class="form-group">        
+      <label for="category"><sup>*</sup>Account Type: </label>        
+      <select name="add_typeDropDown" id="category" class="form-control" value="p_expence" (change)="expence.accType = $event.srcElement.value" disabled>
+          <option value="p_expence" selected>Personal Expance</option>
+          <option value="t_expence" disabled>Tour Expance</option>
+          <option value="g_expence" disabled>Group Expance</option>
+      </select>
+  </div>
+  <div class="form-group">
+      <label for="add_expenceType"><sup>*</sup>Account:</label>
+      <select name="add_typeDropDown" id="add_expenceType" class="form-control" (change)="expence.account = $event.srcElement.value">
+          <option value="0">Select account</option>
+            <option  *ngFor= "let i of arrAccountName;index as t" [value]="i.key +'#'+t"> {{i.label}} {{t}}  </option>
+           
+
+            <!-- <option value="user_333" >Room Expences</option>
+            <option value="user_222">Office Expences</option>
+            <option value="user_111">Other Expences</option> -->
+      </select>    
+    </div>
+  <div class="form-group">
+    <label for="amount"><sup>*</sup>Amount</label>
+    <input type="numner" id="amount" class="form-control"  [(ngModel)]="expence.amount"/>    
+  </div>
+  <div class="form-group">
+    <label for="sDate"><sup>*</sup>Expence Date:</label>
+    <input type="date" id="sDate" class="form-control"  [(ngModel)]="expence.date"/>    
+  </div>
+  <div class="form-group">
+    <label for="desc"><sup>*</sup>Description:</label>
+    <textarea class="from-control" id="desc"  [(ngModel)]="expence.desc"></textarea>
+    
+  </div>
+  <button type="submit" class="btn btn-primary" (click)="submitExpence()">Submit</button>
+</div>

@@ -1,0 +1,41 @@
+<div *ngIf="!model.isMessage" class="well add-container" >
+    
+    <div class="form-group">
+      <label for="add_typeDropDown"><sup>*</sup>Account Type:</label>
+      <select name="add_typeDropDown" id="add_typeDropDown" class="form-control" disabled>
+        <option value="pexpence" selected>Personal Expance</option>
+        <option value="texpence" disabled>Tour Expance</option>
+        <option value="gexpence" disabled>Group Expance</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="acc_name"><sup>*</sup>Account Name:</label>
+      <input type="text" id="acc_name" class="form-control" [(ngModel)]="acc.title"/>    
+    </div>
+    <!-- <div class="form-group">
+      <label for="avl_bal"><sup>*</sup>Total Expences(As of now):</label>
+      <input type="number" id="avl_bal" class="form-control" [(ngModel)]="acc.bal"/>    
+    </div> -->
+    <div class="form-group">
+      <label for="acc_open_date"><sup>*</sup>Account open Date:</label>
+      <input type="date" id="acc_open_date" class="form-control" [(ngModel)]="acc.date"/>    
+    </div>
+    <div class="form-group">
+      <label for="acc_desc"><sup>*</sup>Description:</label>
+      <textarea  id="acc_desc" class="form-control" [(ngModel)]="acc.desc" ></textarea>    
+    </div>
+    
+    <button type="submit" class="btn btn-primary" (click)="createAccount()">Create Account</button>
+
+  </div>
+
+  <div *ngIf="model.isMessage" class="well add-container" >
+      <div class="alert alert-info">
+          <strong>Success!</strong> Indicates a successful or positive action.
+      </div> 
+      <div class="well">Basic Well</div>
+      <div class = "form-group">
+        <button></button>
+      </div>
+
+  </div>

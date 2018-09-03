@@ -1,0 +1,94 @@
+li:focus, li:active, li:hover {
+    outline: none;
+    background: linear-gradient(to right, #fff , #f133 53%, #fff);
+}
+
+.header-cont{
+    text-align: center;
+    padding: 9px 0 3px 0;
+    background: linear-gradient(to right,lightgray,#FFF);
+    margin: 0;
+}
+.main-toolbar {
+    background: linear-gradient(to right,lightgray,#FFF);;
+    position: fixed;
+    width: 255px;
+    z-index: 99;
+    height: 100vw;
+}
+#profile {
+    float: right;
+    margin: 15px;
+}
+.main-ul-toolbar .active {
+    outline: 0px;
+    background: linear-gradient(to right, #fff , #f133 53%, #fff);
+    background-color: white;
+}
+.main-ul-toolbar {
+    display: flex;    
+    list-style: none;
+    text-align: center;
+    font-weight: bold;
+    flex-direction: column;
+    padding: 0;
+    z-index: 99;
+    font-size: 18px;
+    font-weight: 100;
+    line-height: 42px;
+}
+.main-ul-toolbar li {
+    padding: 6px 25px;
+    cursor: pointer;
+    border-bottom: 1px solid #4444;
+}
+.app-container {
+    background: linear-gradient(white,#dde4e8, white);
+    width: auto;
+    margin-left: 250px;
+    padding-top: 15px;
+}
+.mobile-menu-bar{display: none;}
+
+@media screen and (max-width : 574px){
+    span.menu-toolbar {
+        border-bottom: 4px double;
+        padding: 0px;
+        font-weight: bolder;
+        letter-spacing: 3px;
+    }
+    .header-cont{
+        text-align: left; padding-left:10px;
+        }
+    div.app-container{padding:0px;
+        margin-left: 0px;        
+        margin-top: 49px;
+    }
+    
+    .mobile-menu-bar{
+        display: block;
+        position: fixed;
+        top: 0;
+        z-index: 999;
+        text-decoration: underline;
+        color: #fff;
+        width: 100%;
+        font-weight: bold;
+        text-align: right;
+        background: #6697b8;
+        line-height: 48px;
+        padding-right: 15px;
+        margin: 0;
+    }
+    .main-toolbar{
+        display: block;
+        position: fixed;
+        min-height: 30vh;
+        right: 0;
+        width: 100vw;
+        z-index: 99;
+    }
+    .main-ul-toolbar li{
+        padding-right: 10px; 
+    }
+}

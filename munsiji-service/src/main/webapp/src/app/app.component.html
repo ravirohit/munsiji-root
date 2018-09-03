@@ -1,0 +1,45 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<!--<div class="header-cont">
+   <h3>
+    Welcome to {{title}}!
+  </h3>   
+</div> --> 
+<div *ngIf="userData.isLogedin; then homeBlock else loginBlock "></div>
+<ng-template #loginBlock>
+  <app-login [(size)]="fontSize" pre="testData"></app-login>
+  <!-- <div>Font size : {{fontSize}}</div> -->
+</ng-template>
+<ng-template #homeBlock>
+<div class="mobile-menu-bar" (click)="toogleMenu($event)"><span class="menu-toolbar">MENU</span></div>
+<div [hidden]="!isVisble" class="main-toolbar">  
+  <ul class="main-ul-toolbar">
+    <li routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</li>
+    <!-- <li routerLink="tour" routerLinkActive="active">Tour Ledger</li>
+    <li routerLink="group" routerLinkActive="active">Group Ledger</li> -->
+    <li routerLink="profile" routerLinkActive="active">Profile</li>
+    <li routerLink="add" routerLinkActive="active">Add Expances</li>
+    <li routerLink="c_account" routerLinkActive="active">Create Account</li>
+    <li (click)="logout()">Logout</li>
+  </ul>
+</div>
+<div class="app-container container">
+<router-outlet > </router-outlet>
+<!-- 
+<fusioncharts
+    [id]="id"
+    [width]="width"
+    [height]="height"
+    [type]="type"
+    [dataFormat]="dataFormat"
+    [dataSource]="dataSource"
+></fusioncharts> -->
+
+</div>
+</ng-template>
+
+
+
+<!-- <div>
+  Hello {{userData.name}} 
+</div> -->
+

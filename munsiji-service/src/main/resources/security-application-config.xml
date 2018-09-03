@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/security 
+	         http://www.springframework.org/schema/security/spring-security-4.2.xsd
+			http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+     <http auto-config="true">
+		<intercept-url pattern="/rest/myapp/test" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/rest/myapp/*" access="hasRole('ANONYMOUS')" />  <!-- hasRole('ROLE_ANONYMOUS')  -->
+		<csrf disabled="true"/>
+		<!-- <form-login login-page="/login.html" username-parameter="uname" password-parameter="pwd" authentication-failure-url="/access_denied"/> -->
+	 </http>
+	 <authentication-manager>
+	    <authentication-provider user-service-ref="customUserDetialsService">
+	    </authentication-provider>
+	 </authentication-manager>
+	 <!-- <authentication-manager>
+	    <authentication-provider>
+	      <user-service>
+	        <user name="rohit" password="password" authorities="ROLE_USER"></user>
+	        <user name="raj" password="password" authorities="ROLE_ADMIN"></user>
+	        <user name="rohan" password="password" authorities="ROLE_ADMIN"></user>
+	        <user name="ranjan" password="password" authorities="ROLE_USER"></user>
+	      </user-service>
+	    </authentication-provider>
+	 </authentication-manager> -->
+	 
+</beans:beans>

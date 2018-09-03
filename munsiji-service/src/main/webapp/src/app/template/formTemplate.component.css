@@ -1,0 +1,21 @@
+.form-group.asset_groupdate {
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+span.date-cont-el {padding: 0px;margin-right: 2px;}
+button.asset-view-data {float: right;}
+.asset-grid-data-container {clear: both;    text-align: center;}
+
+@media screen and (max-width : 574px){
+    .form-group.asset_groupdate {
+        flex-direction: column;
+    }
+    button.asset-view-data {
+        width: 100%;
+    }
+    span.date-cont-el:nth-child(2) {
+        margin-top: 15px;
+    }
+    .asset-grid-data-container{overflow: auto;}
+}

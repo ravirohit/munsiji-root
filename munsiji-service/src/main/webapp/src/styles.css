@@ -1,0 +1,48 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "~font-awesome/css/font-awesome.css";
+/* You can add global styles to this file, and also import other style files */
+
+*{ font-family: sans-serif;}
+button.btn {min-width: 111px;}
+span.badge{color:rgb(241, 114, 114);}
+.block{display: block;}
+.well {
+    padding: 10px;
+}
+select {
+    min-width: 230px;
+    margin-right: 10px;
+}
+sup {
+    color: red;
+    font-weight: bold;
+}
+textarea {    width: 100%;}
+label{font-weight: bold;}
+::-webkit-scrollbar-thumb {
+    background-color: #aaaaaa;
+}
+::-webkit-scrollbar {
+    width: 9px;
+}
+::-webkit-scrollbar-track {
+    background-color: #dddddd;
+}
+
+.error-msg{
+    color: red;
+    font-size:0.8em;
+    border: 0.1px solid red;
+    padding: 3px 6px;
+    margin-bottom: 5px;
+}
+.hide-msg{ display:none;}
+.show-msg{ display:block;}
+
+@media screen and (max-width : 574px){
+    a.back-btn {
+        position: fixed;
+        top: 10px;
+        left: 15px;
+    }
+}
