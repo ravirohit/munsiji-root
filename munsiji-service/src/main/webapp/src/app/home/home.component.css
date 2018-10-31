@@ -18,9 +18,17 @@
     margin: 0 15px 10px;
     box-shadow: 0px 0px 11px #d9b9b9;
 }
+a.no-margin:hover {
+    background: aqua;
+}
+
 .no-margin {
     margin: 0;
-    background: mediumturquoise;
+    background: lightblue;
+    font-weight: 700;
+    letter-spacing: 2px;
+    transition: background 2s;
+    font-size: 1.2rem;
 }
 .margin-left {
     margin: 0 0 0 15px;

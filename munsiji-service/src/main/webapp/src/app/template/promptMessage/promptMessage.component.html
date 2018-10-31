@@ -1,10 +1,10 @@
-<div  *ngIf="isLoader"  class="busy-indicator" >    
+<div  *ngIf="dataModel.isLoader"  class="busy-indicator" >    
     <div class="loader"></div>   
   </div>
   
 
 
-  <div  *ngIf="isMsgToast"  class="message-toast">
+  <div  *ngIf="dataModel.isMsgToast"  class="message-toast">
       <div class="alert alert-success">
           <strong>Success!</strong> Indicates a successful or positive action.
         </div>    

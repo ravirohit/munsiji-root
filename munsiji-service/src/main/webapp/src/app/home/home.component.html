@@ -2,14 +2,12 @@
 <div class="home-container">
 
 <app-promptMessage></app-promptMessage>
-
-
   <div class="header-dlg-container">
       <div class="header-dlg-tool-bar">  
-      <div class="expand-collapse tool-bar" (click)="homeModel.isHeaderDisplay = !homeModel.isHeaderDisplay; rotateAngel = homeModel.isHeaderDisplay ? 'rotate(0deg)' : 'rotate(-90deg)' ">
-          <a href="#" class="margin-left" (click)="toggle('table')">Expand All</a>
-          <a href="#" class="margin-left" (click)="toggle('none')">Collapse All</a>
-          <span class="angel pull-right" [ngStyle]="{'transform':rotateAngel}"></span>
+      <div class="expand-collapse tool-bar" (click)="homeModel.isHeaderDisplay = !homeModel.isHeaderDisplay; homeModel.rotateAngel = homeModel.isHeaderDisplay ? 'rotate(0deg)' : 'rotate(-90deg)' ">
+          <a class="margin-left" (click)="toggle('table')">Expand All</a>
+          <a class="margin-left" (click)="toggle('none')">Collapse All</a>
+          <span class="angel pull-right" [ngStyle]="{'transform':homeModel.rotateAngel}"></span>
       
         </div>
         

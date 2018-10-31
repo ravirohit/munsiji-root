@@ -7,6 +7,7 @@ import { ElementRef } from '@angular/core/src/linker/element_ref';
 import { Observable } from 'rxjs/Rx';
 import {UrlConfig} from './../../environments/url-config';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -16,26 +17,27 @@ export class HomeComponent implements OnInit {
 
   getUrl = UrlConfig;
   userName:any = {};
-  homeModel = {isHeaderDisplay:false,userName: "Username", displayType: 2}
+  homeModel = {isHeaderDisplay:false,userName: "Username", displayType: 2, rotateAngel:''}
   data:any = [];//{te:12000,td:20000,sa:8000};
 
-  constructor(private userService:UserinfoService, private httpCall:DataService) { }
+  constructor(private userService:UserinfoService, private dataService:DataService) { }
+  
    ngOnInit() {
      this.userName = this.userService.getUserData();
      this.data = this.userService.getDataModel();
      this.homeModel.isHeaderDisplay = true;
      console.log(this.getUrl.GET_ACCOUNT);
-     var sub = this.httpCall.httpGetCall(this.getUrl.GET_ACCOUNT).subscribe(data =>{
+     var sub = this.dataService.httpGetCall(this.getUrl.GET_ACCOUNT).subscribe(data =>{
        console.log(data);
        sub.unsubscribe();
-     },err => {
-      console.log(err);
-      sub.unsubscribe();
-     }
+        },err => {
+          console.log(err);
+          sub.unsubscribe();
+        }
 
      );
      //this.generateChartData();
-   } 
+  } 
 
    toggle(value:string):void{
     var aElements:any =  document.querySelectorAll(".view-container");

@@ -6,7 +6,7 @@
 </div> --> 
 <div *ngIf="userData.isLogedin; then homeBlock else loginBlock "></div>
 <ng-template #loginBlock>
-  <app-login [(size)]="fontSize" pre="testData"></app-login>
+  <app-login></app-login>
   <!-- <div>Font size : {{fontSize}}</div> -->
 </ng-template>
 <ng-template #homeBlock>

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import {HttpClientModule,  HttpClientJsonpModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {RouterModule,Routes   } from "@angular/router";
 import { FusionChartsModule } from 'angular4-fusioncharts';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import * as FusionCharts from 'fusioncharts';
 import * as Charts from 'fusioncharts/fusioncharts.charts';
@@ -36,7 +36,7 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
     formTemplateComponent, AddLedgerInfoComponent, CreateAccountComponent, PromptMessageComponent
   ],
   imports: [   
-    BrowserModule,FusionChartsModule,
+    BrowserModule,FusionChartsModule,BrowserAnimationsModule,
     HttpClientModule,FormsModule,
     RouterModule.forRoot(applicationRouter)
   ],
