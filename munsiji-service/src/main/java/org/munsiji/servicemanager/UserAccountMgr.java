@@ -1,11 +1,14 @@
 package org.munsiji.servicemanager;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.dozer.DozerBeanMapper;
 import org.munsiji.commonUtil.DateUtil;
 import org.munsiji.commonUtil.MunsijiServiceConstants;
+import org.munsiji.model.AccTypeMapToName;
 import org.munsiji.persistance.daoImp.UserDetailDaoImp;
 import org.munsiji.persistance.resource.UserAccount;
 import org.munsiji.persistance.resource.UserDetails;
@@ -124,6 +127,36 @@ public class UserAccountMgr {
 		  
 	  }
 	  
+	}
+	public ResponseInfo getAccountInfo(String email){
+		ResponseInfo responseInfo = new ResponseInfo() ;
+		AccTypeMapToName accountInfo = new AccTypeMapToName();
+		Map<String,List<String>> accTypeMaptoName = accountInfo.getAccountDetail();
+		try{
+			List<UserAccount> userAccountList = userDetailDaoImp.getAccountInfo(email,null,null);
+			for(UserAccount userAccount: userAccountList){
+				String accType = userAccount.getType();
+				if(accTypeMaptoName.get(accType) == null){
+					accTypeMaptoName.put(accType, new ArrayList<String>());
+				}
+				accTypeMaptoName.get(accType).add(userAccount.getName());
+			}
+			responseInfo.setData(accountInfo);
+			responseInfo.setMsg("Account Details for addExpense screen");
+			responseInfo.setReason("");
+			responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+			responseInfo.setStatusCode(200);
+		}
+		catch(Exception e){
+			System.out.println("Exception occur while fetching data from DB");
+			responseInfo.setData(null);
+			responseInfo.setMsg("Account Details for addExpense screen");
+			responseInfo.setReason("Exception occur while fetching data from DB");
+			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+			responseInfo.setStatusCode(500);
+		}
+		return responseInfo;
+		
 	}
 
 }

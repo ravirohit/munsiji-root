@@ -47,13 +47,18 @@ public class UserDetailDaoImp {
 		return userList;
 	}
 	
-	public List<UserAccount> getAccountInfo(String email, String type, String name){
+	public List<UserAccount> getAccountInfo(String email, String accType, String accName){
 		List<UserAccount> userAccountList = null;
-		String str = "from UserAccount where email_id = '"+email+ "' and type = '"
-				+ type + "' and name = '"+name+"'";
+		StringBuffer str = new StringBuffer("from UserAccount where email_id = '"+email+ "'");
+		/*String str = "from UserAccount where email_id = '"+email+ "' and type = '"
+				+ accType + "' and name = '"+accName+"'";*/
+		if((accType != null) && (accName != null)){
+			str.append(" and type = '" + accType + "' and name = '"+accName+"'");
+		}
+		String queryStr = str.toString();
 		try{
 			  session = hibernateCfg.getSession();
-			  Query query = session.createQuery(str);
+			  Query query = session.createQuery(queryStr);
 			  userAccountList = query.list();
 		      System.out.println("getAccountinfoList data:"+userAccountList.size());
 		  }

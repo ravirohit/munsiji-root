@@ -115,6 +115,13 @@ public class MyResourceController {
 		System.out.println("exception occur in addExpense:"+e);
 	  }
 	  return responseInfo;
-	  
 	}
+	@RequestMapping(value="getacctypeandname",method = RequestMethod.GET)
+	public ResponseInfo getAccountTypeAndName(@RequestParam String email){
+		System.out.println("getAccountTypeAndNamec method called");
+		ResponseInfo responseInfo = null;
+		responseInfo = userAccountMgr.getAccountInfo(email);
+		return responseInfo;
+	}
+   	
 }
