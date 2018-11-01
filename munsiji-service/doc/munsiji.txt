@@ -1,0 +1,194 @@
+http://localhost:8080/munsiji-service/rest/myapp/registeruser
+payload:
+   {
+	"emailId":"ravi.swd@gmal.cm",
+	"mobileNo":"9765412385",
+	"pwd":"password",
+	"role":"ROLE_ADMIN"
+   }
+Response:
+  {
+    "status": "Success",
+    "statusCode": null,
+    "msg": "Account Created Successfully",
+    "reason": null,
+    "data": null
+  }
+  for failure:
+  {
+    "status": "Failure",
+    "statusCode": 100,
+    "msg": "User Account already exists for the given email ID",
+    "reason": "",
+    "data": null
+  }
+  
+http://localhost:8080/munsiji-service/rest/myapp/createaccount
+Payload:
+  {
+	"name": "SIP",
+	"type": "Bank",
+	"investedAmnt": 6000,
+	"desc":"future plan",
+	"crteDate": "01-10-2018 10:12:15"
+ }
+Response:
+  {
+    "status": "Success",
+    "statusCode": null,
+    "msg": "Investment account type Created Successfully",
+    "reason": null,
+    "data": null
+   }
+  for failure:
+  {
+    "status": "Failure",
+    "statusCode": 100,
+    "msg": "Investment account type already exist for the given name and type",
+    "reason": "",
+    "data": null
+  }
+  
+http://localhost:8080/munsiji-service/rest/myapp/addexpense
+Payload:
+  {
+	"accType":"Bank",
+	"accName":"SIP",
+	"amount":2341,
+	"dateOfExpnse": "01-15-2018 10:12:15",
+	"desc":"insurance for Jan-dhan"
+  }
+Response:
+  {
+    "status": "Success",
+    "statusCode": null,
+    "msg": "Saved Data Successfully",
+    "reason": null,
+    "data": null
+  }
+For failure:
+  {
+    "status": "Failure",
+    "statusCode": 404,
+    "msg": "Account name does not exist for given account type",
+    "reason": "Account not found",
+    "data": null
+  }
+  
+http://localhost:8080/munsiji-service/rest/myapp/getexpense?accType=Bank
+There is no payload.
+Response:
+  {
+    "status": "Success",
+    "statusCode": null,
+    "msg": "Operation Succeded Successfully",
+    "reason": null,
+    "data": {
+        "colTitle": {
+            "accName": "Account Name",
+            "amnt": "Amount",
+            "date": "Date Of Expense",
+            "desc": "Description"
+        },
+        "colKey": [
+            "accName",
+            "amnt",
+            "date",
+            "desc"
+        ],
+        "accType": "Bank",
+        "content": [
+            {
+                "header": {
+                    "title": "PFF",
+                    "bal": 3500
+                },
+                "data": [
+                    {
+                        "accName": "PFF",
+                        "amnt": 3500,
+                        "date": "2018-12-01 10:00:00.0",
+                        "desc": "insurance for Jan-dhan"
+                    }
+                ]
+            },
+            {
+                "header": {
+                    "title": "SIP",
+                    "bal": 8257
+                },
+                "data": [
+                    {
+                        "accName": "SIP",
+                        "amnt": 1234,
+                        "date": "2018-12-01 10:00:00.0",
+                        "desc": "insurance for Jan-dhan"
+                    },
+                    {
+                        "accName": "SIP",
+                        "amnt": 2341,
+                        "date": "2018-12-01 10:00:00.0",
+                        "desc": "insurance for Jan-dhan"
+                    },
+                    {
+                        "accName": "SIP",
+                        "amnt": 2341,
+                        "date": "2018-12-01 10:00:00.0",
+                        "desc": "insurance for Jan-dhan"
+                    },
+                    {
+                        "accName": "SIP",
+                        "amnt": 2341,
+                        "date": "2018-12-01 10:00:00.0",
+                        "desc": "insurance for Jan-dhan"
+                    }
+                ]
+            }
+        ]
+    }
+}
+  
+=================================
+http://localhost:8080/munsiji-service/rest/myapp/getacctypeandname?email=ravi.swd@gmail.com
+
+Response:
+{
+    "status": "Success",
+    "statusCode": 200,
+    "msg": "Account Details for addExpense screen",
+    "reason": "",
+    "data": {
+        "accountDetail": {
+            "pexpence": [
+                "PPF"
+            ],
+            "Bank": [
+                "PFF",
+                "SIP",
+                "MF"
+            ],
+            "Insurance": [
+                "LIC"
+            ]
+        }
+    }
+}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
