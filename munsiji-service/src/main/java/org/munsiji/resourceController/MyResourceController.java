@@ -16,9 +16,11 @@ import org.munsiji.reqresObject.UserDetailReq;
 import org.munsiji.reqresObject.UserExpenseReq;
 import org.munsiji.servicemanager.ExpenseServiceMgr;
 import org.munsiji.servicemanager.UserAccountMgr;
+import org.munsiji.commonUtil.MunsijiServiceConstants;
 //import org.munsiji.persistancetest.HibernateCfg;
 //import org.munsiji.persistancetest.Test;
 import org.munsiji.hibernateUtil.HibernateCfg;
+import org.munsiji.model.Login;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -84,6 +86,26 @@ public class MyResourceController {
 	  System.out.println("register controllerd excuted:"+responseInfo);
 	  return responseInfo;
 	}
+	@RequestMapping(value="login",method=RequestMethod.POST)
+	public ResponseInfo login(@RequestBody Login login){
+		ResponseInfo responseInfo = new ResponseInfo();
+		if(login.getUserName().equals("admin") && login.getPwd().equals("admin")){
+			responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+            responseInfo.setStatusCode(200);
+            responseInfo.setReason("");
+            responseInfo.setData(null);
+			
+		}
+		else{
+			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+			responseInfo.setStatusCode(403);
+			responseInfo.setReason("User Name or password is wrong");
+			responseInfo.setData(null);
+		}
+		
+		return responseInfo;
+		
+	}
 	@RequestMapping(value="createaccount",method = RequestMethod.POST)
 	public ResponseInfo createAccount(@RequestBody UserAccountReq userAccountReq){
 	  ResponseInfo responseInfo =  null;
@@ -104,7 +126,7 @@ public class MyResourceController {
 	  return responseInfo;
 	}
 	@RequestMapping(value="getexpense",method = RequestMethod.GET)
-	public ResponseInfo getExpense(@RequestParam String accType){
+	public ResponseInfo getExpense(@RequestParam(value = "accType", required = false) String accType){
 	  System.out.println("accName is :"+accType);
 	  ResponseInfo responseInfo =  null;
 	  ObjectMapper mapper  = new ObjectMapper();
