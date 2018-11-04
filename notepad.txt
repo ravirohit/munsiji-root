@@ -1,0 +1,13 @@
+-> git init
+-> git status
+-> git add *
+-> git commit -m "my first commit"
+-> git remote add origin https://github.com/ravirohit/munsiji-root.git
+-> git push --set-upstream origin master
+------ steps to deploy the code:
+-> open the webapp folder in the visual basic code
+-> the the below command in the URL:
+   #npm run build      // it will create the compiled file in the dest folder 
+   Note: in the index.html is kind of home page which is loading all the file inside the dest folder. make file  is linked properly.
+-> for now, munsiji-persistance.jar is not adding to the munsiji-service.war file after build. So, i am manually adding it to the munsiji-service.war file.
+   add this munsiji-service.war file to the deployment folder of the wildfly.

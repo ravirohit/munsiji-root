@@ -173,6 +173,52 @@ Response:
         }
     }
 }
+
+=======
+Expense:
+{ 
+  data:{
+        "expense": []
+      }
+}
+
+[
+   {
+		"acc_type":"bank",
+		"expense":[
+				  {
+					"acc_name":"PPF",
+					"invested":"2145"
+				  },
+				  {
+					"acc_name":"SIP",
+					"invested":"2145"
+				  }
+				  {
+					 "acc_name":"MF",
+					 "invested":"2145"
+				  }
+			   ],
+   }
+    {
+		"acc_type":"insurance",
+		"expense":[
+				  {
+					"acc_name":"jan-dhan",
+					"invested":"2145"
+				  },
+				  {
+					"acc_name":"LIC",
+					"invested":"2145"
+				  }
+				  {
+					 "acc_name":"Pension-yojana",
+					 "invested":"2145"
+				  }
+			   ],
+   }
+]
+
  
  
  
