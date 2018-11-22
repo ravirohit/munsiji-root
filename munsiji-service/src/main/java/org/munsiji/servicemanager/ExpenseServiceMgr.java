@@ -10,6 +10,7 @@ import java.util.Map;
 import org.dozer.DozerBeanMapper;
 import org.munsiji.commonUtil.DateUtil;
 import org.munsiji.commonUtil.MunsijiServiceConstants;
+import org.munsiji.commonUtil.UserContextUtils;
 import org.munsiji.model.ExpensePerAccount;
 import org.munsiji.model.UserTotalExepense;
 import org.munsiji.persistance.daoImp.ExpenseDetailDaoImp;
@@ -27,6 +28,7 @@ import org.munsiji.reqresObject.ResponseInfo;
 import org.munsiji.reqresObject.UserDetailReq;
 import org.munsiji.reqresObject.UserExpenseReq;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,8 +46,9 @@ public class ExpenseServiceMgr {
 	ObjectMapper mapper = new ObjectMapper();
 	
 	
-	public ResponseInfo addExpense(UserExpenseReq userExpenseReq, UserDetailReq user){
-	  user.setEmailId("ravi.swd@gmail.com");
+	public ResponseInfo addExpense(UserExpenseReq userExpenseReq){
+	  //user.setEmailId("ravi.swd@gmail.com");
+	  User userInfo = UserContextUtils.getUser();
 	  Date date = null;
 	  List<UserAccount> userAccountList = null;
 	  Boolean status = null;
@@ -58,7 +61,7 @@ public class ExpenseServiceMgr {
 		UserExpense userExpense = dozerBeanMapper.map(userExpenseReq, UserExpense.class); // does not convert String date to Date
 		userExpense.setDateOfExpnse(date);
 		  //TODO...
-		List<UserAccount> userAccountLst = userDetailDaoImp.getAccountInfo(user.getEmailId(), userExpenseReq.getAccType(), userExpenseReq.getAccName());
+		List<UserAccount> userAccountLst = userDetailDaoImp.getAccountInfo(userInfo.getUsername(), userExpenseReq.getAccType(), userExpenseReq.getAccName());
 		UserAccount userAccount = null;
 		if((userAccountLst == null) ||(userAccountLst.size() == 0)){
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
@@ -70,7 +73,7 @@ public class ExpenseServiceMgr {
 		}
 		userAccount = userAccountLst.get(0);
 		userExpense.setUserAccount(userAccount);
-		UserDetails userDetails = userDetailDaoImp.getUserInfo(user.getEmailId()).get(0);
+		UserDetails userDetails = userDetailDaoImp.getUserInfo(userInfo.getUsername(),null,null).get(0);
 	    userExpense.setUserDetails(userDetails);
 	    //System.out.println("expense saved to the db:"+mapper.writeValueAsString(userExpense));
 	    status = expenseDetailDaoImp.saveExpense(userExpense);
@@ -93,8 +96,9 @@ public class ExpenseServiceMgr {
 	  }
 	  return responseInfo;
 	}
-	public ResponseInfo getExpense(String accTypeReq, UserDetailReq user){
-	  user.setEmailId("ravi.swd@gmail.com");
+	public ResponseInfo getExpense(String accTypeReq){
+	  User userInfo = UserContextUtils.getUser();
+	  System.out.println("inside of service mgr method:"+userInfo.getUsername());
 	  List<String> list = null;
 	  List<Object[]> userObjectExpenseList =null;
 	  List<UserExpense> userExpensePerAccList = null;
@@ -103,11 +107,11 @@ public class ExpenseServiceMgr {
       try {
     	   
 		   //System.out.println("UserDetails fetched:"+mapper.writeValueAsString(userAccountList)+"\n"+mapper.writeValueAsString(accMap));
-    		userObjectExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq, user.getEmailId()); 
+    		userObjectExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq,userInfo.getUsername()); 
     		if(accTypeReq != null){
     			userExpensePerAccList = convertObjectArrayToModelForAcc(userObjectExpenseList);
 		    //userExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq, user.getEmailId());
-    			responseInfo = getExpensePerAccType(userExpensePerAccList,user.getEmailId());
+    			responseInfo = getExpensePerAccType(userExpensePerAccList,userInfo.getUsername());
     		}
     		else{
     			userTotalExepense = convertObjectArrayToModel(userObjectExpenseList);
@@ -136,7 +140,6 @@ public class ExpenseServiceMgr {
 		  String accType = (String)object[0]; 
 		  String accName = (String)object[1];
 		  Float amount = (Float)object[2];
-		  System.out.println("<<<<< accType:"+accType+" accName:"+accName+"   amount:"+amount);
 		   if(userTotalExepense.getExpenseforAlAcc().get(accType) == null){
 			   ExpensePerAccount expensePerAccount = new ExpensePerAccount();
 			   userTotalExepense.getExpenseforAlAcc().put(accType, expensePerAccount);

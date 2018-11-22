@@ -1,3 +1,6 @@
+
+
+
 http://localhost:8080/munsiji-service/rest/myapp/registeruser
 payload:
    {
@@ -23,6 +26,47 @@ Response:
     "data": null
   }
   
+==========
+for login:
+http://localhost:8080/munsiji-service/rest/myapp/login
+request:
+{
+	
+   "userName":"ravi.swd.rohit@gmail.com",
+	
+   "pwd":"password"
+
+}
+response:
+{
+    
+	"status": "Success",
+    
+	"statusCode": 200,
+    
+	"msg": "cmF2aS5zd2Qucm9oaXRAZ21haWwuY29tOTY4cGFzc3dvcmQ=",
+    
+	"reason": null,
+    
+	"data": null
+
+}
+for failure:
+{
+   
+	 "status": "Failure",
+    
+	"statusCode": 403,
+    
+	"msg": "Username or password is wrong",
+    
+	"reason": "User is not authorized",
+    
+	"data": null
+
+}
+
+==========
 http://localhost:8080/munsiji-service/rest/myapp/createaccount
 Payload:
   {
@@ -218,6 +262,45 @@ Expense:
 			   ],
    }
 ]
+
+================
+get expense for all account:
+http://localhost:8080/munsiji-service/rest/myapp/getexpense
+response:
+{
+    "status": "Success",
+    "statusCode": 200,
+    "msg": "data fetched for all account",
+    "reason": null,
+    "data": {
+        "expenseforAlAcc": {
+            "Bank": {
+                "expensePerAcc": {
+                    "MF": 45000,
+                    "SIP": 5341
+                }
+            },
+            "LIC": {
+                "expensePerAcc": {
+                    "Kanya-Yojana": 7000
+                }
+            }
+        }
+    }
+}
+=========
+for logout:
+http://localhost:8080/munsiji-service/rest/myapp/logout
+{
+    "status": "Success",
+    "statusCode": 200,
+    "msg": "User logout successfully",
+    "reason": null,
+    "data": null
+}
+
+
+
 
  
  

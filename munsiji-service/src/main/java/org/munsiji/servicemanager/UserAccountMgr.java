@@ -1,14 +1,19 @@
 package org.munsiji.servicemanager;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.dozer.DozerBeanMapper;
 import org.munsiji.commonUtil.DateUtil;
 import org.munsiji.commonUtil.MunsijiServiceConstants;
+import org.munsiji.commonUtil.UserContextUtils;
 import org.munsiji.model.AccTypeMapToName;
+import org.munsiji.model.Login;
 import org.munsiji.persistance.daoImp.UserDetailDaoImp;
 import org.munsiji.persistance.resource.UserAccount;
 import org.munsiji.persistance.resource.UserDetails;
@@ -16,6 +21,7 @@ import org.munsiji.reqresObject.ResponseInfo;
 import org.munsiji.reqresObject.UserAccountReq;
 import org.munsiji.reqresObject.UserDetailReq;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,7 +42,7 @@ public class UserAccountMgr {
 		Boolean status = null;
 		UserDetails userDetails = dozerBeanMapper.map(userDetailReq, UserDetails.class);
 		System.out.println("registerUser userDetailDaoImp:"+userDetails.getEmailId()+" :"+userDetails.getPwd());
-		userList = userDetailDaoImp.getUserInfo(userDetails.getEmailId());
+		userList = userDetailDaoImp.getUserInfo(userDetails.getEmailId(),null,null);    //TODO ...
 		if(userList == null){
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
@@ -44,7 +50,7 @@ public class UserAccountMgr {
 			responseInfo.setStatusCode(500);
 			return responseInfo;
 		}else if((userList.size() == 0)){
-			status = userDetailDaoImp.registerUser(userDetails);
+			status = userDetailDaoImp.registerUser(userDetails,false);
 			if(status){
 				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
 				responseInfo.setMsg("Account Created Successfully");
@@ -66,6 +72,72 @@ public class UserAccountMgr {
 			return responseInfo;
 		}
 	}
+	public ResponseInfo login(Login login) throws UnsupportedEncodingException{
+		ResponseInfo responseInfo = new ResponseInfo();
+		List<UserDetails> userList = null;
+		Boolean status = null;
+		userList = userDetailDaoImp.getUserInfo(login.getUserName(),login.getPwd(),null);
+		if((userList.size() == 1)){
+			UserDetails userDetails = userList.get(0);
+			Random random = new Random();
+			int n = random.nextInt(1000);
+			String str = login.getUserName() + n +login.getPwd();
+			byte[] byteArray = str.getBytes("utf-8");
+			String base64String = Base64.getEncoder().encodeToString(byteArray);
+			userDetails.setKey(base64String);
+			status = userDetailDaoImp.registerUser(userDetails, true);
+			if(status){
+				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+				responseInfo.setMsg(base64String);
+				responseInfo.setStatusCode(200);
+			}
+			else{
+				responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+				responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+				responseInfo.setReason("");
+				responseInfo.setStatusCode(500);
+			}
+		}
+		else{
+			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+			responseInfo.setMsg("Username or password is wrong");
+			responseInfo.setReason("User is not authorized");
+			responseInfo.setStatusCode(403);
+		}
+		return responseInfo;
+	}
+	public ResponseInfo logout(){
+		List<UserDetails> userList = null;
+		boolean status = false;
+		ResponseInfo responseInfo = new ResponseInfo();
+		User userInfo = UserContextUtils.getUser();
+		userList = userDetailDaoImp.getUserInfo(userInfo.getUsername(),null,null);    //TODO ...
+		System.out.println("user id while logging out:"+userInfo.getUsername());
+		if((userList.size() == 1)){
+			UserDetails userDetails = userList.get(0);
+			userDetails.setKey("");
+			status = userDetailDaoImp.registerUser(userDetails, true);
+			if(status){
+				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+				responseInfo.setMsg("User logout successfully");
+				responseInfo.setStatusCode(200);
+			}
+			else{
+				responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+				responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+				responseInfo.setReason("");
+				responseInfo.setStatusCode(500);
+			}
+		}
+		else{
+			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+			responseInfo.setReason("multiple user exist for the provided emailId");
+			responseInfo.setStatusCode(500);
+		}
+		return responseInfo;
+		
+	}
 	public ResponseInfo createAccount(UserAccountReq userAccountReq){ 
 	  UserDetails user = null;
 	  Date date = null;
@@ -85,8 +157,10 @@ public class UserAccountMgr {
 	  UserAccount uerAccount = dozerBeanMapper.map(userAccountReq, UserAccount.class); // does not convert String date to Date
 	  uerAccount.setCrteDate(date);
 	  uerAccount.setStatus(MunsijiServiceConstants.ACTIVE);
+	  User userInfo = UserContextUtils.getUser();
 	  user = new UserDetails();      //TODO...
-	  user.setEmailId("ravi.swd@gmail.com");
+	  user.setEmailId(userInfo.getUsername());
+	  System.out.println("<<<< userId for create account:"+userInfo.getUsername());   // username is email_id
 	  uerAccount.setUserDetails(user);
 	  try{ 
 		   System.out.println("object before mapping to entity:"+mapper.writeValueAsString(uerAccount));
@@ -133,7 +207,8 @@ public class UserAccountMgr {
 		AccTypeMapToName accountInfo = new AccTypeMapToName();
 		Map<String,List<String>> accTypeMaptoName = accountInfo.getAccountDetail();
 		try{
-			List<UserAccount> userAccountList = userDetailDaoImp.getAccountInfo(email,null,null);
+			User userInfo = UserContextUtils.getUser();
+			List<UserAccount> userAccountList = userDetailDaoImp.getAccountInfo(userInfo.getUsername(),null,null);   // username is email Id
 			for(UserAccount userAccount: userAccountList){
 				String accType = userAccount.getType();
 				if(accTypeMaptoName.get(accType) == null){

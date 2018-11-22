@@ -17,24 +17,37 @@ public class UserDetailDaoImp {
 	HibernateCfg hibernateCfg;
 	Session session = null;
 	
-	public Boolean registerUser(UserDetails UserDetails){
+	public Boolean registerUser(UserDetails UserDetails,boolean isUpdate){
 	  Boolean status = false;
 	  try{
 		  session = hibernateCfg.getSession();
-		  session.save(UserDetails);
+		  //session.save(UserDetails);
+		  session.saveOrUpdate(UserDetails);
 		  session.flush();
 	      status = true;
 	      System.out.println("saved data");
 	  }
 	  catch(Exception e){
 		  System.out.println("exception occur while registering user:"+e);
+		  status = false;
 	  }
 	  session.close();
 	  return status;
 	}
-	public List<UserDetails> getUserInfo(String email){
+	public List<UserDetails> getUserInfo(String email,String pwd, String key){
 		List<UserDetails> userList = null; 
-		String str = "from UserDetails where email_id = '" + email+"'";
+		String str = "from UserDetails where";
+		if(key != null){
+			str = new StringBuffer(str).append(" key = '" + key + "'").toString();
+		}
+		else {
+			if(email != null){
+				str = new StringBuffer(str).append(" emailId = '" + email + "'").toString();
+			}
+			if(pwd != null){
+				str = new StringBuffer(str).append(" and pwd = '" + pwd + "'").toString();
+			}
+		}
 		try{
 			  session = hibernateCfg.getSession();
 			  Query query = session.createQuery(str);

@@ -23,7 +23,7 @@ public class CustomUserDetialsService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String emailId) throws UsernameNotFoundException {
 	 System.out.println("loadUserByUsername is getting executed");
 	 emailId = "ravi.swd@gmail.com";
-	  List<org.munsiji.persistance.resource.UserDetails> usrDetailsList= userDetailDaoImp.getUserInfo(emailId);
+	  List<org.munsiji.persistance.resource.UserDetails> usrDetailsList= userDetailDaoImp.getUserInfo(emailId,null,null);
 	  if(usrDetailsList == null || usrDetailsList.size() == 0)
 		  return null;
 	  org.munsiji.persistance.resource.UserDetails usrDetails = usrDetailsList.get(0);

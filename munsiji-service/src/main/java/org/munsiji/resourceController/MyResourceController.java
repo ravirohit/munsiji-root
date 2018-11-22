@@ -1,6 +1,8 @@
 package org.munsiji.resourceController;
 
+import java.util.Base64;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.PostConstruct;
 
@@ -88,21 +90,32 @@ public class MyResourceController {
 	}
 	@RequestMapping(value="login",method=RequestMethod.POST)
 	public ResponseInfo login(@RequestBody Login login){
-		ResponseInfo responseInfo = new ResponseInfo();
-		if(login.getUserName().equals("admin") && login.getPwd().equals("admin")){
-			responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
-            responseInfo.setStatusCode(200);
-            responseInfo.setReason("");
-            responseInfo.setData(null);
-			
+		System.out.println("hiiiiiiiiiiii");
+		ResponseInfo responseInfo = null;
+		try{
+			responseInfo = userAccountMgr.login(login);
 		}
-		else{
+		catch(Exception e){
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
-			responseInfo.setStatusCode(403);
-			responseInfo.setReason("User Name or password is wrong");
-			responseInfo.setData(null);
+			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+			responseInfo.setReason("");
+			responseInfo.setStatusCode(500);
 		}
+		return responseInfo;
 		
+	}
+	@RequestMapping(value="logout",method=RequestMethod.GET)
+	public ResponseInfo logout(){
+		ResponseInfo responseInfo = null;
+		try{
+			responseInfo = userAccountMgr.logout();
+		}
+		catch(Exception e){
+			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+			responseInfo.setReason("");
+			responseInfo.setStatusCode(500);
+		}
 		return responseInfo;
 		
 	}
@@ -119,7 +132,7 @@ public class MyResourceController {
 	 ObjectMapper mapper  = new ObjectMapper();
 	  try {
 		System.out.println("accName is :"+mapper.writeValueAsString(userExpenseReq));
-		responseInfo = expenseServiceMgr.addExpense(userExpenseReq,new UserDetailReq());
+		responseInfo = expenseServiceMgr.addExpense(userExpenseReq);
 	  } catch (JsonProcessingException e) {
 		System.out.println("exception occur in addExpense:"+e);
 	  }
@@ -132,7 +145,7 @@ public class MyResourceController {
 	  ObjectMapper mapper  = new ObjectMapper();
 	  try {
 		System.out.println("accName is :");
-		responseInfo = expenseServiceMgr.getExpense(accType, new UserDetailReq());
+		responseInfo = expenseServiceMgr.getExpense(accType);
 	  } catch (Exception e) {
 		System.out.println("exception occur in addExpense:"+e);
 	  }
