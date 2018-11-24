@@ -1,3 +1,10 @@
+<div *ngIf="isMessage" class="alert alert-success well add-container clearfix" >
+    <div class="text-center">
+        <strong>Success!</strong> 
+        Login account is created succesfully. Please enter your emailid and password to login.
+        </div>
+</div>
+
 <app-promptMessage></app-promptMessage>
 <div  *ngIf="!isSignup" id="loginFormCont" class="login-cont" [style.font-size.px]="size">
   <!-- <button  class="btn btn-primary" (click) ="resize(-1)" > - </button>
@@ -14,9 +21,9 @@
     <label><input type="checkbox"> Remember me</label>
   </div> -->
   <div class="form-group">
-  <button  class="btn btn-primary pull-right" (click) ="loginFn(userID,userPWD)" >Submit</button>
+  <button  class="btn btn-primary pull-right" (click) ="loginFn(userID,userPWD)" >Login</button>
 </div>
-  <a class="signup" id="signup" (click)="isSignup = !isSignup">Signup</a>
+  <a class="signup" id="signup" (click)="isSignup = !isSignup;isMessage=false;">Signup</a>
 </div>
 
 
@@ -45,3 +52,6 @@
     
   </div>
 </div>
+
+
+

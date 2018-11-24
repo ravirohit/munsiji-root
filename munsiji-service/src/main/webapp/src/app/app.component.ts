@@ -21,17 +21,17 @@ export class AppComponent {
     this.userData = this.userInfo.getUserData();
   }
   logout():void{
-    localStorage.setItem("ui",JSON.stringify({}));
-    this.userInfo.setUSerData({});
-    this.router.navigate(['/']); 
+    
+    // this.router.navigate(['/munsiji-service']); 
+    // localStorage.setItem("ui",JSON.stringify({}));
+    // this.userInfo.setUSerData({});
 
         let logoutURL = UrlConfig.LOGOUT;
         let sub = this.dataService.httpGetCall(logoutURL).subscribe(data =>{
             sub.unsubscribe();    
-            alert("LOGOUT IS sUCCESSFUL...");
             localStorage.setItem("ui",JSON.stringify({}));
             this.userInfo.setUSerData({});
-            this.router.navigate(['/']); 
+            this.router.navigate(['/munsiji-service']); 
   
         },(err) =>{
           console.log("Error in LOGOUT HTTP call ", err);
@@ -44,12 +44,6 @@ export class AppComponent {
     console.log(this.isVisble+"   asds" + e);
     this.isVisble = !this.isVisble;
   }
-    id = 'chart1';
-    width = 600;
-    height = 400;
-    type = 'column2d';
-    dataFormat = 'json';
-    dataSource;
-    title = 'Angular4 FusionCharts Sample';
+  
 
 }

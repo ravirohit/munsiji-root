@@ -22,7 +22,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let tbcol of data.grdiData.content" (click)="gridRowClicked(tbcol)">
+                    <tr *ngFor="let tbcol of data.grdiData" (click)="gridRowClicked(tbcol)">
                     <td *ngFor="let thcol of data.th" class="text-center">
                             {{tbcol[thcol]}}
                     </td>

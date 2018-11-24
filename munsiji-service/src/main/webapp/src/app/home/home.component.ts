@@ -17,6 +17,7 @@ import {PromptMessageComponent} from '../template/promptMessage/promptMessage.co
 export class HomeComponent implements OnInit {
 
   getUrl = UrlConfig;
+  chartDataModel:any;
 
   @ViewChild(PromptMessageComponent) promptMessageComponent:PromptMessageComponent;
   
@@ -29,7 +30,7 @@ export class HomeComponent implements OnInit {
    ngOnInit() {
      
      this.promptMessageComponent.showLoader();
-    // this.userName = this.userService.getUserData();
+     this.chartDataModel = this.chartDataModel1;
      this.data = this.userService.getDataModel();
      console.log(this.data);
      this.homeModel.isHeaderDisplay = true;
@@ -37,7 +38,8 @@ export class HomeComponent implements OnInit {
      var sub = this.dataService.httpGetCall(this.getUrl.GET_ALL_EXPENCE).subscribe(res =>{
 
        console.log(res.data);
-       this.data = res.data;
+       this.data.grdiData = res.data;
+       this.chartDataModel = this.generateChartData(res.data);
        sub.unsubscribe();
        this.promptMessageComponent.hideLoader();
         },err => {
@@ -47,7 +49,6 @@ export class HomeComponent implements OnInit {
         }
 
      );
-     //this.generateChartData();
   } 
   clickChart(e){
     console.log("Chart palete clicked" ,  e);
@@ -112,14 +113,30 @@ export class HomeComponent implements OnInit {
    }
 
 
-   chartDataModel = {"chartData":{ "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},
+   chartDataModel1 = {"chartData":{ "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},
                       "data": [
                           {"label":"MF","value": "50000", "routerLink": "?acc=MF"},
                           {"label":"LIC","value": "20000", "link": "/?acc=LIC"},
                           {"label":"PPF","value": "40000", "link": "/?acc=PPF"}]                          
    }}
 
+   generateChartData(d:Array<any>){
+    let arrData = [];
+    d.forEach(element => {
+      arrData.push({
+        "label" : element.accName,
+        "value" : element.value
+      });
+    });
+    console.log("CHART DATA : ",arrData);
+    return arrData;
+   }
 
+  //  [
+  //   {"accName":"MF","amnt":50000, "date":"2-10-2012",  "desc":"PPF deposit for me"},
+  //   {"accName":"LIC","amnt":20000, "date":"2-11-2012",  "desc":"PPF deposit for me"},
+  //   {"accName":"PPF","amnt":40000, "date":"2-12-2012",  "desc":"PPF deposit for me"}
+  //  ] 
   
       width="100%";
       type = 'column3d';

@@ -15,7 +15,8 @@ import {PromptMessageComponent} from '../template/promptMessage/promptMessage.co
 export class LoginComponent implements OnInit {
 
   url = UrlConfig;
-  isSignup = false;
+  isMessage:boolean = false;
+  isSignup:boolean = false;
   signupModel = {  name:"",  pwd1:"",  pwd2:"",  email:""  };
   signupErrorModel = {  name:"",  pwd1:"",  pwd2:"",  email:"", commonMessage:false };
 
@@ -26,6 +27,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() { }  
 
   loginFn(userID, userPWD){
+    this.isMessage=false;
     console.log(userID.value, userPWD.value);
     
       if(userID.value.length > 3 && userPWD.value.length > 3){
@@ -45,7 +47,7 @@ export class LoginComponent implements OnInit {
                         k:data.msg
                       };
         this.userService.setUSerData(userObj);
-        this.router.navigate(['/']);   
+        this.router.navigate(['/munsiji-service']);   
         this.promptMessageComponent.hideLoader();
       },(err) =>{
         console.log("Error in LOGIN HTTP call ", err);
@@ -61,6 +63,8 @@ export class LoginComponent implements OnInit {
           k:"@@@@@@@@@@@@@@@"
         };
       this.userService.setUSerData(userObj);
+      
+      this.router.navigate(['/munsiji-service']);  
       }
     }
  
@@ -71,6 +75,11 @@ export class LoginComponent implements OnInit {
  * 
  */
   signUp(){
+
+    this.isMessage=true;
+    this.isSignup = !this.isSignup;
+
+
 
     if(this.signupModel.pwd1 !== this.signupModel.pwd2){
       this.signupErrorModel.commonMessage = true;
@@ -85,7 +94,7 @@ export class LoginComponent implements OnInit {
 
       let sub = this.dataService.httpPostCall(signUpUrl, data).subscribe( res => {
         console.log("Signup http call is success", res.msg);
-        alert("Signup is successfull");
+        this.isMessage=true;
         this.isSignup = !this.isSignup;
         sub.unsubscribe();
       }, err => {
