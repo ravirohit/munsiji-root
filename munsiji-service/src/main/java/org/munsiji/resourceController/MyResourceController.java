@@ -52,8 +52,7 @@ public class MyResourceController {
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 	@RequestMapping(value="test", method = RequestMethod.GET)
-    public String test() {
-		ResponseInfo responseInfo =  null;
+    public String test(@RequestParam(value = "reqKey", required = false) String reqKey) {      // security related experiment
 		System.out.println("test  service get callled:");
 		String usrName = SecurityContextHolder.getContext().getAuthentication().getName();
 		UserDetails usrDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -61,18 +60,25 @@ public class MyResourceController {
         Session session = hibernateCfg.getSession();
         Query query = session.createQuery(" from Test");
         List<Test> testlist = query.list();
-        return "welcome";
+        return ReqHoldingClass.getReqHoldingMap().get(reqKey);
+    }
+	@RequestMapping(value="gettest", method = RequestMethod.GET)
+    public String getTest(@RequestParam(value = "reqKey", required = false) String reqKey) {
+		System.out.println("getTest  service get callled with req param:"+reqKey);
+		
+        return ReqHoldingClass.getReqHoldingMap().get(reqKey);
     }
 	@RequestMapping(value="test12", method = RequestMethod.POST)
     public ResponseInfo test12(@RequestBody TestEnumReq testEnumReq) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			System.out.println("req obj:"+mapper.writeValueAsString(testEnumReq));
+			ReqHoldingClass.getReqHoldingMap().put(testEnumReq.getReqId(), testEnumReq.getRestUrl());
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 		ResponseInfo responseInfo =  new ResponseInfo();
-		System.out.println("test  service get callled:");
+		System.out.println("test service get callled:");
 		
 		EnumTest obj=EnumTest.SUNDAY;
         responseInfo.setData(obj);
