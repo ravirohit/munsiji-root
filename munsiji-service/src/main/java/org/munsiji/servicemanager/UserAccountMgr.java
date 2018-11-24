@@ -202,7 +202,7 @@ public class UserAccountMgr {
 	  }
 	  
 	}
-	public ResponseInfo getAccountInfo(String email){
+	public ResponseInfo getAccountInfo(String accTypeToBeUsed){
 		ResponseInfo responseInfo = new ResponseInfo() ;
 		AccTypeMapToName accountInfo = new AccTypeMapToName();
 		Map<String,List<String>> accTypeMaptoName = accountInfo.getAccountDetail();

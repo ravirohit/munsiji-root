@@ -1,10 +1,16 @@
 package org.munsiji.reqresObject;
 
-public class AccExpnseData {
+public class AccExpenseData {
 	String accName;
 	Float amnt;
 	String date;
 	String desc;
+	public AccExpenseData(String accName,float amnt, String date, String desc){
+		this.accName = accName;
+		this.amnt = amnt;
+		this.date = date;
+		this.desc = desc;
+	}
 	public String getAccName() {
 		return accName;
 	}

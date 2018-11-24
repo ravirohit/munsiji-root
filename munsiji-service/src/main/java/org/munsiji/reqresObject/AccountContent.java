@@ -4,17 +4,17 @@ import java.util.List;
 
 public class AccountContent {
 	Header header;
-	List<AccExpnseData>  data;
+	List<AccExpenseData>  data;
 	public Header getHeader() {
 		return header;
 	}
 	public void setHeader(Header header) {
 		this.header = header;
 	}
-	public List<AccExpnseData> getData() {
+	public List<AccExpenseData> getData() {
 		return data;
 	}
-	public void setData(List<AccExpnseData> data) {
+	public void setData(List<AccExpenseData> data) {
 		this.data = data;
 	}
 	

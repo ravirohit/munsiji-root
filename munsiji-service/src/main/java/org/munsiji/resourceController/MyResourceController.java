@@ -145,23 +145,24 @@ public class MyResourceController {
 	  return responseInfo;
 	}
 	@RequestMapping(value="getexpense",method = RequestMethod.GET)
-	public ResponseInfo getExpense(@RequestParam(value = "accType", required = false) String accType){
+	public ResponseInfo getExpense(@RequestParam(value = "accType", required = false) String accType,
+								   @RequestParam(value = "accName", required = false) String accName){
 	  System.out.println("accName is :"+accType);
 	  ResponseInfo responseInfo =  null;
 	  ObjectMapper mapper  = new ObjectMapper();
 	  try {
 		System.out.println("accName is :");
-		responseInfo = expenseServiceMgr.getExpense(accType);
+		responseInfo = expenseServiceMgr.getExpense(accType,accName);
 	  } catch (Exception e) {
 		System.out.println("exception occur in addExpense:"+e);
 	  }
 	  return responseInfo;
 	}
 	@RequestMapping(value="getacctypeandname",method = RequestMethod.GET)
-	public ResponseInfo getAccountTypeAndName(@RequestParam String email){
+	public ResponseInfo getAccountTypeAndName(@RequestParam(value = "accType", required = false) String accType){
 		System.out.println("getAccountTypeAndNamec method called");
 		ResponseInfo responseInfo = null;
-		responseInfo = userAccountMgr.getAccountInfo(email);
+		responseInfo = userAccountMgr.getAccountInfo(accType);
 		return responseInfo;
 	}
    	

@@ -273,19 +273,25 @@ response:
     "msg": "data fetched for all account",
     "reason": null,
     "data": {
-        "expenseforAlAcc": {
-            "Bank": {
-                "expensePerAcc": {
-                    "MF": 45000,
-                    "SIP": 5341
-                }
-            },
-            "LIC": {
-                "expensePerAcc": {
-                    "Kanya-Yojana": 7000
-                }
+        "expenseWithAccTypeList": [
+            {
+                "accType": "personal",
+                "accExpList": [
+                    {
+                        "accName": "LIC",
+                        "amnt": 8000,
+                        "date": "2018-12-01 10:00:00.0",
+                        "desc": "future plan"
+                    },
+                    {
+                        "accName": "MF",
+                        "amnt": 1500,
+                        "date": "2018-12-01 10:00:00.0",
+                        "desc": "future plan"
+                    }
+                ]
             }
-        }
+        ]
     }
 }
 =========

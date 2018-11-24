@@ -49,12 +49,12 @@ public class ExpenseDetailDaoImp {
 	  session.close();
 	  return userAccountList;
 	}
-	public List<Object[]> getUsrExpense(String accType, String usrEmail){
+	public List<Object[]> getUsrExpense(String accType,String accName, String usrEmail){
 	  List<UserExpense> userExpenseList = null;
 	  List<Object[]> userObjectExpenseList = null;
 	  String queryStr;
 	  if(accType == null) {
-		  queryStr = "select a.type, a.name, e.amount from UserAccount a, UserExpense e "
+		  queryStr = "select a.type, a.name, e.amount, a.crteDate, a.desc from UserAccount a, UserExpense e "
 	  		               + "where e.userDetails = '"+usrEmail+"' and e.userAccount = a.id";
 	  }
 	  else {

@@ -18,20 +18,19 @@ import org.munsiji.persistance.daoImp.UserDetailDaoImp;
 import org.munsiji.persistance.resource.UserAccount;
 import org.munsiji.persistance.resource.UserDetails;
 import org.munsiji.persistance.resource.UserExpense;
-import org.munsiji.reqresObject.AccExpnseData;
+import org.munsiji.reqresObject.AccExpenseData;
 import org.munsiji.reqresObject.AccountContent;
 import org.munsiji.reqresObject.ColTitle;
-import org.munsiji.reqresObject.ContentData;
+import org.munsiji.reqresObject.ExpenseForAllAccType;
 import org.munsiji.reqresObject.ExpenseInfoRes;
+import org.munsiji.reqresObject.ExpenseWithAccType;
 import org.munsiji.reqresObject.Header;
 import org.munsiji.reqresObject.ResponseInfo;
-import org.munsiji.reqresObject.UserDetailReq;
 import org.munsiji.reqresObject.UserExpenseReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
@@ -96,27 +95,29 @@ public class ExpenseServiceMgr {
 	  }
 	  return responseInfo;
 	}
-	public ResponseInfo getExpense(String accTypeReq){
+	public ResponseInfo getExpense(String accTypeReq,String accName){
 	  User userInfo = UserContextUtils.getUser();
 	  System.out.println("inside of service mgr method:"+userInfo.getUsername());
 	  List<String> list = null;
 	  List<Object[]> userObjectExpenseList =null;
 	  List<UserExpense> userExpensePerAccList = null;
-	  UserTotalExepense userTotalExepense = null;
+	  //UserTotalExepense userTotalExepense = null;
+	  ExpenseForAllAccType expenseForAllAccType = null;
       ResponseInfo responseInfo = null;
       try {
     	   
 		   //System.out.println("UserDetails fetched:"+mapper.writeValueAsString(userAccountList)+"\n"+mapper.writeValueAsString(accMap));
-    		userObjectExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq,userInfo.getUsername()); 
+    		userObjectExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq,accName,userInfo.getUsername()); 
     		if(accTypeReq != null){
     			userExpensePerAccList = convertObjectArrayToModelForAcc(userObjectExpenseList);
 		    //userExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq, user.getEmailId());
     			responseInfo = getExpensePerAccType(userExpensePerAccList,userInfo.getUsername());
     		}
     		else{
-    			userTotalExepense = convertObjectArrayToModel(userObjectExpenseList);
+    			//userTotalExepense = convertObjectArrayToModel(userObjectExpenseList);
+    			expenseForAllAccType = convertObjectArrayToModel(userObjectExpenseList);
     			responseInfo = new ResponseInfo();
-    			responseInfo.setData(userTotalExepense);
+    			responseInfo.setData(expenseForAllAccType);
     			responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
     			responseInfo.setStatusCode(200);
     			responseInfo.setMsg("data fetched for all account");
@@ -134,14 +135,51 @@ public class ExpenseServiceMgr {
 		 }
 	  return responseInfo;
 	}
-	private UserTotalExepense convertObjectArrayToModel(List<Object[]> objArray){
-		UserTotalExepense userTotalExepense = new UserTotalExepense();
+	private ExpenseForAllAccType convertObjectArrayToModel(List<Object[]> objArray){
+		//UserTotalExepense userTotalExepense = new UserTotalExepense();
+		Map<String,Map<String,AccExpenseData>> accTypeToExp = new HashMap<>();   
+		Map<String,AccExpenseData> accToExp = new HashMap<>();
+		ExpenseForAllAccType ExpenseForAllAccType = null;
 		for(Object[] object: objArray){
 		  String accType = (String)object[0]; 
 		  String accName = (String)object[1];
 		  Float amount = (Float)object[2];
-		   if(userTotalExepense.getExpenseforAlAcc().get(accType) == null){
-			   ExpensePerAccount expensePerAccount = new ExpensePerAccount();
+		  System.out.println("location of error---");
+		  String crtDate = String.valueOf(object[3]);
+		  System.out.println("location of error---");
+		  String desc = (String)object[4];
+		  AccExpenseData accExpenseData = new AccExpenseData(accName,amount,crtDate,desc);
+		  if(accTypeToExp.get(accType) == null){
+			  accToExp.put(accName, accExpenseData);
+			  accTypeToExp.put(accType, accToExp);
+		  }
+		  else{
+			  if(accTypeToExp.get(accType).get(accName) == null){
+				  accTypeToExp.get(accType).put(accName, accExpenseData);
+			  }
+			  else{
+				  float amnt = accTypeToExp.get(accType).get(accName).getAmnt();
+				  accTypeToExp.get(accType).get(accName).setAmnt(amnt+accExpenseData.getAmnt());
+			  }
+		  }
+		}
+		  ExpenseForAllAccType = new ExpenseForAllAccType();
+		  Map<String,AccExpenseData> accToExpTemp = null;
+		  ExpenseWithAccType expenseWithAccType = null;
+		  for(String accTypeKey:accTypeToExp.keySet()){
+			  accToExpTemp = accTypeToExp.get(accTypeKey);
+			  expenseWithAccType = new ExpenseWithAccType();
+			  expenseWithAccType.setAccType(accTypeKey);
+			  for(String accNameKey:accToExpTemp.keySet()){
+				  expenseWithAccType.getAccExpList().add(accToExpTemp.get(accNameKey));
+			  }
+			  ExpenseForAllAccType.getExpenseWithAccTypeList().add(expenseWithAccType);
+			  expenseWithAccType = null;
+		  }
+		  
+		  return ExpenseForAllAccType;
+		  /* if(userTotalExepense.getExpenseforAlAcc().get(accType) == null){
+		   ExpensePerAccount expensePerAccount = new ExpensePerAccount();
 			   userTotalExepense.getExpenseforAlAcc().put(accType, expensePerAccount);
 		   }
 		   System.out.println("----------------");
@@ -154,8 +192,8 @@ public class ExpenseServiceMgr {
 			   expensePerAcc.put(accName,expensePerAcc.get(accName)+amount);
 		   }
 		 }
-		    return userTotalExepense;
-		
+		    return userTotalExepense;*/
+
 	}
 	private List<UserExpense> convertObjectArrayToModelForAcc(List<Object[]> objArray){
 		List<UserExpense> userExpenseList = new ArrayList();
@@ -173,11 +211,11 @@ public class ExpenseServiceMgr {
 	}
 	private ResponseInfo getExpensePerAccType(List<UserExpense> userExpenseList, String email){
 	   ResponseInfo responseInfo = new ResponseInfo();
-	   AccExpnseData accExpnseData = null;
+	   AccExpenseData accExpnseData = null;
 	   List<UserAccount> userAccountList = null;
 	   String accType=null;
-	   List<AccExpnseData> accExpnseDataList = new ArrayList<>();
-	   Map<String, List<AccExpnseData>> rspDatamap = new HashMap<>();
+	   List<AccExpenseData> accExpnseDataList = new ArrayList<>();
+	   Map<String, List<AccExpenseData>> rspDatamap = new HashMap<>();
 	   Map<Long, UserAccount> accMap = new HashMap<>();   // 0 index of list is type, 1 is subtype
 	   
 	   userAccountList = expenseDetailDaoImp.getUsrAccountDetail(email);   // TODO.. Need to get it from UserDao
@@ -199,14 +237,16 @@ public class ExpenseServiceMgr {
 	   }
 	   for(UserExpense userExpense:userExpenseList){
 			 //System.out.println("userExpense:"+mapper.writeValueAsString(userExpense));
-			 accExpnseData = new AccExpnseData();
+			 
 		     String name = accMap.get(userExpense.getUserAccount().getId()).getName();
 		     accType = accMap.get(userExpense.getUserAccount().getId()).getType();
-		     accExpnseData.setAccName(accMap.get(userExpense.getUserAccount().getId()).getName());
-		     accExpnseData.setAmnt(userExpense.getAmount());
-		     accExpnseData.setDesc(userExpense.getDesc());
-		     accExpnseData.setDate(String.valueOf(userExpense.getDateOfExpnse())); //TODO...
-		     //accExpnseDataList = rspDatamap.get(type);
+		     accExpnseData = new AccExpenseData(accMap.get(userExpense.getUserAccount().getId()).getName(),
+		    		 		userExpense.getAmount(),String.valueOf(userExpense.getDateOfExpnse()), userExpense.getDesc());
+		   /*  accExpnseData.setAccName();
+		     accExpnseData.setAmnt();
+		     accExpnseData.setDesc();
+		     accExpnseData.setDate(); //TODO...
+*/		     //accExpnseDataList = rspDatamap.get(type);
 		     accExpnseDataList = rspDatamap.get(name);
 		     if(accExpnseDataList == null){
 		    	 accExpnseDataList = new ArrayList();
@@ -218,7 +258,7 @@ public class ExpenseServiceMgr {
 	   rspDatamap.forEach((type, accExpnseDataLst) -> {
 			 System.out.println((type + ":" + accExpnseDataLst));
 			 Float expnseSum = 0f;
-			 for(AccExpnseData accExpnseDat : accExpnseDataLst){
+			 for(AccExpenseData accExpnseDat : accExpnseDataLst){
 				 expnseSum = expnseSum + accExpnseDat.getAmnt();
 			 }
 			 Header header = new Header();
