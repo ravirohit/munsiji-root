@@ -43,15 +43,22 @@ public class SessionManager implements HandlerInterceptor{
 		List<UserDetails> userList = null;
 		System.out.println("preHandle called");
 		List<GrantAuthCol> list= new ArrayList<>();
-		
-		if(req.getHeader("authId").equals("login") || req.getHeader("authId").equals("register")){
+		if((req.getHeader("auth-key") == null)){
+			flag = false;
 			return flag;
 		}
-		System.out.println(req.getHeader("authId"));
+		
+		if(req.getHeader("auth-key").equals("login") || req.getHeader("auth-key").equals("register")){
+			return flag;
+		}
+		System.out.println(req.getHeader("auth-key"));
 		System.out.println(userDetailDaoImp);
-		userList = userDetailDaoImp.getUserInfo(null,null,req.getHeader("authId")); 
+		userList = userDetailDaoImp.getUserInfo(null,null,req.getHeader("auth-key")); 
 		if(userList.size() == 0){
 			flag = false;
+			res.setStatus(403);
+			res.sendError(403, "unauthorized user trying to access");
+			res.setContentType("application/json;charset=UTF-8");
 		}
 		else{
 			UserDetails userDetails = userList.get(0);
