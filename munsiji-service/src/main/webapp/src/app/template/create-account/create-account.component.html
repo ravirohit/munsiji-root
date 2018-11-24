@@ -1,3 +1,4 @@
+<app-promptMessage></app-promptMessage>
 <div *ngIf="!model.isMessage" class="well add-container" >
     
     <div class="form-group">
@@ -10,7 +11,7 @@
     </div>
     <div class="form-group">
       <label for="acc_name"><sup>*</sup>Account Name:</label>
-      <input type="text" id="acc_name" class="form-control" [(ngModel)]="acc.title"/> 
+      <input type="text" id="acc_name" class="form-control" [(ngModel)]="acc.name"/> 
       <div class="alert alert-info hidden">
         <strong>Account Name: </strong> Provide Account Name Uniqe and meaningful.
       </div>   
@@ -21,8 +22,13 @@
     </div> -->
     <div class="form-group">
       <label for="acc_open_date"><sup>*</sup>Account open Date:</label>
-      <input type="date" id="acc_open_date" class="form-control" [(ngModel)]="acc.date"/>    
+      <input type="date" id="acc_open_date" class="form-control" [(ngModel)]="acc.date"/>   
+      <div class="alert alert-info hidden">
+          <strong>Date: </strong> Select date.
+        </div>  
     </div>
+
+    
     <div class="form-group">
       <label for="acc_desc"><sup>*</sup>Description:</label>
       <textarea  id="acc_desc" class="form-control" [(ngModel)]="acc.desc" ></textarea> 
@@ -35,13 +41,15 @@
 
   </div>
 
-  <div *ngIf="model.isMessage" class="well add-container" >
-      <div class="alert alert-info">
+  <div *ngIf="model.isMessage" class="alert alert-success well add-container clearfix" >
+      <div class="">
           <strong>Success!</strong> {{acc.resMSG}}
       </div> 
-      <div class="well">Basic Well</div>
-      <div class = "form-group">
-        <button></button>
+      <div class="well"> {{acc.name}} Account is created succesfully. Do you want to create another account?</div>
+      
+      <div class = "form-group pull-right">
+          <button class="btn btn-primary" (click)="routeToHomePage()">No</button>
+        <button  class="btn btn-primary"  (click)="fromReset()">Yes</button>
       </div>
 
   </div>

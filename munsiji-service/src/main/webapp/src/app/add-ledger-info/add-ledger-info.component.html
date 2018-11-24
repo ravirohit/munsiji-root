@@ -1,4 +1,5 @@
-<div class="well add-container" >
+<app-promptMessage></app-promptMessage>
+<div  *ngIf="!isMessage" class="well add-container" >
   
 <div class="form-group">        
       <label for="category"><sup>*</sup>Account Type: </label>        
@@ -12,17 +13,14 @@
       <label for="add_expenceType"><sup>*</sup>Account:</label>
       <select name="add_typeDropDown" id="add_expenceType" class="form-control" (change)="expence.account = $event.srcElement.value">
           <option value="0">Select account</option>
-            <option  *ngFor= "let i of arrAccountName;index as t" [value]="i.key +'#'+t"> {{i.label}} {{t}}  </option>
-           
-
-            <!-- <option value="user_333" >Room Expences</option>
-            <option value="user_222">Office Expences</option>
-            <option value="user_111">Other Expences</option> -->
+          
+          <option  *ngFor= "let i of arrAccountName;index as t" [value]="i"> {{i}}  </option>            
       </select> 
       <div class="alert alert-info hidden">
         <strong>Account: </strong> Select the Account for which you want to add Data.
       </div>   
     </div>
+
   <div class="form-group">
     <label for="amount"><sup>*</sup>Amount</label>
     <input type="numner" id="amount" class="form-control"  [(ngModel)]="expence.amount"/> 
@@ -30,6 +28,7 @@
       <strong>Amount: </strong> Provide the total amount you want to add.
     </div>   
   </div>
+
   <div class="form-group">
     <label for="sDate"><sup>*</sup>Expence Date:</label>
     <input type="date" id="sDate" class="form-control"  [(ngModel)]="expence.date"/>    
@@ -43,4 +42,20 @@
     
   </div>
   <button type="submit" class="btn btn-primary" (click)="submitExpence()">Submit</button>
+</div>
+
+
+
+
+<div *ngIf="isMessage" class="alert alert-success well add-container clearfix" >
+    <div class="">
+        <strong>Success!</strong> {{acc.resMSG}}
+    </div> 
+    <div class="well"> Expence is added succesfully. Do you want to add another expences for accounts?</div>
+    
+    <div class = "form-group pull-right">
+        <button class="btn btn-primary" (click)="routeToHomePage()">No</button>
+      <button  class="btn btn-primary"  (click)="fromReset()">Yes</button>
+    </div>
+
 </div>

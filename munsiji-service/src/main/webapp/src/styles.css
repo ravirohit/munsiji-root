@@ -4,7 +4,9 @@
 /* You can add global styles to this file, and also import other style files */
 
 *{ font-family: sans-serif;}
-
+body{
+    background:linear-gradient(#56787b,#dde4e8, #56787b);
+}
 
 .hidden {display: none;opacity: 0;}
 .show, input:focus + .alert, textarea:focus + .alert,  select:focus + .alert {

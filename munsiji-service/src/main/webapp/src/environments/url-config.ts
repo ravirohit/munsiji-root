@@ -7,7 +7,8 @@ export const UrlConfig = (function(){
                     "ADD_EXPANCE"           : "/munsiji-service/rest/myapp/addexpense",
                     "CREATE_ACCOUNT"        : "/munsiji-service/rest/myapp/createaccount",
                     "LOGIN"                 : "/munsiji-service/rest/myapp/login",
-                    "LOGOUT"                : "/munsiji-service/rest/myapp/logout"
+                    "LOGOUT"                : "/munsiji-service/rest/myapp/logout",
+                    "GET_ACCOUNT_TYPE"      : "/munsiji-service/rest/myapp/getacctypeandname?accType="
 
         };
 })();

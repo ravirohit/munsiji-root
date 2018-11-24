@@ -73,20 +73,20 @@ export class UserinfoService implements OnDestroy, OnInit{
 
   dataModel:any = {
                       "dropDown" : [
-                        {"key":"room_exp", "label": "Room Expences"},
-                        {"key":"offi_exp", "label": "Office Expences"},
-                        {"key":"othe_exp", "label": "Other Expences"},
+                        "Room Expences",
+                        "Office Expences",
+                        "Other Expences",
                       ],
-                      "colTitle" : { "amount": "Amount", "date":"Date", "desc":"Details", "account": "Received"},
+                      "colTitle" : { "amount": "Amount", "date":"Start Date", "desc":"Details", "account": "Received"},
                       "th"        : ["account","amount", "date",  "desc"],
 
 
                       grdiData : {     
                         "header":{"title":"Other Expences", "bal":6000, key:"user_111"},
                         "content":  [
-                                      {"account":"HDFC","amount":1000, "date":"2-10-2012",  "desc":"PPF deposit for me"},
-                                      {"account":"IDFC","amount":2000, "date":"2-11-2012",  "desc":"PPF deposit for me"},
-                                      {"account":"AXIS","amount":3000, "date":"2-12-2012",  "desc":"PPF deposit for me"}
+                                      {"account":"MF","amount":50000, "date":"2-10-2012",  "desc":"PPF deposit for me"},
+                                      {"account":"LIC","amount":20000, "date":"2-11-2012",  "desc":"PPF deposit for me"},
+                                      {"account":"PPF","amount":40000, "date":"2-12-2012",  "desc":"PPF deposit for me"}
                                      ]                        
                           },
 

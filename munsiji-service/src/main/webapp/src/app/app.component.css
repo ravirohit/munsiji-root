@@ -10,7 +10,6 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
     margin: 0;
 }
 .main-toolbar {
-    background: linear-gradient(to right,lightgray,#FFF);;
     position: fixed;
     width: 255px;
     z-index: 99;
@@ -38,7 +37,7 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
     border-bottom: 1px solid #4444;
 }
 .app-container {
-    background: linear-gradient(white,#dde4e8, white);
+    
     width: auto;
     margin-left: 250px;
     padding-top: 15px;

@@ -6,7 +6,7 @@ import { ElementRef } from '@angular/core/src/linker/element_ref';
 
 import { Observable } from 'rxjs/Rx';
 import {UrlConfig} from './../../environments/url-config';
-
+import {PromptMessageComponent} from '../template/promptMessage/promptMessage.component';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
 
   getUrl = UrlConfig;
 
-  //@ViewChild(PromptMessageComponent) PromptMessageComponent:PromptMessageComponent;
+  @ViewChild(PromptMessageComponent) promptMessageComponent:PromptMessageComponent;
   
   userName:any = {};
   homeModel = {isHeaderDisplay:false,userName: "Username", displayType: 2, rotateAngel:''}
@@ -27,6 +27,8 @@ export class HomeComponent implements OnInit {
   constructor(private userService:UserinfoService, private dataService:DataService) { }
   
    ngOnInit() {
+     
+     this.promptMessageComponent.showLoader();
      this.userName = this.userService.getUserData();
      this.data = this.userService.getDataModel();
      console.log(this.data);
@@ -34,8 +36,11 @@ export class HomeComponent implements OnInit {
      console.log(this.getUrl.GET_ACCOUNT);
      var sub = this.dataService.httpGetCall(this.getUrl.GET_ACCOUNT).subscribe(data =>{
        console.log(data);
+
        sub.unsubscribe();
+       this.promptMessageComponent.hideLoader();
         },err => {
+          this.promptMessageComponent.hideLoader();
           console.log(err);
           sub.unsubscribe();
         }
@@ -108,9 +113,9 @@ export class HomeComponent implements OnInit {
 
    chartDataModel = {"chartData":{ "chart": { "caption": "PPF Summary","theme": "fint"},
                       "data": [
-                          {"label":"MF","value": "5000", "routerLink": "?acc=MF"},
-                          {"label":"LIC","value": "2000", "link": "/?acc=LIC"},
-                          {"label":"PPF","value": "5000", "link": "/?acc=PPF"}]                          
+                          {"label":"MF","value": "50000", "routerLink": "?acc=MF"},
+                          {"label":"LIC","value": "20000", "link": "/?acc=LIC"},
+                          {"label":"PPF","value": "40000", "link": "/?acc=PPF"}]                          
    }}
 
 

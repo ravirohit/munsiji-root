@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {UserinfoService} from './../../services/userinfo.service'
 
+import { Router } from '@angular/router';
 import { UrlConfig } from './../../../environments/url-config';
 import {DataService} from '../../services/data.service'; 
+import {PromptMessageComponent} from './../promptMessage/promptMessage.component';
 
 @Component({
   selector: 'app-create-account',
@@ -11,29 +13,23 @@ import {DataService} from '../../services/data.service';
 })
 export class CreateAccountComponent implements OnInit {
 
+  @ViewChild(PromptMessageComponent) promptMessageComponent:PromptMessageComponent;
+
   URL = UrlConfig;
 
-  name = "dfdf";
-  acc:any = {title:"",type:"",desc:"",date:"" }
+  //name = "dfdf";
+  acc:any = {name:"",type:"",desc:"",date:new Date() }
 
   model = {isMessage: false}
-  constructor( private userService:UserinfoService, private dataService:DataService) { }
+  constructor( private userService:UserinfoService, private dataService:DataService, private router: Router) { }
 
-  ngOnInit() {
-    // {
-    //   "name": "SIP",
-    //   "type": "Bank",
-    //   "investedAmnt": 6000,
-    //   "desc":"future plan",
-    //   "crteDate": "01-10-2018 10:12:15"
-    //  }
-  }
+  ngOnInit() { }
 
   createAccount():void{
-
+    this.promptMessageComponent.showLoader();
     let createAccountUrl = this.URL.CREATE_ACCOUNT,
         createDataModel = {
-                            name : this.acc.title, 
+                            name : this.acc.name, 
                             type: 'pexpence', 
                             investedAmnt : this.acc.bal, 
                             crteDate : this.acc.date
@@ -43,18 +39,27 @@ export class CreateAccountComponent implements OnInit {
 
 
     this.userService.setDataModelForAcctType(this.acc);
-    
-
 
     let sub = this.dataService.httpPostCall(createAccountUrl, createDataModel).subscribe( res => {
       console.log("CREATE_ACCOUNT http call is success", res.msg);
       this.acc.resMSG = res.msg;
       this.model.isMessage = true;
       sub.unsubscribe();
+      this.promptMessageComponent.hideLoader();
     }, err => {
       console.log("Error in CREATE_ACCOUNT HTTP call ", err);
+      this.promptMessageComponent.hideLoader();
       sub.unsubscribe();
     });
     
+  }
+
+  fromReset(){
+    this.model.isMessage = false;
+    this.acc = {name:"",type:"",desc:"",date:new Date() 
+  }
+  }
+  routeToHomePage(){
+    this.router.navigate(['/']); 
   }
 }

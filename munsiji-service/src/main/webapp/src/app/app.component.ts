@@ -13,50 +13,20 @@ import {DataService } from '../app/services/data.service';
 export class AppComponent {
   isVisble = true;
   userData = {isLogedin:false};
-  fontSize:number = 20;
   
   constructor(private userInfo:UserinfoService,private router: Router,  private dataService : DataService){
-
-    this.dataSource = {
-      "chart": {
-          "caption": "Harry's SuperMart",
-          "subCaption": "Top 5 stores in last month by revenue",
-          "numberprefix": "$",
-          "theme": "fint"
-      },
-      "data": [
-          {
-              "label": "Bakersfield Central",
-              "value": "880000"
-          },
-          {
-              "label": "Garden Groove harbour",
-              "value": "730000"
-          },
-          {
-              "label": "Los Angeles Topanga",
-              "value": "590000"
-          },
-          {
-              "label": "Compton-Rancho Dom",
-              "value": "520000"
-          },
-          {
-              "label": "Daly City Serramonte",
-              "value": "330000"
-          }
-      ]
   }
-
-  }
+    
   ngOnInit(){
     this.userData = this.userInfo.getUserData();
   }
   logout():void{
-        
+    localStorage.setItem("ui",JSON.stringify({}));
+    this.userInfo.setUSerData({});
+    this.router.navigate(['/']); 
 
         let logoutURL = UrlConfig.LOGOUT;
-        let sub = this.dataService.httpPostCall(logoutURL,{}).subscribe(data =>{
+        let sub = this.dataService.httpGetCall(logoutURL).subscribe(data =>{
             sub.unsubscribe();    
             alert("LOGOUT IS sUCCESSFUL...");
             localStorage.setItem("ui",JSON.stringify({}));

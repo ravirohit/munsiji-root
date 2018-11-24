@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { UrlConfig } from './../../environments/url-config';
-import {LoginModule} from './../Model/loginModel/loginModule';
 
 import {UserinfoService} from '../services/userinfo.service'; 
 import {DataService} from '../services/data.service'; 
+import {PromptMessageComponent} from '../template/promptMessage/promptMessage.component';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +21,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private userService:UserinfoService, private router: Router, private dataService : DataService) { }
 
+  @ViewChild(PromptMessageComponent) promptMessageComponent:PromptMessageComponent;
+
   ngOnInit() { }  
 
   loginFn(userID, userPWD){
@@ -34,6 +35,7 @@ export class LoginComponent implements OnInit {
         "userName": userID.value,	
         "pwd": userPWD.value
       };
+      this.promptMessageComponent.showLoader();
       let sub = this.dataService.httpPostCall(loginURL,data).subscribe(data =>{
         sub.unsubscribe();
         alert("LOGIN IS sUCCESSFUL...");
@@ -44,13 +46,21 @@ export class LoginComponent implements OnInit {
                       };
         this.userService.setUSerData(userObj);
         this.router.navigate(['/']);   
-
+        this.promptMessageComponent.hideLoader();
       },(err) =>{
         console.log("Error in LOGIN HTTP call ", err);
         sub.unsubscribe();
+        this.promptMessageComponent.showLoader();
       });
       }else{
         console.log("USERID OR PASSWORD is not correct.");
+
+        let userObj = {
+          isLogedin : true, 
+          name:"Raj kumar singh",
+          k:"@@@@@@@@@@@@@@@"
+        };
+      this.userService.setUSerData(userObj);
       }
     }
  
