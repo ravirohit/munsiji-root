@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
       };
       this.promptMessageComponent.showLoader();
       let sub = this.dataService.httpPostCall(loginURL,data).subscribe(res =>{
-        sub.unsubscribe();
+       
         if(res.status != 403){
             let userObj = {
               isLogedin : true, 
@@ -51,24 +51,25 @@ export class LoginComponent implements OnInit {
         }else{
           alert("Invailed user/pwd. Please try again.");
         }
-        
+        sub.unsubscribe();
       },(err) =>{
         console.log("Error in LOGIN HTTP call ", err);
         sub.unsubscribe();
         this.promptMessageComponent.hideLoader();
       });
-      }else{
-        console.log("USERID OR PASSWORD is not correct.");
-
-        let userObj = {
-          isLogedin : true, 
-          name:"Raj kumar singh",
-          k:"@@@@@@@@@@@@@@@"
-        };
-      this.userService.setUSerData(userObj);
-      
-      this.router.navigate(['/munsiji-service']);  
       }
+      // else{
+      //   console.log("USERID OR PASSWORD is not correct.");
+
+      //   let userObj = {
+      //     isLogedin : true, 
+      //     name:"Raj kumar singh",
+      //     k:"@@@@@@@@@@@@@@@"
+      //   };
+      // this.userService.setUSerData(userObj);
+      
+      // this.router.navigate(['/munsiji-service']);  
+      // }
     }
  
   

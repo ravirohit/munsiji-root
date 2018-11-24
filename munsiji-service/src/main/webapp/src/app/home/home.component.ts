@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
      var sub = this.dataService.httpGetCall(this.getUrl.GET_ALL_EXPENCE).subscribe(res =>{
 
        console.log(res.data);
-       if(res.data.expenseWithAccTypeList.length > 0){
+       if(res.data.expenseWithAccTypeList && res.data.expenseWithAccTypeList.length > 0){
             this.data.grdiData = res.data.expenseWithAccTypeList[0].accExpList;
             this.chartDataModel = this.generateChartData(this.data.grdiData);
             sub.unsubscribe();
