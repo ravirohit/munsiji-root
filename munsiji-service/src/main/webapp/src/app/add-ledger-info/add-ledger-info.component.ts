@@ -12,6 +12,7 @@ import {PromptMessageComponent} from '../template/promptMessage/promptMessage.co
   styleUrls: ['./add-ledger-info.component.css']
 })
 export class AddLedgerInfoComponent implements OnInit, OnDestroy {
+  
   URL = UrlConfig;
   @ViewChild(PromptMessageComponent) promptMessageComponent:PromptMessageComponent;
 
@@ -28,11 +29,11 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
     //this.arrAccountName = dataMoel.dropDown;
     //console.log(this.arrAccountName);
     this.promptMessageComponent.showLoader();
-    let getAccountTypeURL = this.URL.GET_ACCOUNT_TYPE+"pexpence";
+    let getAccountTypeURL = this.URL.GET_ACCOUNT_TYPE+"personalexp";
 
     let sub = this.dataService.httpGetCall(getAccountTypeURL).subscribe(data =>{
-      this.arrAccountName = data.data.accountDetail.pexpence;
-      console.log("Account names for PEXPENCE: ", this.arrAccountName);
+      this.arrAccountName = data.data.accountDetail.personalexp;
+      console.log("Account names for personalexp: ", this.arrAccountName);
       this.promptMessageComponent.hideLoader();
       sub.unsubscribe();
     },err =>{
@@ -50,14 +51,14 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
     let addDataModel, index =this.expence.account.split("#")[1];
 
     addDataModel = {
-      "accType"     : this.expence.accType,
-      "accName"     : this.expence.account,
-      "amount"      : this.expence.amount,
-      "dateOfExpnse": this.expence.date,
-      "desc"        : this.expence.desc
-      };
+                    "accType"     : this.expence.accType,
+                    "accName"     : this.expence.account,
+                    "amount"      : this.expence.amount,
+                    "dateOfExpnse": this.expence.date,
+                    "desc"        : this.expence.desc
+                    };
       
-    this.userService.setDataModelForAccount(this.expence, index);
+    //this.userService.setDataModelForAccount(this.expence, index);
     let sub = this.dataService.httpPostCall(this.URL.ADD_EXPANCE, addDataModel).subscribe( res => {
       this.isMessage = true;
       console.log(".ADD_EXPANCE http call is success", res.msg);
@@ -82,7 +83,7 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
 
   clearForm(){
     this.expence={
-      "accType":"pexpence",
+      "accType":"personalexp",
       "account":"",
       "amount":0,
       "date":"",

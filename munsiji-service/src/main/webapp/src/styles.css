@@ -5,6 +5,7 @@
 
 *{ font-family: sans-serif;}
 body{
+    height: 100vh;
     background:linear-gradient(#56787b,#dde4e8, #56787b);
 }
 

@@ -1,61 +1,18 @@
-
+<app-promptMessage></app-promptMessage>
 <div class="home-container">
 
-<app-promptMessage></app-promptMessage>
-  <div class="header-dlg-container">
-      <div class="header-dlg-tool-bar">  
-      <div class="expand-collapse tool-bar" (click)="homeModel.isHeaderDisplay = !homeModel.isHeaderDisplay; homeModel.rotateAngel = homeModel.isHeaderDisplay ? 'rotate(0deg)' : 'rotate(-90deg)' ">
-          <!-- <a class="margin-left" (click)="toggle('block',1)">Expand All</a>
-          <a class="margin-left" (click)="toggle('none',0)">Collapse All</a> -->
-          <span class="angel pull-right" [ngStyle]="{'transform':homeModel.rotateAngel}"></span>
-      
-       
-        
-        <div *ngIf="homeModel.isHeaderDisplay" class="tool-bar header-dlg" >
-            <!-- <div class="form-group"> 
-              <label for="accountType">Account Type:</label>
-              <select name="viewType" id="accountType" class="form-control col-lg-3 col-md-4 col-sm-6 col-xs-12" disabled >
-                  <option value="pexpence" selected>Personal Expance</option>
-                  <option value="texpence" disabled>Tour Expance</option>
-                  <option value="gexpence" disabled>Group Expance</option>
-              </select>
-            </div> -->
-        <!-- <div class="form-group"> 
-              <label for="account">Account:</label>
-              <select name="viewType" id="account" class="form-control col-lg-3 col-md-4 col-sm-6 col-xs-12" >
-                  <option value="tabl">All</option>
-              </select>
-        </div> -->
-        <div class="form-group"> 
-
-              <label for="viewType">Display:</label>
-              <select name="viewType" id="viewType" class="form-control col-lg-3 col-md-4 col-sm-6 col-xs-12" 
-                (change)="homeModel.displayType = $event.srcElement.value" >
-                  <option value="0">Grid</option>
-                  <option value="1">Graph</option>
-                  <option value="2" selected>Table and Graph</option>
-              </select>
-        </div>
-        <!-- <div class="form-group"> 
-            <label for="asOf">As of:</label>
-              <select name="asOf" id="asOf" class="form-control col-lg-3 col-md-4 col-sm-6 col-xs-12" >
-                  <option value="mont" selected>Monthly</option>
-                  <option value="quar">Quterly</option>
-                  <option value="mont">Half-yearly</option>option>
-                  <option value="quar">Yearly</option>
-              </select>
-          </div> -->
-        </div>
-    </div>
-</div>
-</div>
-  <!-- <div class="col-sm-12" *ngFor="let arrData of data.arrData;index as i;">
-    <a href="#" class="list-group-item block row no-margin" (click)="rowClick(i)">
-      <span class="label label-primary">{{arrData.header.title}}  </span>
-      <span class="badge badge-right">Total: {{arrData.header.bal}} Rs.</span>      
-    </a> -->
-    <!-- <div class="view-container" id="view-container-{{i}}"> -->
     <div class="view-container" id="view-container">
+            <div class="form-group"> 
+
+                    <label for="viewType">Display:</label>
+                    <select name="viewType" id="viewType" class="form-control col-lg-3 col-md-4 col-sm-6 col-xs-12" 
+                      (change)="homeModel.displayType = $event.srcElement.value" >
+                        <option value="0">Grid</option>
+                        <option value="1">Graph</option>
+                        <option value="2" selected>Table and Graph</option>
+                    </select>
+              </div>
+
         <div class="gridContainer" *ngIf = "homeModel.displayType != 1 ">
             <table id="table-{{i}}" class="template-grid-cl table table-striped table-condensed table-bordered col-sm-12">
                 <thead><tr>

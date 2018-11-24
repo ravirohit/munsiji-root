@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Rx';
 export class UserinfoService implements OnDestroy, OnInit{
   public userData:any  = {'isLogedin':false};
   constructor() { 
-    this.generateChartData();
+    
   }
 
   getUserData(){
@@ -43,7 +43,6 @@ export class UserinfoService implements OnDestroy, OnInit{
   setDataModelForAccount(obj, arrIndex=1){
 
     this.dataModel.arrData[arrIndex].content.push(JSON.parse(JSON.stringify(obj)));
-    this.generateChartData();
   }
 
   setDataModelForAcctType(data){
@@ -52,63 +51,20 @@ export class UserinfoService implements OnDestroy, OnInit{
     this.dataModel.dropDown.push({"key": data.title.replace(/ /g, "_"), "label" : data.title});
   }
 
-  generateChartData(){
-
-    for(let i=0, l =  this.dataModel.arrData.length ; i < l ; i++){
-      
-      var chartData = {chart: {}, data:[]}, title = "", totalBal:number=0,
-          arrData = this.dataModel.arrData[i].content;
-
-      for(let j=0, l2 =   arrData.length ; j < l2 ; j++){        
-        chartData.data.push({"label": arrData[j].date, "value": arrData[j].amount});     
-        totalBal +=    Number.parseFloat(arrData[j].amount);
-      }
-      
-      this.dataModel.arrData[i].header.bal = totalBal;
-      title = this.dataModel.arrData[i].header.title + " ( "+totalBal +" ) ";
-      chartData.chart = {"caption" :  title , "theme":"fint"};
-      this.dataModel.arrData[i].chartData = chartData;
-    }    
-  }
 
   dataModel:any = {
-                      "dropDown" : [
-                        "Room Expences",
-                        "Office Expences",
-                        "Other Expences",
-                      ],
-                      "colTitle" : { "amount": "Amount", "date":"Start Date", "desc":"Details", "account": "Received"},
-                      "th"        : ["account","amount", "date",  "desc"],
-
+    
+                      "colTitle" : { "amnt": "Amount", "date":"Start Date", "desc":"Details", "accName": "Received"},
+                      "th"        : ["accName","amnt", "date",  "desc"],
 
                       grdiData : {     
                         "header":{"title":"Other Expences", "bal":6000, key:"user_111"},
                         "content":  [
-                                      {"account":"MF","amount":50000, "date":"2-10-2012",  "desc":"PPF deposit for me"},
-                                      {"account":"LIC","amount":20000, "date":"2-11-2012",  "desc":"PPF deposit for me"},
-                                      {"account":"PPF","amount":40000, "date":"2-12-2012",  "desc":"PPF deposit for me"}
+                                      {"accName":"MF","amnt":50000, "date":"2-10-2012",  "desc":"PPF deposit for me"},
+                                      {"accName":"LIC","amnt":20000, "date":"2-11-2012",  "desc":"PPF deposit for me"},
+                                      {"accName":"PPF","amnt":40000, "date":"2-12-2012",  "desc":"PPF deposit for me"}
                                      ]                        
-                          },
-
-                      arrData:[
-                                   
-                                      {
-                                        "header":{"title":"Room Expences", "bal":24000,key:"user_333"},
-                                        "content": []
-                                    },{
-                                        "header":{"title":"Office Expences ", "bal":15000,key:"user_222"},
-                                        "content": [{"account":"HDFC","amount":4000, "date":"2-10-2012",  "desc":"PPF deposit for me"}, {"account":"HDFC","amount":5000, "date":"2-11-2012",  "desc":"PPF deposit for me"}]
-                                    },
-                                   
-                                    {     
-                                      "header":{"title":"Other Expences", "bal":6000, key:"user_111"},
-                                      "content":  [
-                                                    {"account":"HDFC","amount":1000, "date":"2-10-2012",  "desc":"PPF deposit for me"},
-                                                    {"account":"IDFC","amount":2000, "date":"2-11-2012",  "desc":"PPF deposit for me"},
-                                                    {"account":"AXIS","amount":3000, "date":"2-12-2012",  "desc":"PPF deposit for me"}
-                                                   ]                        
-                                        }
-                                  ]
-                  };
+                          }
+                        }
 }
 

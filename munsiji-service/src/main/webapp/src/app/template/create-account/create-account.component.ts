@@ -30,7 +30,7 @@ export class CreateAccountComponent implements OnInit {
     let createAccountUrl = this.URL.CREATE_ACCOUNT,
         createDataModel = {
                             name : this.acc.name, 
-                            type: 'pexpence', 
+                            type: 'personalexp', 
                             investedAmnt : this.acc.bal, 
                             crteDate : this.acc.date
                           };
@@ -38,7 +38,7 @@ export class CreateAccountComponent implements OnInit {
     console.log(this.acc.name," > ",this.acc.type," > ",this.acc.date," > ",this.acc.bal," > ",this.acc.desc);
 
 
-    this.userService.setDataModelForAcctType(this.acc);
+    //this.userService.setDataModelForAcctType(this.acc);
 
     let sub = this.dataService.httpPostCall(createAccountUrl, createDataModel).subscribe( res => {
       console.log("CREATE_ACCOUNT http call is success", res.msg);

@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
 
   @ViewChild(PromptMessageComponent) promptMessageComponent:PromptMessageComponent;
   
-  userName:any = {};
+  //userName:any = {};
   homeModel = {isHeaderDisplay:false,userName: "Username", displayType: 2, rotateAngel:''}
   data:any = [];//{te:12000,td:20000,sa:8000};
 
@@ -29,14 +29,15 @@ export class HomeComponent implements OnInit {
    ngOnInit() {
      
      this.promptMessageComponent.showLoader();
-     this.userName = this.userService.getUserData();
+    // this.userName = this.userService.getUserData();
      this.data = this.userService.getDataModel();
      console.log(this.data);
      this.homeModel.isHeaderDisplay = true;
-     console.log(this.getUrl.GET_ACCOUNT);
-     var sub = this.dataService.httpGetCall(this.getUrl.GET_ACCOUNT).subscribe(data =>{
-       console.log(data);
+     
+     var sub = this.dataService.httpGetCall(this.getUrl.GET_ALL_EXPENCE).subscribe(res =>{
 
+       console.log(res.data);
+        this.data = res.data;
        sub.unsubscribe();
        this.promptMessageComponent.hideLoader();
         },err => {
@@ -111,7 +112,7 @@ export class HomeComponent implements OnInit {
    }
 
 
-   chartDataModel = {"chartData":{ "chart": { "caption": "PPF Summary","theme": "fint"},
+   chartDataModel = {"chartData":{ "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},
                       "data": [
                           {"label":"MF","value": "50000", "routerLink": "?acc=MF"},
                           {"label":"LIC","value": "20000", "link": "/?acc=LIC"},
