@@ -13,12 +13,12 @@
 <div class="mobile-menu-bar" (click)="toogleMenu($event)"><span class="menu-toolbar">MENU</span></div>
 <div [hidden]="!isVisble" class="main-toolbar">  
   <ul class="main-ul-toolbar">
-    <li routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</li>
+    <li routerLink="munsiji-service" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</li>
     <!-- <li routerLink="tour" routerLinkActive="active">Tour Ledger</li>
     <li routerLink="group" routerLinkActive="active">Group Ledger</li> -->
-    <li routerLink="profile" routerLinkActive="active">Profile</li>
-    <li routerLink="add" routerLinkActive="active">Add Expances</li>
-    <li routerLink="c_account" routerLinkActive="active">Create Account</li>
+    <li routerLink="munsiji-service/profile" routerLinkActive="active">Profile</li>
+    <li routerLink="munsiji-service/add" routerLinkActive="active">Add Expances</li>
+    <li routerLink="munsiji-service/c_account" routerLinkActive="active">Create Account</li>
     <li (click)="logout()">Logout</li>
   </ul>
 </div>

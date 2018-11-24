@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
      var sub = this.dataService.httpGetCall(this.getUrl.GET_ALL_EXPENCE).subscribe(res =>{
 
        console.log(res.data);
-        this.data = res.data;
+       this.data = res.data;
        sub.unsubscribe();
        this.promptMessageComponent.hideLoader();
         },err => {
