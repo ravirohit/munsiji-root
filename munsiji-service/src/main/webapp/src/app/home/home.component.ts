@@ -38,10 +38,13 @@ export class HomeComponent implements OnInit {
      var sub = this.dataService.httpGetCall(this.getUrl.GET_ALL_EXPENCE).subscribe(res =>{
 
        console.log(res.data);
-       this.data.grdiData = res.data.expenseWithAccTypeList[0].accExpList;
-       this.chartDataModel = this.generateChartData(this.data.grdiData);
-       sub.unsubscribe();
-       this.promptMessageComponent.hideLoader();
+       if(res.data.expenseWithAccTypeList.length > 0){
+            this.data.grdiData = res.data.expenseWithAccTypeList[0].accExpList;
+            this.chartDataModel = this.generateChartData(this.data.grdiData);
+            sub.unsubscribe();
+            
+            }
+            this.promptMessageComponent.hideLoader();
         },err => {
           this.promptMessageComponent.hideLoader();
           console.log(err);

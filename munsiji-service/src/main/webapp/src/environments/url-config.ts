@@ -9,7 +9,7 @@ export const UrlConfig = (function(){
                     "LOGIN"                 : "/munsiji-service/rest/myapp/login",
                     "LOGOUT"                : "/munsiji-service/rest/myapp/logout",
                     "GET_ACCOUNT_TYPE"      : "/munsiji-service/rest/myapp/getacctypeandname?accType=",
-                    "GET_ALL_EXPENCE"       : "/munsiji-service/rest/myapp/getexpense?accType=personalexp"
+                    "GET_ALL_EXPENCE"       : "/munsiji-service/rest/myapp/getexpense"//?accType=personalexp
 
         };
 })();

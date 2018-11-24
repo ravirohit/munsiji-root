@@ -37,21 +37,25 @@ export class LoginComponent implements OnInit {
         "pwd": userPWD.value
       };
       this.promptMessageComponent.showLoader();
-      let sub = this.dataService.httpPostCall(loginURL,data).subscribe(data =>{
+      let sub = this.dataService.httpPostCall(loginURL,data).subscribe(res =>{
         sub.unsubscribe();
-        alert("LOGIN IS sUCCESSFUL...");
-        let userObj = {
-                        isLogedin : true, 
-                        name:"Raj kumar singh",
-                        k:data.msg
-                      };
-        this.userService.setUSerData(userObj);
-        this.router.navigate(['/munsiji-service']);   
-        this.promptMessageComponent.hideLoader();
+        if(res.status != 403){
+            let userObj = {
+              isLogedin : true, 
+              name:"Raj kumar singh",
+              k:data.msg
+            };
+            this.userService.setUSerData(userObj);
+            this.router.navigate(['/munsiji-service']);   
+            this.promptMessageComponent.hideLoader();
+        }else{
+          alert("Invailed user/pwd. Please try again.");
+        }
+        
       },(err) =>{
         console.log("Error in LOGIN HTTP call ", err);
         sub.unsubscribe();
-        this.promptMessageComponent.showLoader();
+        this.promptMessageComponent.hideLoader();
       });
       }else{
         console.log("USERID OR PASSWORD is not correct.");
@@ -75,7 +79,7 @@ export class LoginComponent implements OnInit {
  */
   signUp(){
 
-    this.isMessage=true;
+    this.isMessage=false;
     if(this.signupModel.pwd1 !== this.signupModel.pwd2){
       this.signupErrorModel.commonMessage = true;
     }else{
