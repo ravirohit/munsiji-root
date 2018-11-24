@@ -32,14 +32,14 @@ export class HomeComponent implements OnInit {
      this.promptMessageComponent.showLoader();
      this.chartDataModel = this.chartDataModel1;
      this.data = this.userService.getDataModel();
-     console.log(this.data);
+     
      this.homeModel.isHeaderDisplay = true;
      
      var sub = this.dataService.httpGetCall(this.getUrl.GET_ALL_EXPENCE).subscribe(res =>{
 
        console.log(res.data);
-       this.data.grdiData = res.data;
-       this.chartDataModel = this.generateChartData(res.data);
+       this.data.grdiData = res.data.expenseWithAccTypeList[0].accExpList;
+       this.chartDataModel = this.generateChartData(this.data.grdiData);
        sub.unsubscribe();
        this.promptMessageComponent.hideLoader();
         },err => {

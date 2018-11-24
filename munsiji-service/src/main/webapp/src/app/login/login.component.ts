@@ -28,9 +28,8 @@ export class LoginComponent implements OnInit {
 
   loginFn(userID, userPWD){
     this.isMessage=false;
-    console.log(userID.value, userPWD.value);
-    
-      if(userID.value.length > 3 && userPWD.value.length > 3){
+        
+    if(userID.value.length > 3 && userPWD.value.length > 3){
 
       let loginURL:string = this.url.LOGIN, data:any = {};
       data = {
@@ -77,10 +76,6 @@ export class LoginComponent implements OnInit {
   signUp(){
 
     this.isMessage=true;
-    this.isSignup = !this.isSignup;
-
-
-
     if(this.signupModel.pwd1 !== this.signupModel.pwd2){
       this.signupErrorModel.commonMessage = true;
     }else{
@@ -93,10 +88,11 @@ export class LoginComponent implements OnInit {
       this.signupErrorModel.commonMessage = false;
 
       let sub = this.dataService.httpPostCall(signUpUrl, data).subscribe( res => {
-        console.log("Signup http call is success", res.msg);
+        
         this.isMessage=true;
         this.isSignup = !this.isSignup;
         sub.unsubscribe();
+      
       }, err => {
         console.log("Error in SIGNUP HTTP call ", err);
         sub.unsubscribe();
