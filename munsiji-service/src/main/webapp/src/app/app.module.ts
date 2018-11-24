@@ -6,6 +6,9 @@ import {RouterModule,Routes   } from "@angular/router";
 import { FusionChartsModule } from 'angular4-fusioncharts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import {CustomHttpInterceptorService} from './services/httpInterceptorService';
+
+
 import * as FusionCharts from 'fusioncharts';
 import * as Charts from 'fusioncharts/fusioncharts.charts';
 import * as FintTheme from 'fusioncharts/themes/fusioncharts.theme.fint';
@@ -40,7 +43,7 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
     HttpClientModule,FormsModule,
     RouterModule.forRoot(applicationRouter)
   ],
-  providers: [UserinfoService, AuthGuard,DataService/*,  { provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptorService, multi: true }*/],
+  providers: [UserinfoService, AuthGuard,DataService,  { provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

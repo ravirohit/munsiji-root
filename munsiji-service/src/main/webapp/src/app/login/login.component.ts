@@ -24,18 +24,35 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() { }  
 
-  loginFn(e){
-      let userObj = {isLogedin : true, name:"Raj kumar singh",  id:'A-0001',  email:'singhraj.swd@gmail.com',  cont:'9342276957'};
-      this.userService.setUSerData(userObj);
-      this.router.navigate(['/']);   
-
+  loginFn(userID, userPWD){
+    console.log(userID.value, userPWD.value);
     
+      if(userID.value.length > 3 && userPWD.value.length > 3){
 
+      let loginURL:string = this.url.LOGIN, data:any = {};
+      data = {
+        "userName": userID.value,	
+        "pwd": userPWD.value
+      };
+      let sub = this.dataService.httpPostCall(loginURL,data).subscribe(data =>{
+        sub.unsubscribe();
+        alert("LOGIN IS sUCCESSFUL...");
+        let userObj = {
+                        isLogedin : true, 
+                        name:"Raj kumar singh",
+                        k:data.msg
+                      };
+        this.userService.setUSerData(userObj);
+        this.router.navigate(['/']);   
 
-
-
-
-  }
+      },(err) =>{
+        console.log("Error in LOGIN HTTP call ", err);
+        sub.unsubscribe();
+      });
+      }else{
+        console.log("USERID OR PASSWORD is not correct.");
+      }
+    }
  
   
 
@@ -58,6 +75,7 @@ export class LoginComponent implements OnInit {
 
       let sub = this.dataService.httpPostCall(signUpUrl, data).subscribe( res => {
         console.log("Signup http call is success", res.msg);
+        alert("Signup is successfull");
         this.isSignup = !this.isSignup;
         sub.unsubscribe();
       }, err => {

@@ -1,6 +1,6 @@
-li:focus, li:active, li:hover {
+li:focus, li:active, li:hover, .main-ul-toolbar .active {
     outline: none;
-    background: linear-gradient(to right, #fff , #f133 53%, #fff);
+    background: linear-gradient(to right, #fff , aqua, #fff);
 }
 
 .header-cont{
@@ -19,11 +19,6 @@ li:focus, li:active, li:hover {
 #profile {
     float: right;
     margin: 15px;
-}
-.main-ul-toolbar .active {
-    outline: 0px;
-    background: linear-gradient(to right, #fff , #f133 53%, #fff);
-    background-color: white;
 }
 .main-ul-toolbar {
     display: flex;    

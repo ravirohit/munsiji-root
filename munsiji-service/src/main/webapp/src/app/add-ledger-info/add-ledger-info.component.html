@@ -4,8 +4,8 @@
       <label for="category"><sup>*</sup>Account Type: </label>        
       <select name="add_typeDropDown" id="category" class="form-control" value="p_expence" (change)="expence.accType = $event.srcElement.value" disabled>
           <option value="pexpence" selected>Personal Expance</option>
-          <option value="texpence" disabled>Tour Expance</option>
-          <option value="gexpence" disabled>Group Expance</option>
+          <!-- <option value="texpence" disabled>Tour Expance</option>
+          <option value="gexpence" disabled>Group Expance</option> -->
       </select>
   </div>
   <div class="form-group">
@@ -18,11 +18,17 @@
             <!-- <option value="user_333" >Room Expences</option>
             <option value="user_222">Office Expences</option>
             <option value="user_111">Other Expences</option> -->
-      </select>    
+      </select> 
+      <div class="alert alert-info hidden">
+        <strong>Account: </strong> Select the Account for which you want to add Data.
+      </div>   
     </div>
   <div class="form-group">
     <label for="amount"><sup>*</sup>Amount</label>
-    <input type="numner" id="amount" class="form-control"  [(ngModel)]="expence.amount"/>    
+    <input type="numner" id="amount" class="form-control"  [(ngModel)]="expence.amount"/> 
+    <div class="alert alert-info hidden">
+      <strong>Amount: </strong> Provide the total amount you want to add.
+    </div>   
   </div>
   <div class="form-group">
     <label for="sDate"><sup>*</sup>Expence Date:</label>
@@ -31,6 +37,9 @@
   <div class="form-group">
     <label for="desc"><sup>*</sup>Description:</label>
     <textarea class="from-control" id="desc"  [(ngModel)]="expence.desc"></textarea>
+    <div class="alert alert-info hidden">
+      <strong>Description: </strong> Provide Description for the expences.
+    </div>
     
   </div>
   <button type="submit" class="btn btn-primary" (click)="submitExpence()">Submit</button>

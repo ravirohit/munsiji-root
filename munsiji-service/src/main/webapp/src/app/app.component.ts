@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import {Router} from '@angular/router';
 import {UserinfoService} from './services/userinfo.service';
 
+import { UrlConfig } from '../environments/url-config';
+import {DataService } from '../app/services/data.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,7 +15,7 @@ export class AppComponent {
   userData = {isLogedin:false};
   fontSize:number = 20;
   
-  constructor(private userInfo:UserinfoService,private router: Router){
+  constructor(private userInfo:UserinfoService,private router: Router,  private dataService : DataService){
 
     this.dataSource = {
       "chart": {
@@ -50,10 +53,23 @@ export class AppComponent {
     this.userData = this.userInfo.getUserData();
   }
   logout():void{
-    localStorage.setItem("ui",JSON.stringify({}));
-    this.userInfo.setUSerData({});
-    this.router.navigate(['/']);    
+        
+
+        let logoutURL = UrlConfig.LOGOUT;
+        let sub = this.dataService.httpPostCall(logoutURL,{}).subscribe(data =>{
+            sub.unsubscribe();    
+            alert("LOGOUT IS sUCCESSFUL...");
+            localStorage.setItem("ui",JSON.stringify({}));
+            this.userInfo.setUSerData({});
+            this.router.navigate(['/']); 
+  
+        },(err) =>{
+          console.log("Error in LOGOUT HTTP call ", err);
+          sub.unsubscribe();
+        });
   }
+
+
   toogleMenu(e):void{
     console.log(this.isVisble+"   asds" + e);
     this.isVisble = !this.isVisble;

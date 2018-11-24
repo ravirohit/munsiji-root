@@ -27,17 +27,15 @@ a.no-margin:hover {
     background: lightblue;
     font-weight: 700;
     letter-spacing: 2px;
-    transition: background 2s;
+    transition: background 1s;
     font-size: 1.2rem;
 }
 .margin-left {
     margin: 0 0 0 15px;
 }
 .view-container{
-    display:none;
+    
     width: 100%;
-    transition: display 5s;
-    transition-delay: 10s;
 }
 label {
     font-weight: 100;

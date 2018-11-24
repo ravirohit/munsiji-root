@@ -4,13 +4,16 @@
       <label for="add_typeDropDown"><sup>*</sup>Account Type:</label>
       <select name="add_typeDropDown" id="add_typeDropDown" class="form-control" disabled>
         <option value="pexpence" selected>Personal Expance</option>
-        <option value="texpence" disabled>Tour Expance</option>
-        <option value="gexpence" disabled>Group Expance</option>
+        <!-- <option value="texpence" disabled>Tour Expance</option>
+        <option value="gexpence" disabled>Group Expance</option> -->
       </select>
     </div>
     <div class="form-group">
       <label for="acc_name"><sup>*</sup>Account Name:</label>
-      <input type="text" id="acc_name" class="form-control" [(ngModel)]="acc.title"/>    
+      <input type="text" id="acc_name" class="form-control" [(ngModel)]="acc.title"/> 
+      <div class="alert alert-info hidden">
+        <strong>Account Name: </strong> Provide Account Name Uniqe and meaningful.
+      </div>   
     </div>
     <!-- <div class="form-group">
       <label for="avl_bal"><sup>*</sup>Total Expences(As of now):</label>
@@ -22,7 +25,10 @@
     </div>
     <div class="form-group">
       <label for="acc_desc"><sup>*</sup>Description:</label>
-      <textarea  id="acc_desc" class="form-control" [(ngModel)]="acc.desc" ></textarea>    
+      <textarea  id="acc_desc" class="form-control" [(ngModel)]="acc.desc" ></textarea> 
+      <div class="alert alert-info hidden">
+        <strong>Description: </strong> Provide Description for the Account(Why you are creating the account).
+      </div>   
     </div>
     
     <button type="submit" class="btn btn-primary" (click)="createAccount()">Create Account</button>
