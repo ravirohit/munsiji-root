@@ -1,5 +1,5 @@
 <app-promptMessage></app-promptMessage>
-<div class="home-container">
+<div class="home-container" *ngIf = "ifDataAvailable">
 
     <div class="view-container" id="view-container">
             <div class="form-group"> 
@@ -45,3 +45,10 @@
 </div>
 
 
+<div *ngIf="!ifDataAvailable" class="alert alert-info well add-container" >
+    <div class="">
+        <strong>Sorry !</strong>
+    </div> 
+    <div class="well">It seems there is no data loaded yet. Please make sure you have added expences in your account. ?</div>
+
+</div>

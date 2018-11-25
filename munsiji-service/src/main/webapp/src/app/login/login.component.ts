@@ -24,7 +24,10 @@ export class LoginComponent implements OnInit {
 
   @ViewChild(PromptMessageComponent) promptMessageComponent:PromptMessageComponent;
 
-  ngOnInit() { }  
+  ngOnInit() { 
+    
+    this.userService.setUSerData({});
+  }  
 
   loginFn(userID, userPWD){
     this.isMessage=false;
@@ -43,10 +46,10 @@ export class LoginComponent implements OnInit {
             let userObj = {
               isLogedin : true, 
               name:"Raj kumar singh",
-              k:data.msg
+              k:res.msg
             };
             this.userService.setUSerData(userObj);
-            this.router.navigate(['/munsiji-service']);   
+            this.router.navigate(['munsiji-service']);   
             this.promptMessageComponent.hideLoader();
         }else{
           alert("Invailed user/pwd. Please try again.");
@@ -58,18 +61,18 @@ export class LoginComponent implements OnInit {
         this.promptMessageComponent.hideLoader();
       });
       }
-      // else{
-      //   console.log("USERID OR PASSWORD is not correct.");
+      else{
+        console.log("USERID OR PASSWORD is not correct.");
 
-      //   let userObj = {
-      //     isLogedin : true, 
-      //     name:"Raj kumar singh",
-      //     k:"@@@@@@@@@@@@@@@"
-      //   };
-      // this.userService.setUSerData(userObj);
+        let userObj = {
+          isLogedin : true, 
+          name:"Raj kumar singh",
+          k:"@@@@@@@@@@@@@@@"
+        };
+      this.userService.setUSerData(userObj);
       
-      // this.router.navigate(['/munsiji-service']);  
-      // }
+      this.router.navigate(['munsiji-service']);  
+      }
     }
  
   

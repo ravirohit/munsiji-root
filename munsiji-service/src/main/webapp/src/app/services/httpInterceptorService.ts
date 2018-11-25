@@ -22,7 +22,8 @@ export class CustomHttpInterceptorService implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler):
       Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
-          debugger;
+     
+        
         let key:string;
         if(req.url.indexOf("login") > 0){
             key = "login" 

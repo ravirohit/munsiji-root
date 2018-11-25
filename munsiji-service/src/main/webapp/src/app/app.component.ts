@@ -22,21 +22,21 @@ export class AppComponent {
   }
   logout():void{
     
-    // this.router.navigate(['/munsiji-service']); 
-    // localStorage.setItem("ui",JSON.stringify({}));
-    // this.userInfo.setUSerData({});
+    
 
         let logoutURL = UrlConfig.LOGOUT;
         let sub = this.dataService.httpGetCall(logoutURL).subscribe(data =>{
             sub.unsubscribe();    
-            localStorage.setItem("ui",JSON.stringify({}));
+           // localStorage.setItem("ui",JSON.stringify({}));
             this.userInfo.setUSerData({});
-            this.router.navigate(['/munsiji-service']); 
+            this.router.navigate(['munsiji-service']); 
   
         },(err) =>{
+          this.userInfo.setUSerData({});
           console.log("Error in LOGOUT HTTP call ", err);
           sub.unsubscribe();
         });
+        this.router.navigate(['munsiji-service']);
   }
 
 

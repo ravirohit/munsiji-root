@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
+
+import { Component, OnInit, ViewChild } from '@angular/core';
+
 import {UserinfoService} from '../services/userinfo.service';
 import {DataService} from '../services/data.service';
-import { ElementRef } from '@angular/core/src/linker/element_ref';
 
-import { Observable } from 'rxjs/Rx';
 import {UrlConfig} from './../../environments/url-config';
 import {PromptMessageComponent} from '../template/promptMessage/promptMessage.component';
 
@@ -17,7 +16,8 @@ import {PromptMessageComponent} from '../template/promptMessage/promptMessage.co
 export class HomeComponent implements OnInit {
 
   getUrl = UrlConfig;
-  chartDataModel:any;
+  ifDataAvailable:boolean = false;
+  chartDataModel:any = {};
 
   @ViewChild(PromptMessageComponent) promptMessageComponent:PromptMessageComponent;
   
@@ -30,7 +30,6 @@ export class HomeComponent implements OnInit {
    ngOnInit() {
      
      this.promptMessageComponent.showLoader();
-     this.chartDataModel = this.chartDataModel1;
      this.data = this.userService.getDataModel();
      
      this.homeModel.isHeaderDisplay = true;
@@ -42,10 +41,12 @@ export class HomeComponent implements OnInit {
             this.data.grdiData = res.data.expenseWithAccTypeList[0].accExpList;
             this.chartDataModel = this.generateChartData(this.data.grdiData);
             sub.unsubscribe();
-            
-            }
+            this.ifDataAvailable = true;
+          }
             this.promptMessageComponent.hideLoader();
         },err => {
+         // this.ifDataAvailable = true;
+          //this.chartDataModel = this.chartDataModel1;
           this.promptMessageComponent.hideLoader();
           console.log(err);
           sub.unsubscribe();
@@ -53,67 +54,28 @@ export class HomeComponent implements OnInit {
 
      );
   } 
-  clickChart(e){
-    console.log("Chart palete clicked" ,  e);
-  }
+  
 
   gridRowClicked(data){
     console.log("DATA ", data);
   }
 
-   toggle(value:string, opacity, index=-1):void{
-    let aElements:any =  document.querySelectorAll(".view-container");
-    for(let i = 0; i <  aElements.length; i++){
-      let el = aElements[i];
-
-      if(index === -1 || i != index){
-        
-        if(opacity === 0){
-          el.style.opacity = opacity;
-          this.createTransitionEffect(el,"display", "none",500); 
-          
-        }else{
-          
-          el.style.display= value; 
-          this.createTransitionEffect(el,"opacity", "1",500);
-        }
-      }
-    }
-   }
-   
-   rowClick(a):void{
-     let targetEl = document.getElementById("view-container-"+a),
-         style = targetEl.style.display;
-     this.toggle("none", 0, a);
-    
-     if( style === "block" ){
-       
-      targetEl.style.opacity = "0";
-      this.createTransitionEffect(targetEl, "display", "none",500);
-      
-     }else{ 
-       
-     targetEl.style.display= "block"; 
-     this.createTransitionEffect(targetEl,"opacity", "1",500);
-           
-     }
-   }
-
-   createTransitionEffect(el,prop, displayPro, duration){
-     setTimeout( ()=> {
-      el.style[prop] = displayPro; 
-     }, duration);
-   }
-
-
-
    displayType(e){
      console.log(e.srcElement.value);
    }
 
-   getData(){
-
+   generateChartData(d:Array<any>){
+    let arrData = [];
+    d.forEach(element => {
+      arrData.push({
+        "label" : element.accName,
+        "value" : element.amnt
+      });
+    });
+    console.log("CHART DATA : ",arrData);
+    return arrData;
    }
+
 
 
    chartDataModel1 = {"chartData":{ "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},
@@ -122,24 +84,6 @@ export class HomeComponent implements OnInit {
                           {"label":"LIC","value": "20000", "link": "/?acc=LIC"},
                           {"label":"PPF","value": "40000", "link": "/?acc=PPF"}]                          
    }}
-
-   generateChartData(d:Array<any>){
-    let arrData = [];
-    d.forEach(element => {
-      arrData.push({
-        "label" : element.accName,
-        "value" : element.value
-      });
-    });
-    console.log("CHART DATA : ",arrData);
-    return arrData;
-   }
-
-  //  [
-  //   {"accName":"MF","amnt":50000, "date":"2-10-2012",  "desc":"PPF deposit for me"},
-  //   {"accName":"LIC","amnt":20000, "date":"2-11-2012",  "desc":"PPF deposit for me"},
-  //   {"accName":"PPF","amnt":40000, "date":"2-12-2012",  "desc":"PPF deposit for me"}
-  //  ] 
   
       width="100%";
       type = 'column3d';

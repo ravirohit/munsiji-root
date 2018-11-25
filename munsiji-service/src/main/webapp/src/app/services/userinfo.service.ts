@@ -20,7 +20,7 @@ export class UserinfoService implements OnDestroy, OnInit{
     return this.userData;
   }
   setUSerData(userInfo){
-    this.userData.isLogedin = userInfo.isLogedin;
+    this.userData.isLogedin = userInfo.isLogedin == undefined ? false : userInfo.isLogedin;
     localStorage.setItem("ui",JSON.stringify(userInfo));
   }
 
@@ -52,17 +52,17 @@ export class UserinfoService implements OnDestroy, OnInit{
   }
 
 
-  dataModel:any = {
-    
+  dataModel:any = {    
                       "colTitle" : { "amnt": "Amount", "date":"Start Date", "desc":"Details", "accName": "Received"},
                       "th"        : ["accName","amnt", "date",  "desc"],
 
-                      grdiData :   [
-                                      {"accName":"MF","amnt":50000, "date":"2-10-2012",  "desc":"PPF deposit for me"},
-                                      {"accName":"LIC","amnt":20000, "date":"2-11-2012",  "desc":"PPF deposit for me"},
-                                      {"accName":"PPF","amnt":40000, "date":"2-12-2012",  "desc":"PPF deposit for me"}
-                                     ]                        
+                      // grdiData :   [
+                      //                 {"accName":"MF","amnt":50000, "date":"2-10-2012",  "desc":"PPF deposit for me"},
+                      //                 {"accName":"LIC","amnt":20000, "date":"2-11-2012",  "desc":"PPF deposit for me"},
+                      //                 {"accName":"PPF","amnt":40000, "date":"2-12-2012",  "desc":"PPF deposit for me"}
+                      //                ]                        
                           
-                        }
+                      //   }
+  }
 }
 
