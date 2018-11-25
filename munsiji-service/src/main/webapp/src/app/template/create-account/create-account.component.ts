@@ -32,17 +32,12 @@ export class CreateAccountComponent implements OnInit {
                             name : this.acc.name, 
                             type: 'personalexp', 
                             investedAmnt : this.acc.bal, 
-                            crteDate : this.acc.date
+                            crteDate : this.acc.date,
+                            desc  : this.acc.desc
                           };
-
-    console.log(this.acc.name," > ",this.acc.type," > ",this.acc.date," > ",this.acc.bal," > ",this.acc.desc);
-
-
-    //this.userService.setDataModelForAcctType(this.acc);
-
     let sub = this.dataService.httpPostCall(createAccountUrl, createDataModel).subscribe( res => {
       console.log("CREATE_ACCOUNT http call is success", res.msg);
-      this.acc.resMSG = res.msg;
+      //this.acc.resMSG = res.msg;
       this.model.isMessage = true;
       sub.unsubscribe();
       this.promptMessageComponent.hideLoader();

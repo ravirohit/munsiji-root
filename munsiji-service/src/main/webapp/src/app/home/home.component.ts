@@ -17,7 +17,10 @@ export class HomeComponent implements OnInit {
 
   getUrl = UrlConfig;
   ifDataAvailable:boolean = false;
-  chartDataModel:any = {};
+  chartDataModel:any = {
+    chartData:{ "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},
+    data:[]
+  }};
 
   @ViewChild(PromptMessageComponent) promptMessageComponent:PromptMessageComponent;
   
@@ -36,10 +39,9 @@ export class HomeComponent implements OnInit {
      
      var sub = this.dataService.httpGetCall(this.getUrl.GET_ALL_EXPENCE).subscribe(res =>{
 
-       console.log(res.data);
        if(res.data.expenseWithAccTypeList && res.data.expenseWithAccTypeList.length > 0){
             this.data.grdiData = res.data.expenseWithAccTypeList[0].accExpList;
-            this.chartDataModel = this.generateChartData(this.data.grdiData);
+            this.chartDataModel.data = this.generateChartData(this.data.grdiData);
             sub.unsubscribe();
             this.ifDataAvailable = true;
           }

@@ -61,14 +61,11 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
     //this.userService.setDataModelForAccount(this.expence, index);
     let sub = this.dataService.httpPostCall(this.URL.ADD_EXPANCE, addDataModel).subscribe( res => {
       this.isMessage = true;
-      console.log(".ADD_EXPANCE http call is success", res.msg);
-      alert(res.msg);
-      sub.unsubscribe();
       this.promptMessageComponent.hideLoader();
+      sub.unsubscribe();
 
     }, err => {
       this.promptMessageComponent.hideLoader();
-      console.log("Error in .ADD_EXPANCE HTTP call ", err);
       sub.unsubscribe();
     });
   }
