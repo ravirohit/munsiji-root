@@ -16,7 +16,7 @@ import {PromptMessageComponent} from '../template/promptMessage/promptMessage.co
 export class HomeComponent implements OnInit {
 
   getUrl = UrlConfig;
-  ifDataAvailable:boolean = false;
+  ifDataAvailable:boolean;
   chartDataModel:any = {
     chartData:{ "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},
     data:[]
@@ -39,15 +39,16 @@ export class HomeComponent implements OnInit {
      
      var sub = this.dataService.httpGetCall(this.getUrl.GET_ALL_EXPENCE).subscribe(res =>{
 
+        this.ifDataAvailable = false;
        if(res.data.expenseWithAccTypeList && res.data.expenseWithAccTypeList.length > 0){
             this.data.grdiData = res.data.expenseWithAccTypeList[0].accExpList;
             this.chartDataModel.data = this.generateChartData(this.data.grdiData);
             sub.unsubscribe();
             this.ifDataAvailable = true;
           }
-            this.promptMessageComponent.hideLoader();
+          this.promptMessageComponent.hideLoader();
         },err => {
-         // this.ifDataAvailable = true;
+          this.ifDataAvailable = false;
           //this.chartDataModel = this.chartDataModel1;
           this.promptMessageComponent.hideLoader();
           console.log(err);

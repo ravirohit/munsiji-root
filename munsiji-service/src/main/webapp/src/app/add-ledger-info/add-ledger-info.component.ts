@@ -54,7 +54,7 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
                     "accType"     : this.expence.accType,
                     "accName"     : this.expence.account,
                     "amount"      : this.expence.amount,
-                    "dateOfExpnse": this.expence.date,
+                    "dateOfExpnse": new Date(this.expence.date),
                     "desc"        : this.expence.desc
                     };
       

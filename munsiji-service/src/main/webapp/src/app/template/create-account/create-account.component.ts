@@ -32,7 +32,7 @@ export class CreateAccountComponent implements OnInit {
                             name : this.acc.name, 
                             type: 'personalexp', 
                             investedAmnt : this.acc.bal, 
-                            crteDate : this.acc.date,
+                            crteDate : new Date(this.acc.date),
                             desc  : this.acc.desc
                           };
     let sub = this.dataService.httpPostCall(createAccountUrl, createDataModel).subscribe( res => {
