@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
               k:res.msg
             };
             this.userService.setUSerData(userObj);
-            this.router.navigate(['munsiji-service']);   
+            this.router.navigate(['/munsiji-service']);   
             this.promptMessageComponent.hideLoader();
         }else{
           alert("Invailed user/pwd. Please try again.");
@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
         };
       this.userService.setUSerData(userObj);
       
-      this.router.navigate(['munsiji-service']);  
+      this.router.navigate(['/munsiji-service']);  
       }
     }
  

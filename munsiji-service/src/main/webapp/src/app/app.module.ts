@@ -31,6 +31,8 @@ import {formTemplateComponent} from './template/template.component';
 import { CreateAccountComponent } from './template/create-account/create-account.component';
 
 import {PromptMessageComponent} from './../app/template/promptMessage/promptMessage.component';
+//import { ChildComponent } from '../app/home/child/child.component';
+
 FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
 
 @NgModule({

@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import {UserinfoService} from '../services/userinfo.service';
 import {DataService} from '../services/data.service';
-
+import {  ActivatedRoute } from '@angular/router';
 import {UrlConfig} from './../../environments/url-config';
 import {PromptMessageComponent} from '../template/promptMessage/promptMessage.component';
 
@@ -15,7 +15,6 @@ import {PromptMessageComponent} from '../template/promptMessage/promptMessage.co
 })
 export class HomeComponent implements OnInit {
 
-  getUrl = UrlConfig;
   ifDataAvailable:boolean;
   chartDataModel:any = {
     chartData:{ 
@@ -26,39 +25,58 @@ export class HomeComponent implements OnInit {
   @ViewChild(PromptMessageComponent) promptMessageComponent:PromptMessageComponent;
   
   //userName:any = {};
-  homeModel = {isHeaderDisplay:false,userName: "Username", displayType: 2, rotateAngel:''}
+  homeModel = { displayType: 2}
   data:any = [];//{te:12000,td:20000,sa:8000};
 
-  constructor(private userService:UserinfoService, private dataService:DataService) { }
+  constructor(private route: ActivatedRoute,private userService:UserinfoService, private dataService:DataService) { }
   
    ngOnInit() {
      
+    let flag:boolean = true, url,accName = this.route.snapshot.paramMap.get('accname'),
+        accType = this.route.snapshot.paramMap.get('acctype');
+
+    console.log(accName, " ---> ", accType);
+
      this.promptMessageComponent.showLoader();
-     this.data = this.userService.getDataModel();
+     this.data = this.userService.getDataModel();   
+     if(accName && accType && accName.length > 0 && accType.length > 0){
+        url  = UrlConfig.GET_ALL_EXPENCE+accType+"&accName="+accName; 
+        flag = false;
+     }else{
+        url  = UrlConfig.GET_ALL_EXPENCE+"personalexp";
+        
+     }   
      
-     this.homeModel.isHeaderDisplay = true;
-     
-     var sub = this.dataService.httpGetCall(this.getUrl.GET_ALL_EXPENCE).subscribe(res =>{
-
-        this.ifDataAvailable = false;
-       if(res.data.expenseWithAccTypeList && res.data.expenseWithAccTypeList.length > 0){
-            this.data.grdiData = res.data.expenseWithAccTypeList[0].accExpList;
-            this.chartDataModel.chartData.data = this.generateChartData(this.data.grdiData);
-            sub.unsubscribe();
-            this.ifDataAvailable = true;
-          }
-          this.promptMessageComponent.hideLoader();
-        },err => {
-          this.ifDataAvailable = false;
-          //this.chartDataModel = this.chartDataModel1;
-          this.promptMessageComponent.hideLoader();
-          console.log(err);
-          sub.unsubscribe();
-        }
-
-     );
+     this.setHomeData(url, flag);
   } 
   
+
+  setHomeData(url, isLinkAvailable){
+
+    var sub = this.dataService.httpGetCall(url).subscribe(res =>{
+
+      this.ifDataAvailable = false;
+     if(res.data.expenseWithAccTypeList && res.data.expenseWithAccTypeList.length > 0){
+          this.data.grdiData = res.data.expenseWithAccTypeList[0].accExpList;
+          this.chartDataModel.chartData.data = this.generateChartData(this.data.grdiData, isLinkAvailable);
+          sub.unsubscribe();
+          this.ifDataAvailable = true;
+        }
+        this.promptMessageComponent.hideLoader();
+      },err => {
+        this.ifDataAvailable = true;
+        this.chartDataModel = isLinkAvailable ? this.chartDataModel1 : this.chartDataModel2;
+        this.promptMessageComponent.hideLoader();
+        console.log(err);
+        sub.unsubscribe();
+      }
+
+   );
+
+  }
+
+
+
 
   gridRowClicked(data){
     console.log("DATA ", data);
@@ -68,15 +86,18 @@ export class HomeComponent implements OnInit {
      console.log(e.srcElement.value);
    }
 
-   generateChartData(d:Array<any>){
+   generateChartData(d:Array<any>, isLinkAvailable:boolean){
+
     let arrData = [];
     d.forEach(element => {
+      let link = isLinkAvailable ?  "/munsiji-service/detail/personalexp/"+element.accName : '';
       arrData.push({
         "label" : element.accName,
-        "value" : element.amnt
+        "value" : element.amnt,
+        link
       });
     });
-    console.log("CHART DATA : ",arrData);
+    console.log("CHART DATA ****** : ",arrData);
     return arrData;
    }
 
@@ -84,10 +105,17 @@ export class HomeComponent implements OnInit {
 
    chartDataModel1 = {"chartData":{ "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},
                       "data": [
-                          {"label":"MF","value": "50000", "routerLink": "?acc=MF"},
-                          {"label":"LIC","value": "20000", "link": "/?acc=LIC"},
-                          {"label":"PPF","value": "40000", "link": "/?acc=PPF"}]                          
+                          {"label":"MF","value": "50000", "link": "/munsiji-service/detail/acc/MF"},
+                          {"label":"LIC","value": "20000", "link":  "/munsiji-service/detail/acc2/MF2"},
+                          {"label":"PPF","value": "40000", "link":  "munsiji-service/detail/acc4/MF4"}]                          
    }}
+
+   chartDataModel2 = {"chartData":{ "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},
+   "data": [
+       {"label":"MF","value": "50000", "link" :  ""},
+       {"label":"LIC","value": "20000", "link":  ""},
+       {"label":"PPF","value": "40000", "link":  ""}]                          
+}}
   
       width="100%";
       type = 'column3d';

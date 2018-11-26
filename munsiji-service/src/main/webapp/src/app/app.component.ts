@@ -14,7 +14,8 @@ import * as d3 from 'd3';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, AfterContentInit, OnChanges {
-  isVisble = true;
+  isVisble = false;
+  headerTitle:string = "Home";
   userData = {isLogedin:false};
   
   constructor(private userInfo:UserinfoService,private router: Router,  private dataService : DataService){
@@ -40,14 +41,14 @@ export class AppComponent implements OnInit, AfterContentInit, OnChanges {
         let sub = this.dataService.httpGetCall(logoutURL).subscribe(data =>{
             sub.unsubscribe();    
             this.userInfo.setUSerData({});
-            this.router.navigate(['munsiji-service']); 
+            this.router.navigate(['/munsiji-service']); 
   
         },(err) =>{
           this.userInfo.setUSerData({});
           console.log("Error in LOGOUT HTTP call ", err);
           sub.unsubscribe();
         });
-        this.router.navigate(['munsiji-service']);
+        this.router.navigate(['/munsiji-service']);
   }
 
 

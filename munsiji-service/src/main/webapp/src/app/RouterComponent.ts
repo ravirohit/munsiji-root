@@ -7,6 +7,7 @@ import {ProfileComponent} from './profile/profile.component';
 import {GroupComponent} from './group/group.component';
 import {AddLedgerInfoComponent} from './add-ledger-info/add-ledger-info.component';
 import {CreateAccountComponent} from './template/create-account/create-account.component';
+//import {ChildComponent} from './home/child/child.component';
 
 export const applicationRouter : Routes = [
     {path: 'munsiji-service',canActivate:[AuthGuard] ,component: HomeComponent },
@@ -16,7 +17,7 @@ export const applicationRouter : Routes = [
     {path: 'munsiji-service/profile',canActivate:[AuthGuard] , component: ProfileComponent},
     {path: 'munsiji-service/add',canActivate:[AuthGuard] , component: AddLedgerInfoComponent},
     {path: 'munsiji-service/c_account',canActivate:[AuthGuard] , component: CreateAccountComponent},
-    //{path: '', redirectTo: 'munsiji-service/', pathMatch: 'full'} ,
-   
-    {path: '**', redirectTo: 'munsiji-service'}
+   // { path: '',   redirectTo: '/munsiji-service', pathMatch: 'full' },
+   {path: 'munsiji-service/detail/:acctype/:accname', component: HomeComponent}
+    //{path: '**', redirectTo: 'munsiji-service'}
    ];

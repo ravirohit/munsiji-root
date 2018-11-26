@@ -10,7 +10,7 @@
 <div [ngClass]="isVisble ? '' : 'menuClicked'" class="main-toolbar">  
   <ul class="main-ul-toolbar" >
 
-    <li routerLink="/munsiji-service" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</li>
+    <li routerLink="munsiji-service" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</li>
     <!-- <li routerLink="tour" routerLinkActive="active">Tour Ledger</li>
     <li routerLink="group" routerLinkActive="active">Group Ledger</li> -->
     <li routerLink="/munsiji-service/profile" routerLinkActive="active">Profile</li>
@@ -19,6 +19,12 @@
     <li (click)="logout()">Logout</li>
   </ul>
 </div>
+
+<div class="desktop page-header">
+    <header>
+       <strong>Munshi G :</strong> <span class="header-msg">{{headerTitle}}</span>
+      </header> 
+  </div>
 <div class="app-container container">
 <router-outlet > </router-outlet>
 

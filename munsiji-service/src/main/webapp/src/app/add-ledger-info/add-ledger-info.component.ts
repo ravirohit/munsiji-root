@@ -35,10 +35,6 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
       this.arrAccountName = data.data.accountDetail.personalexp;
       this.promptMessageComponent.hideLoader();
       sub.unsubscribe();
-      if(data.status != 403){
-        this.userService.setUSerData({});
-        this.router.navigate(['munsiji-service']);
-      }
     },err =>{
       this.promptMessageComponent.hideLoader();
       sub.unsubscribe();
@@ -78,7 +74,7 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
     this.clearForm();
   }
   routeToHomePage(){
-    this.router.navigate(['munsiji-service']); 
+    this.router.navigate(['/munsiji-service']); 
   }
 
   clearForm(){

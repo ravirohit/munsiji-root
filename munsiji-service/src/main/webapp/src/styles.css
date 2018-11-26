@@ -6,13 +6,12 @@
 *{ font-family: sans-serif;}
 body{
     height: 100vh;
-    background: #2cb36f;
-    padding: 15px;
+    background: #b7ddff;
 }
  .form-group:focus-within {
-    box-shadow: 0px 0px 7px lightgrey;
-    margin-bottom: 1rem;
-    padding: 5px 3px 10px 3px;
+    box-shadow: 0px 6px 14px lightpink;
+    margin: -7px -9px 8px -9px;
+    padding: 7px 9px 4px 9px;
 }
 .hidden {display: none;opacity: 0;}
 .show, input:focus + .alert, textarea:focus + .alert,  select:focus + .alert {
@@ -30,7 +29,6 @@ body{
 }
 .btn:hover{cursor: pointer;}
 button.btn {
-    margin-top: 15px;
     margin-right: 5px;
 }
 span.badge{color:rgb(241, 114, 114);}
@@ -76,4 +74,7 @@ label{font-weight: bold;}
         top: 10px;
         left: 15px;
     }
+        body{
+            padding:1rem;
+        }
 }
