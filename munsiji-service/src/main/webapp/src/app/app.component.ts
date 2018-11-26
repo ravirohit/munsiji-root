@@ -1,4 +1,4 @@
-import { Component, AfterContentInit, OnInit } from '@angular/core';
+import { Component, AfterContentInit, OnInit, OnChanges } from '@angular/core';
 import {Router} from '@angular/router';
 import {UserinfoService} from './services/userinfo.service';
 
@@ -13,7 +13,7 @@ import * as d3 from 'd3';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, AfterContentInit {
+export class AppComponent implements OnInit, AfterContentInit, OnChanges {
   isVisble = true;
   userData = {isLogedin:false};
   
@@ -24,6 +24,10 @@ export class AppComponent implements OnInit, AfterContentInit {
     this.userData = this.userInfo.getUserData();
   }
 
+  ngOnChanges(){
+    alert("dsfsdfsd");
+
+  }
   ngAfterContentInit(){
     setTimeout(()=>{
       d3.select("li").style("color", "red");
@@ -48,7 +52,7 @@ export class AppComponent implements OnInit, AfterContentInit {
 
 
   toogleMenu(e):void{
-    console.log(this.isVisble+"   asds" + e);
+    
     this.isVisble = !this.isVisble;
   }
   

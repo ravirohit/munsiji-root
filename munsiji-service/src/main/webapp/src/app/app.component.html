@@ -7,8 +7,8 @@
 </ng-template>
 <ng-template #homeBlock>
 <div class="mobile-menu-bar" (click)="toogleMenu($event)"><span class="menu-toolbar">MENU</span></div>
-<div [hidden]="!isVisble" class="main-toolbar">  
-  <ul class="main-ul-toolbar">
+<div [ngClass]="isVisble ? '' : 'menuClicked'" class="main-toolbar">  
+  <ul class="main-ul-toolbar" >
 
     <li routerLink="/munsiji-service" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</li>
     <!-- <li routerLink="tour" routerLinkActive="active">Tour Ledger</li>

@@ -1,6 +1,6 @@
 li:focus, li:active, li:hover, .main-ul-toolbar .active {
     outline: none;
-    box-shadow: 1px 1px 2px lightgrey;
+    box-shadow: 0px 1px 2px lightgrey;
     color: #fff;
 }
 
@@ -34,6 +34,7 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
 }
 .app-container {
     
+    max-width: 50rem;
     width: auto;
     margin-left: 250px;
     padding-top: 15px;
@@ -75,13 +76,19 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
     }
     .main-toolbar{
         display: block;
-    position: fixed;
-    right: 0;
-    top: 3rem;
-    padding: 2rem;
-    width: 100vw;
-    z-index: 99;
-    background: #89a1a4;
+        position: fixed;
+        right: 0;
+        left:0rem;
+        top: 3rem;
+        padding: 2rem;
+        width: 100vw;
+        z-index: 99;
+        background: #2cb36f;
+        transition: left 1s;
+    }
+
+    .main-toolbar.menuClicked {
+        left: 200rem;
     }
     .main-ul-toolbar li{
         padding-right: 10px;         
