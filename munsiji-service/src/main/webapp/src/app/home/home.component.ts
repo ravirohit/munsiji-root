@@ -18,8 +18,9 @@ export class HomeComponent implements OnInit {
   getUrl = UrlConfig;
   ifDataAvailable:boolean;
   chartDataModel:any = {
-    chartData:{ "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},
-    data:[]
+    chartData:{ 
+      "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},
+      data:[]
   }};
 
   @ViewChild(PromptMessageComponent) promptMessageComponent:PromptMessageComponent;
@@ -42,7 +43,7 @@ export class HomeComponent implements OnInit {
         this.ifDataAvailable = false;
        if(res.data.expenseWithAccTypeList && res.data.expenseWithAccTypeList.length > 0){
             this.data.grdiData = res.data.expenseWithAccTypeList[0].accExpList;
-            this.chartDataModel.data = this.generateChartData(this.data.grdiData);
+            this.chartDataModel.chartData.data = this.generateChartData(this.data.grdiData);
             sub.unsubscribe();
             this.ifDataAvailable = true;
           }

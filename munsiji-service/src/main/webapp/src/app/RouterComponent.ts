@@ -18,5 +18,5 @@ export const applicationRouter : Routes = [
     {path: 'munsiji-service/c_account',canActivate:[AuthGuard] , component: CreateAccountComponent},
     //{path: '', redirectTo: 'munsiji-service/', pathMatch: 'full'} ,
    
-    {path: '**', redirectTo: 'munsiji-service/'}
+    {path: '**', redirectTo: 'munsiji-service'}
    ];
