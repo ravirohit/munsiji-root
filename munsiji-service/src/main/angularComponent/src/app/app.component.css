@@ -32,7 +32,8 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
 .main-ul-toolbar li {
     cursor: pointer;
     text-align: left;
-    padding-left: 15px;
+    padding-left: 15px;    
+    padding-right: 8px;
 }
 .app-container {
     

@@ -8,6 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {CustomHttpInterceptorService} from './services/httpInterceptorService';
 
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
+
+
 
 import * as FusionCharts from 'fusioncharts';
 import * as Charts from 'fusioncharts/fusioncharts.charts';
@@ -41,7 +44,7 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
     formTemplateComponent, AddLedgerInfoComponent, CreateAccountComponent, PromptMessageComponent
   ],
   imports: [   
-    BrowserModule,FusionChartsModule,BrowserAnimationsModule,
+    BrowserModule,FusionChartsModule,BrowserAnimationsModule,AngularFontAwesomeModule,
     HttpClientModule,FormsModule,
     RouterModule.forRoot(applicationRouter)
   ],

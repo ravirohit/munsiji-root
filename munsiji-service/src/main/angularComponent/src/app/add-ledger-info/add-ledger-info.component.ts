@@ -74,7 +74,7 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
     this.clearForm();
   }
   routeToHomePage(){
-    this.router.navigate(['/munsiji-service']); 
+    this.router.navigate(['']); 
   }
 
   clearForm(){

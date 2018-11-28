@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
         url  = UrlConfig.GET_ALL_EXPENCE+"personalexp";
         
      }   
-     
+     console.log("URL - > " , url);
      this.setHomeData(url, flag);
   } 
   
@@ -90,7 +90,7 @@ export class HomeComponent implements OnInit {
 
     let arrData = [];
     d.forEach(element => {
-      let link = isLinkAvailable ?  "/munsiji-service/detail/personalexp/"+element.accName : '';
+      let link = isLinkAvailable ?  "detail/personalexp/"+element.accName : '';
       arrData.push({
         "label" : element.accName,
         "value" : element.amnt,
@@ -105,9 +105,9 @@ export class HomeComponent implements OnInit {
 
    chartDataModel1 = {"chartData":{ "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},
                       "data": [
-                          {"label":"MF","value": "50000", "link": "/munsiji-service/detail/acc/MF"},
-                          {"label":"LIC","value": "20000", "link":  "/munsiji-service/detail/acc2/MF2"},
-                          {"label":"PPF","value": "40000", "link":  "munsiji-service/detail/acc4/MF4"}]                          
+                          {"label":"MF","value": "50000", "link": "detail/acc/MF"},
+                          {"label":"LIC","value": "20000", "link":  "detail/acc2/MF2"},
+                          {"label":"PPF","value": "40000", "link":  "detail/acc4/MF4"}]                          
    }}
 
    chartDataModel2 = {"chartData":{ "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},

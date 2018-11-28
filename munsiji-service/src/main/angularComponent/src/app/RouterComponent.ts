@@ -10,14 +10,14 @@ import {CreateAccountComponent} from './template/create-account/create-account.c
 //import {ChildComponent} from './home/child/child.component';
 
 export const applicationRouter : Routes = [
-    {path: 'munsiji-service',canActivate:[AuthGuard] ,component: HomeComponent },
+    {path: '',canActivate:[AuthGuard] ,component: HomeComponent },
    // {path: 'munsiji-service/login', component: LoginComponent},
-    {path: 'munsiji-service/tour',canActivate:[AuthGuard] , component: TourComponent,data: { title: '' }},
-    {path: 'munsiji-service/group',canActivate:[AuthGuard] , component: GroupComponent},
-    {path: 'munsiji-service/profile',canActivate:[AuthGuard] , component: ProfileComponent},
-    {path: 'munsiji-service/add',canActivate:[AuthGuard] , component: AddLedgerInfoComponent},
-    {path: 'munsiji-service/c_account',canActivate:[AuthGuard] , component: CreateAccountComponent},
+    {path: 'tour',canActivate:[AuthGuard] , component: TourComponent,data: { title: '' }},
+    {path: 'group',canActivate:[AuthGuard] , component: GroupComponent},
+    {path: 'profile',canActivate:[AuthGuard] , component: ProfileComponent},
+    {path: 'add',canActivate:[AuthGuard] , component: AddLedgerInfoComponent},
+    {path: 'c_account',canActivate:[AuthGuard] , component: CreateAccountComponent},
    // { path: '',   redirectTo: '/munsiji-service', pathMatch: 'full' },
-   {path: 'munsiji-service/detail/:acctype/:accname', component: HomeComponent}
+   {path: 'detail/:acctype/:accname', component: HomeComponent}
     //{path: '**', redirectTo: 'munsiji-service'}
    ];

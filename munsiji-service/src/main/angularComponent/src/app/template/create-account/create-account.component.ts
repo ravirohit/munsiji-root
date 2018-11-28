@@ -55,6 +55,6 @@ export class CreateAccountComponent implements OnInit {
   }
   }
   routeToHomePage(){
-    this.router.navigate(['/munsiji-service']); 
+    this.router.navigate(['']); 
   }
 }

@@ -8,6 +8,9 @@ body{
     height: 100vh;
     background: #b7ddff;
 }
+fa i {
+    color: teal;
+}
  .form-group:focus-within {
     box-shadow: 0px 6px 14px lightpink;
     margin: -7px -9px 8px -9px;

@@ -1,0 +1,60 @@
+
+
+<div *ngIf="userData.isLogedin; then homeBlock else loginBlock "></div>
+
+<ng-template #homeBlock>
+<div class="mobile-menu-bar" (click)="toogleMenu($event)"><span class="menu-toolbar">MENU</span></div>
+<div [ngClass]="isVisble ? '' : 'menuClicked'" class="main-toolbar">  
+  <ul class="main-ul-toolbar" >
+
+    <li routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+      Home
+      <span class="pull-right">
+        <fa name="home"></fa>
+      </span>
+    </li>
+    <!-- <li routerLink="tour" routerLinkActive="active">Tour Ledger</li>
+    <li routerLink="group" routerLinkActive="active">Group Ledger</li> -->
+    <li routerLink="profile" routerLinkActive="active">Profile
+      <span class="pull-right">
+        <fa name="cog" animation="spin"></fa>
+      </span>
+      
+    </li>
+    <li routerLink="add" routerLinkActive="active">
+      Add Expances
+      <span class="pull-right">
+          <fa name="pencil-square-o"></fa>
+        </span>
+    </li>
+    <li routerLink="/c_account" routerLinkActive="active">
+      Create Account
+      <span class="pull-right">
+          <fa name="file-text"></fa>
+        </span>
+    </li>
+    <li (click)="logout()">Logout</li>
+  </ul>
+</div>
+
+<div class="desktop page-header">
+    <header>
+      <strong>Munshi G :</strong> <span class="header-msg">{{headerTitle}}</span>
+    </header> 
+  </div>
+<div class="app-container container">
+<router-outlet > </router-outlet>
+
+
+</div>
+</ng-template>
+
+
+<ng-template #loginBlock>
+  <app-login></app-login>
+  
+</ng-template>
+
+
+
+
