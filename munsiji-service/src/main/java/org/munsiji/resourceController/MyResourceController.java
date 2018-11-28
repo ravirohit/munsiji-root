@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -25,6 +26,7 @@ import org.munsiji.hibernateUtil.HibernateCfg;
 import org.munsiji.model.Login;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,7 +71,7 @@ public class MyResourceController {
         return ReqHoldingClass.getReqHoldingMap().get(reqKey);
     }
 	@RequestMapping(value="test12", method = RequestMethod.POST)
-    public ResponseInfo test12(@RequestBody TestEnumReq testEnumReq) {
+    public ResponseEntity<ResponseInfo> test12(@RequestBody TestEnumReq testEnumReq, HttpServletResponse response ) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			System.out.println("req obj:"+mapper.writeValueAsString(testEnumReq));
@@ -84,18 +86,25 @@ public class MyResourceController {
         responseInfo.setData(obj);
         responseInfo.setMsg("msg");
         responseInfo.setStatus("Success");
-        return responseInfo;
+        //return responseInfo;
+        return new ResponseEntity<>(responseInfo,HttpStatus.FORBIDDEN);
     }
 	@RequestMapping(value="registeruser",method = RequestMethod.POST)
-	public ResponseInfo register(@RequestBody UserDetailReq userDetailReq){
+	public ResponseEntity<ResponseInfo> register(@RequestBody UserDetailReq userDetailReq){
 	  ResponseInfo responseInfo =  null;
 	  System.out.println("UserDetails is :" + userDetailReq.getPwd());
 	  responseInfo = userAccountMgr.registerUser(userDetailReq);
 	  System.out.println("register controllerd excuted:"+responseInfo);
-	  return responseInfo;
+	  if(responseInfo.getStatusCode() == MunsijiServiceConstants.SUCCESS_STATUS_CODE){
+		  return new ResponseEntity<>(responseInfo,HttpStatus.OK);
+	  }
+	  else{
+		  return new ResponseEntity<>(responseInfo,HttpStatus.BAD_REQUEST);
+	  }
+	  
 	}
 	@RequestMapping(value="login",method=RequestMethod.POST)
-	public ResponseInfo login(@RequestBody Login login){
+	public ResponseEntity<ResponseInfo> login(@RequestBody Login login){
 		System.out.println("hiiiiiiiiiiii");
 		ResponseInfo responseInfo = null;
 		try{
@@ -106,12 +115,21 @@ public class MyResourceController {
 			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
 			responseInfo.setReason("");
 			responseInfo.setStatusCode(500);
+			return new ResponseEntity<>(responseInfo,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return responseInfo;
+		if(responseInfo.getStatusCode() == MunsijiServiceConstants.SUCCESS_STATUS_CODE){
+			  return new ResponseEntity<>(responseInfo,HttpStatus.OK);
+		}
+		else if(responseInfo.getStatusCode() == MunsijiServiceConstants.AUTHORIZATION_ERROR_CODE){
+			return new ResponseEntity<>(responseInfo,HttpStatus.FORBIDDEN);
+		}
+		else{
+			  return new ResponseEntity<>(responseInfo,HttpStatus.BAD_REQUEST);
+		}
 		
 	}
 	@RequestMapping(value="logout",method=RequestMethod.GET)
-	public ResponseInfo logout(){
+	public ResponseEntity<ResponseInfo> logout(){
 		ResponseInfo responseInfo = null;
 		try{
 			responseInfo = userAccountMgr.logout();
@@ -120,20 +138,30 @@ public class MyResourceController {
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
 			responseInfo.setReason("");
-			responseInfo.setStatusCode(500);
+			responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 		}
-		return responseInfo;
+		if(responseInfo.getStatusCode() == MunsijiServiceConstants.SUCCESS_STATUS_CODE){
+			  return new ResponseEntity<>(responseInfo,HttpStatus.OK);
+		 }
+		 else{
+			  return new ResponseEntity<>(responseInfo,HttpStatus.BAD_REQUEST);
+		 }
 		
 	}
 	@RequestMapping(value="createaccount",method = RequestMethod.POST)
-	public ResponseInfo createAccount(@RequestBody UserAccountReq userAccountReq){
+	public ResponseEntity<ResponseInfo> createAccount(@RequestBody UserAccountReq userAccountReq){
 	  ResponseInfo responseInfo =  null;
 	  System.out.println("account crete resource called");
 	  responseInfo = userAccountMgr.createAccount(userAccountReq);
-	  return responseInfo;
+	  if(responseInfo.getStatusCode() == MunsijiServiceConstants.SUCCESS_STATUS_CODE){
+		  return new ResponseEntity<>(responseInfo,HttpStatus.OK);
+	  }
+	  else{
+		  return new ResponseEntity<>(responseInfo,HttpStatus.BAD_REQUEST);
+	  }
 	}
 	@RequestMapping(value="addexpense",method = RequestMethod.POST)
-	public ResponseInfo addExpense(@RequestBody UserExpenseReq userExpenseReq){
+	public ResponseEntity<ResponseInfo> addExpense(@RequestBody UserExpenseReq userExpenseReq){
 	 ResponseInfo responseInfo =  null;
 	 ObjectMapper mapper  = new ObjectMapper();
 	  try {
@@ -142,28 +170,40 @@ public class MyResourceController {
 	  } catch (JsonProcessingException e) {
 		System.out.println("exception occur in addExpense:"+e);
 	  }
-	  return responseInfo;
+	  if(responseInfo.getStatusCode() == MunsijiServiceConstants.SUCCESS_STATUS_CODE){
+		  return new ResponseEntity<>(responseInfo,HttpStatus.OK);
+	  }
+	  else{
+		  return new ResponseEntity<>(responseInfo,HttpStatus.BAD_REQUEST);
+	  }
 	}
 	@RequestMapping(value="getexpense",method = RequestMethod.GET)
-	public ResponseInfo getExpense(@RequestParam(value = "accType", required = false) String accType,
-								   @RequestParam(value = "accName", required = false) String accName){
-	  System.out.println("accName is :"+accType);
+	public ResponseEntity<ResponseInfo> getExpense(@RequestParam(value = "accType", required = false) String accType,
+								   @RequestParam(value = "accName", required = false) String accName,
+								   @RequestParam(value = "startDate", required = false) String startDate,
+								   @RequestParam(value = "endDate", required = false) String endDate){
+	  System.out.println("accType  :"+accType+" accName:"+accName+ "  startDate:"+startDate+"  endDate:"+endDate);
 	  ResponseInfo responseInfo =  null;
-	  ObjectMapper mapper  = new ObjectMapper();
-	  try {
-		System.out.println("accName is :");
-		responseInfo = expenseServiceMgr.getExpense(accType,accName);
-	  } catch (Exception e) {
-		System.out.println("exception occur in addExpense:"+e);
+	 // ObjectMapper mapper  = new ObjectMapper();
+	  responseInfo = expenseServiceMgr.getExpense(accType,accName, startDate, endDate);
+	  if(responseInfo.getStatusCode() == MunsijiServiceConstants.SUCCESS_STATUS_CODE){
+		  return new ResponseEntity<>(responseInfo,HttpStatus.OK);
 	  }
-	  return responseInfo;
+	  else{
+		  return new ResponseEntity<>(responseInfo,HttpStatus.BAD_REQUEST);
+	  }
 	}
 	@RequestMapping(value="getacctypeandname",method = RequestMethod.GET)
-	public ResponseInfo getAccountTypeAndName(@RequestParam(value = "accType", required = false) String accType){
+	public ResponseEntity<ResponseInfo> getAccountTypeAndName(@RequestParam(value = "accType", required = false) String accType){
 		System.out.println("getAccountTypeAndNamec method called");
 		ResponseInfo responseInfo = null;
 		responseInfo = userAccountMgr.getAccountInfo(accType);
-		return responseInfo;
+		if(responseInfo.getStatusCode() == MunsijiServiceConstants.SUCCESS_STATUS_CODE){
+			  return new ResponseEntity<>(responseInfo,HttpStatus.OK);
+		}
+		else{
+			  return new ResponseEntity<>(responseInfo,HttpStatus.BAD_REQUEST);
+		}
 	}
    	
 }

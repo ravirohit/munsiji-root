@@ -11,8 +11,6 @@ import org.dozer.DozerBeanMapper;
 import org.munsiji.commonUtil.DateUtil;
 import org.munsiji.commonUtil.MunsijiServiceConstants;
 import org.munsiji.commonUtil.UserContextUtils;
-import org.munsiji.model.ExpensePerAccount;
-import org.munsiji.model.UserTotalExepense;
 import org.munsiji.persistance.daoImp.ExpenseDetailDaoImp;
 import org.munsiji.persistance.daoImp.UserDetailDaoImp;
 import org.munsiji.persistance.resource.UserAccount;
@@ -56,7 +54,7 @@ public class ExpenseServiceMgr {
 	    System.out.println("object before mapping to entity:"+mapper.writeValueAsString(userExpenseReq));
 	  
 	    date = DateUtil.convertStringToDate(userExpenseReq.getDateOfExpnse());
-		userExpenseReq.setDateOfExpnse(null);;
+		userExpenseReq.setDateOfExpnse(null);
 		UserExpense userExpense = dozerBeanMapper.map(userExpenseReq, UserExpense.class); // does not convert String date to Date
 		userExpense.setDateOfExpnse(date);
 		  //TODO...
@@ -78,15 +76,15 @@ public class ExpenseServiceMgr {
 	    status = expenseDetailDaoImp.saveExpense(userExpense);
 		if(status){
 			responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+			responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
 			responseInfo.setMsg(MunsijiServiceConstants.SUCCESS_MSG);
 			return responseInfo;
 		}
 		else{
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+			responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
 			responseInfo.setReason("");
-			
-			responseInfo.setStatusCode(500);
 			return responseInfo;
 		}
 	  }
@@ -95,7 +93,7 @@ public class ExpenseServiceMgr {
 	  }
 	  return responseInfo;
 	}
-	public ResponseInfo getExpense(String accTypeReq,String accName){
+	public ResponseInfo getExpense(String accTypeReq,String accName, String startDateStr,String endDateStr){
 	  User userInfo = UserContextUtils.getUser();
 	  System.out.println("inside of service mgr method:"+userInfo.getUsername());
 	  List<String> list = null;
@@ -104,11 +102,18 @@ public class ExpenseServiceMgr {
 	  //UserTotalExepense userTotalExepense = null;
 	  ExpenseForAllAccType expenseForAllAccType = null;
       ResponseInfo responseInfo = null;
+      String startDate = null;
+      String endDate = null;
       try {
     	   
 		   //System.out.println("UserDetails fetched:"+mapper.writeValueAsString(userAccountList)+"\n"+mapper.writeValueAsString(accMap));
-    		userObjectExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq,accName,userInfo.getUsername()); 
-    		if(accTypeReq != null){
+    	  if(startDateStr != null){
+	    	   startDate = DateUtil.convertStringToString(startDateStr);
+	    	  if(endDateStr != null)
+	    	   endDate = DateUtil.convertStringToString(endDateStr);
+    	  }
+    		userObjectExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq,accName,userInfo.getUsername(), startDate, endDate); 
+    		if(accName != null){
     			userExpensePerAccList = convertObjectArrayToModelForAcc(userObjectExpenseList);
 		    //userExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq, user.getEmailId());
     			responseInfo = getExpensePerAccType(userExpensePerAccList,userInfo.getUsername());
@@ -119,7 +124,7 @@ public class ExpenseServiceMgr {
     			responseInfo = new ResponseInfo();
     			responseInfo.setData(expenseForAllAccType);
     			responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
-    			responseInfo.setStatusCode(200);
+    			responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
     			responseInfo.setMsg("data fetched for all account");
     		}
     	  
@@ -130,8 +135,8 @@ public class ExpenseServiceMgr {
 			responseInfo = new ResponseInfo();
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+			responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 			responseInfo.setReason("");
-			responseInfo.setStatusCode(500);
 		 }
 	  return responseInfo;
 	}
@@ -144,11 +149,9 @@ public class ExpenseServiceMgr {
 		  String accType = (String)object[0]; 
 		  String accName = (String)object[1];
 		  Float amount = (Float)object[2];
-		  System.out.println("location of error---");
 		  String crtDate = String.valueOf(object[3]);
-		  System.out.println("location of error---");
 		  String desc = (String)object[4];
-		  AccExpenseData accExpenseData = new AccExpenseData(accName,amount,crtDate,desc);
+		  AccExpenseData accExpenseData = new AccExpenseData(accName,amount,DateUtil.convertDBStringToViewString(crtDate),desc);
 		  if(accTypeToExp.get(accType) == null){
 			  accToExp.put(accName, accExpenseData);
 			  accTypeToExp.put(accType, accToExp);
@@ -241,7 +244,7 @@ public class ExpenseServiceMgr {
 		     String name = accMap.get(userExpense.getUserAccount().getId()).getName();
 		     accType = accMap.get(userExpense.getUserAccount().getId()).getType();
 		     accExpnseData = new AccExpenseData(accMap.get(userExpense.getUserAccount().getId()).getName(),
-		    		 		userExpense.getAmount(),String.valueOf(userExpense.getDateOfExpnse()), userExpense.getDesc());
+		    		 		userExpense.getAmount(),DateUtil.convertDBStringToViewString(String.valueOf(userExpense.getDateOfExpnse())), userExpense.getDesc());
 		   /*  accExpnseData.setAccName();
 		     accExpnseData.setAmnt();
 		     accExpnseData.setDesc();
@@ -274,6 +277,7 @@ public class ExpenseServiceMgr {
 	   expenseInfoRes.setColTitle(colTitle);
 	   //System.out.println("expenseInfoRes:"+mapper.writeValueAsString(expenseInfoRes));
 	   responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+	   responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
 	   responseInfo.setData(expenseInfoRes);
 	   responseInfo.setMsg(MunsijiServiceConstants.OPER_MSG); 
 	   return responseInfo;

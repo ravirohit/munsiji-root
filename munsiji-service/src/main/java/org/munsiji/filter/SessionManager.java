@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.munsiji.commonUtil.MunsijiServiceConstants;
 import org.munsiji.commonUtil.UserContextUtils;
 import org.munsiji.persistance.daoImp.UserDetailDaoImp;
 import org.munsiji.persistance.resource.UserDetails;
@@ -44,8 +45,9 @@ public class SessionManager implements HandlerInterceptor{
 		System.out.println("preHandle called");
 		List<GrantAuthCol> list= new ArrayList<>();
 		if((req.getHeader("auth-key") == null)){
-			flag = false;
-			return flag;
+			res.setStatus(MunsijiServiceConstants.BAD_REQUEST_ERROR_CODE);
+			res.sendError(MunsijiServiceConstants.BAD_REQUEST_ERROR_CODE, "Bad Request");
+			return false;
 		}
 		
 		if(req.getHeader("auth-key").equals("login") || req.getHeader("auth-key").equals("register")){
@@ -56,8 +58,8 @@ public class SessionManager implements HandlerInterceptor{
 		userList = userDetailDaoImp.getUserInfo(null,null,req.getHeader("auth-key")); 
 		if(userList.size() == 0){
 			flag = false;
-			res.setStatus(403);
-			res.sendError(403, "unauthorized user trying to access");
+			res.setStatus(MunsijiServiceConstants.AUTHORIZATION_ERROR_CODE);
+			res.sendError(MunsijiServiceConstants.AUTHORIZATION_ERROR_CODE, "User is not Authorized");
 			res.setContentType("application/json;charset=UTF-8");
 		}
 		else{

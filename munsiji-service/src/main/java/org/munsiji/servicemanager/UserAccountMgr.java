@@ -46,21 +46,22 @@ public class UserAccountMgr {
 		if(userList == null){
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+			responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 			responseInfo.setReason("");
-			responseInfo.setStatusCode(500);
 			return responseInfo;
 		}else if((userList.size() == 0)){
 			status = userDetailDaoImp.registerUser(userDetails,false);
 			if(status){
 				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
 				responseInfo.setMsg("Account Created Successfully");
+				responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
 				return responseInfo;
 			}
 			else{
 				responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 				responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+				responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 				responseInfo.setReason("");
-				responseInfo.setStatusCode(500);
 				return responseInfo;
 			}
 		}
@@ -68,7 +69,7 @@ public class UserAccountMgr {
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 			responseInfo.setMsg("User Account already exists for the given email ID");
 			responseInfo.setReason("");
-			responseInfo.setStatusCode(100);
+			responseInfo.setStatusCode(MunsijiServiceConstants.MULTIPLE_RECORD_ERROR_CODE);
 			return responseInfo;
 		}
 	}
@@ -89,20 +90,20 @@ public class UserAccountMgr {
 			if(status){
 				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
 				responseInfo.setMsg(base64String);
-				responseInfo.setStatusCode(200);
+				responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
 			}
 			else{
 				responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 				responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+				responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 				responseInfo.setReason("");
-				responseInfo.setStatusCode(500);
 			}
 		}
 		else{
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 			responseInfo.setMsg("Username or password is wrong");
 			responseInfo.setReason("User is not authorized");
-			responseInfo.setStatusCode(403);
+			responseInfo.setStatusCode(MunsijiServiceConstants.AUTHORIZATION_ERROR_CODE);
 		}
 		return responseInfo;
 	}
@@ -119,21 +120,21 @@ public class UserAccountMgr {
 			status = userDetailDaoImp.registerUser(userDetails, true);
 			if(status){
 				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+				responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
 				responseInfo.setMsg("User logout successfully");
-				responseInfo.setStatusCode(200);
 			}
 			else{
 				responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 				responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+				responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 				responseInfo.setReason("");
-				responseInfo.setStatusCode(500);
 			}
 		}
 		else{
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
-			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
-			responseInfo.setReason("multiple user exist for the provided emailId");
-			responseInfo.setStatusCode(500);
+			responseInfo.setMsg("multiple user exist for the provided emailId");
+			responseInfo.setStatusCode(MunsijiServiceConstants.MULTIPLE_RECORD_ERROR_CODE);
+			responseInfo.setReason("One emailId can't for multiple user");
 		}
 		return responseInfo;
 		
@@ -173,30 +174,31 @@ public class UserAccountMgr {
 	  if(userAccountList == null){
 	    responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 		responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+		responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 		responseInfo.setReason("");
-		responseInfo.setStatusCode(500);
 		return responseInfo;
 	  }
 	  else if(userAccountList.size() == 0){
 		  status = userDetailDaoImp.saveAccountInfo(uerAccount);
 			if(status){
 				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+				responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
 				responseInfo.setMsg("Investment account type Created Successfully");
 				return responseInfo;
 			}
 			else{
 				responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 				responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+				responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 				responseInfo.setReason("");
-				responseInfo.setStatusCode(500);
 				return responseInfo;
 			}
 	  }
 	  else{
 		responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+		responseInfo.setStatusCode(MunsijiServiceConstants.MULTIPLE_RECORD_ERROR_CODE);
 		responseInfo.setMsg("Investment account type already exist for the given name and type");
-		responseInfo.setReason("");
-		responseInfo.setStatusCode(100);
+		responseInfo.setReason("Dublicate account under one account type can't be created");
 		return responseInfo;
 		  
 	  }
@@ -220,7 +222,7 @@ public class UserAccountMgr {
 			responseInfo.setMsg("Account Details for addExpense screen");
 			responseInfo.setReason("");
 			responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
-			responseInfo.setStatusCode(200);
+			responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
 		}
 		catch(Exception e){
 			System.out.println("Exception occur while fetching data from DB");
@@ -228,7 +230,7 @@ public class UserAccountMgr {
 			responseInfo.setMsg("Account Details for addExpense screen");
 			responseInfo.setReason("Exception occur while fetching data from DB");
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
-			responseInfo.setStatusCode(500);
+			responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 		}
 		return responseInfo;
 		
