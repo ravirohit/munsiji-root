@@ -49,19 +49,41 @@ public class ExpenseDetailDaoImp {
 	  session.close();
 	  return userAccountList;
 	}
-	public List<Object[]> getUsrExpense(String accType,String accName, String usrEmail){
-	  List<UserExpense> userExpenseList = null;
+	public List<Object[]> getUsrExpense(String accType,String accName, String usrEmail, String startDate, String endDate){
+	 // List<UserExpense> userExpenseList = null;
 	  List<Object[]> userObjectExpenseList = null;
-	  String queryStr;
-	  if(accType == null) {
-		  queryStr = "select a.type, a.name, e.amount, a.crteDate, a.desc from UserAccount a, UserExpense e "
-	  		               + "where e.userDetails = '"+usrEmail+"' and e.userAccount = a.id";
+	  String queryStr = "";
+	  System.out.println("start date:"+startDate+" end date:"+endDate);
+	 
+	  if(accName != null) {
+		  queryStr = "select e.amount, e.dateOfExpnse, e.desc, e.userAccount, e.userDetails"
+			  		+ "  FROM UserExpense e join e.userAccount a where a.type='" + accType +"' and  e.userAccount = a.id "
+			  		+ " and e.userDetails = '"+usrEmail + "'";
+		  if(accName != null){
+			  queryStr = new StringBuffer(queryStr).append(" and a.name = '"+accName+"'").toString();
+		  }
 	  }
 	  else {
+		  queryStr = "select a.type, a.name, e.amount, a.crteDate, a.desc from UserAccount a, UserExpense e "
+	  		               + "where e.userDetails = '"+usrEmail+"' and e.userAccount = a.id and a.type = '" +accType +"'" ;
+	  }
+	  if(startDate != null){
+		  queryStr = new StringBuffer(queryStr).append(" and e.dateOfExpnse >= '"+startDate+"'").toString();
+		  if(endDate !=null){
+			  queryStr = new StringBuffer(queryStr).append(" and e.dateOfExpnse <= '"+endDate+"'").toString();
+		  }
+	  }
+	  /*else {
 		   queryStr = "select e.amount, e.dateOfExpnse, e.desc, e.userAccount, e.userDetails"
 			  		+ "  FROM UserExpense e join e.userAccount a where a.type='" + accType +"' and  e.userAccount = a.id "
 			  		+ " and e.userDetails = '"+usrEmail + "'";
-	  }
+		   if(startDate != null){
+			   queryStr = new StringBuffer(queryStr).append(" and e.dateOfExpnse >= '"+startDate+"'").toString();
+			   if(endDate != null){
+				   queryStr = new StringBuffer(queryStr).append(" and e.dateOfExpnse <= '"+endDate+"'").toString();
+			   }
+		   }
+	  }*/
 	  try{
 	    session =hibernateCfg.getSession();
 	    System.out.println("start---------------");
