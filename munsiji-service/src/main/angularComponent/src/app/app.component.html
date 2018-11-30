@@ -3,7 +3,10 @@
 <div *ngIf="userData.isLogedin; then homeBlock else loginBlock "></div>
 
 <ng-template #homeBlock>
-<div class="mobile-menu-bar" (click)="toogleMenu($event)"><span class="menu-toolbar">MENU</span></div>
+<div class="mobile-menu-bar" (click)="toogleMenu($event)">
+    <span class="header-msg pull-left">{{headerTitle}}</span>
+   <span class="menu-toolbar pull-right">MENU</span>
+</div>
 <div [ngClass]="isVisble ? '' : 'menuClicked'" class="main-toolbar">  
   <ul class="main-ul-toolbar" >
 
@@ -13,8 +16,6 @@
         <fa name="home"></fa>
       </span>
     </li>
-    <!-- <li routerLink="tour" routerLinkActive="active">Tour Ledger</li>
-    <li routerLink="group" routerLinkActive="active">Group Ledger</li> -->
     <li routerLink="profile" routerLinkActive="active">Profile
       <span class="pull-right">
         <fa name="cog" animation="spin"></fa>
@@ -33,24 +34,38 @@
           <fa name="file-text"></fa>
         </span>
     </li>
-    <li (click)="logout()">Logout</li>
+    <li class="logout-mobile-visibility" (click)="logout()">
+    Logout
+    <span class="pull-right">
+        <fa name="sign-out"></fa>
+      </span>
+  </li>
   </ul>
 </div>
 
 <div class="desktop page-header">
-    <header>
-      <strong>Munshi G :</strong> <span class="header-msg">{{headerTitle}}</span>
+    <header class="header-banner">
+            <span>
+                <strong>Munshi G : </strong>
+                <span class="header-msg">{{headerTitle}}</span>
+            </span>    
+            <ul>
+            <li  class="pull-right" (click)="logout()">
+                <span>
+                    Logout <fa name="sign-out"></fa>
+                  </span>        
+                </li>
+              </ul>      
     </header> 
+
   </div>
-<div class="app-container container">
-<router-outlet > </router-outlet>
-
-
+<div class="app-container container well">
+    <router-outlet > </router-outlet>
 </div>
 </ng-template>
 
 
-<ng-template #loginBlock>
+<ng-template #loginBlock class="app-container container well">
   <app-login></app-login>
   
 </ng-template>

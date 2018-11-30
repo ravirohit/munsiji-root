@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import {UserinfoService} from './../services/userinfo.service';
 
 import { Router } from '@angular/router';
-import { UrlConfig } from '../../environments/url-config';
-import {DataService} from '../services/data.service'; 
-import {PromptMessageComponent} from '../template/promptMessage/promptMessage.component';
+import { UrlConfig } from '../../../environments/url-config';
+import {DataService} from '../../services/data.service'; 
+import {PromptMessageComponent} from '../../template/promptMessage/promptMessage.component';
 
 @Component({
   selector: 'app-add-ledger-info',
@@ -20,7 +19,7 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
   arrAccountName = [];
   isMessage:boolean = false;
   
-  constructor( private userService:UserinfoService, private dataService: DataService, private router: Router) { }
+  constructor(  private dataService: DataService, private router: Router) { }
 
 
   ngOnInit() { 

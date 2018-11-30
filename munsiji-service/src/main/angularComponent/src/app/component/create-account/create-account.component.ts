@@ -4,7 +4,7 @@ import {UserinfoService} from './../../services/userinfo.service'
 import { Router } from '@angular/router';
 import { UrlConfig } from './../../../environments/url-config';
 import {DataService} from '../../services/data.service'; 
-import {PromptMessageComponent} from './../promptMessage/promptMessage.component';
+import {PromptMessageComponent} from '../../template/promptMessage/promptMessage.component';
 
 @Component({
   selector: 'app-create-account',

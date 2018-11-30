@@ -1,0 +1,21 @@
+.home-list-group {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,50%);
+}
+tr.hover-cl{
+    cursor: pointer;
+}
+.table-striped tbody tr:hover{
+    background: #67a9d4;
+ }
+
+
+.view-container{
+    
+    width: 100%;
+}
+label {
+    font-weight: 100;
+    margin:0 7px;
+}

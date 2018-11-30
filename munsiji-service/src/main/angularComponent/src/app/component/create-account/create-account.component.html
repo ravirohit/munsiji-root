@@ -11,10 +11,11 @@
     </div>
     <div class="form-group">
       <label for="acc_name"><sup>*</sup>Account Name:</label>
-      <input type="text" id="acc_name" class="form-control" [(ngModel)]="acc.name"/> 
       <div class="alert alert-info hidden">
-        <strong>Account Name: </strong> Provide Account Name Uniqe and meaningful.
-      </div>   
+        Account Name Uniqe and meaningful.
+      </div>  
+      <input type="text" id="acc_name" class="form-control" [(ngModel)]="acc.name"/> 
+       
     </div>
     <!-- <div class="form-group">
       <label for="avl_bal"><sup>*</sup>Total Expences(As of now):</label>
@@ -22,19 +23,20 @@
     </div> -->
     <div class="form-group">
       <label for="acc_open_date"><sup>*</sup>Account open Date:</label>
-      <input type="date" id="acc_open_date" class="form-control" [(ngModel)]="acc.date"/>   
       <div class="alert alert-info hidden">
-          <strong>Date: </strong> Select date.
-        </div>  
+         Select Account start date.
+      </div> 
+      <input type="date" id="acc_open_date" class="form-control" [(ngModel)]="acc.date"/>   
+       
     </div>
 
     
     <div class="form-group">
-      <label for="acc_desc"><sup>*</sup>Description:</label>
+      <label for="acc_desc"><sup>*</sup>Description:</label>  <div class="alert alert-info hidden">
+        Provide Description for the Account
+      </div> 
       <textarea  id="acc_desc" class="form-control" [(ngModel)]="acc.desc" ></textarea> 
-      <div class="alert alert-info hidden">
-        <strong>Description: </strong> Provide Description for the Account(Why you are creating the account).
-      </div>   
+      
     </div>
     
     <button type="submit" class="btn btn-primary" (click)="createAccount()">Create Account</button>

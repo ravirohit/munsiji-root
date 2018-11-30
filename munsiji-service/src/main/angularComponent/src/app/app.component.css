@@ -1,7 +1,19 @@
+.header-banner{
+    display: flex;
+    justify-content: space-between;
+}
+.header-banner .pull-right {
+    line-height: 3em;
+    padding: 0 1em;
+    box-sizing: border-box;
+    margin-top: 0.3em;
+    cursor: pointer;
+}
 li:focus, li:active, li:hover, .main-ul-toolbar .active {
-    outline: none;
-    box-shadow: 1px 1px 2px grey;
+    box-shadow: 2px 4px 4px #fff;
     color: #fff;
+    border: 1px solid #fff;
+    border-width: 1px 1px 1px 1px;
 }
 
 .header-cont{
@@ -32,8 +44,9 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
 .main-ul-toolbar li {
     cursor: pointer;
     text-align: left;
-    padding-left: 15px;    
+    padding-left: 15px;
     padding-right: 8px;
+    line-height: 2.5em;
 }
 .app-container {
     
@@ -54,16 +67,23 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
     font-weight: 600;
     color: crimson;
 }
-.mobile-menu-bar{display: none;}
+.mobile-menu-bar, .logout-mobile-visibility{display: none;}
 
 @media screen and (max-width : 574px){
 
+    .logout-mobile-visibility{display: block;}
     .desktop.page-header{display: none;}
     span.menu-toolbar {
-        border-bottom: 4px double;
+        border-bottom: 9px double lightgray;
         padding: 0px;
         font-weight: bolder;
-        letter-spacing: 3px;
+        color: #fff;
+        line-height: 2em;
+        outline: 3px solid lightgray;
+        outline-offset: 4px;
+        position: relative;
+        top: 10px;
+        right: -6px;
     }
     .header-cont{
         text-align: left; padding-left:10px;
@@ -74,6 +94,8 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
     }
     
     .mobile-menu-bar{
+        
+        letter-spacing: 2px;
         display: block;
         position: fixed;
         top: 0;
@@ -88,6 +110,9 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
         padding-right: 15px;
         margin: 0;
         left: 0;
+        padding-left: 1em ;
+        font-size: 1em;
+        color:crimson;
     }
     .main-toolbar{
         display: block;
@@ -98,7 +123,7 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
         padding: 2rem;
         width: 100vw;
         z-index: 99;
-        background: #b7ddff;
+        background: #fb1844;
         transition: left 1s;
     }
 
@@ -106,7 +131,9 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
         left: 200rem;
     }
     .main-ul-toolbar li{
-        padding-right: 10px;         
+        padding-right: 10px;
         text-align: center;
+        font-size: 1.1em;
+        letter-spacing: 0.1em;
     }
 }

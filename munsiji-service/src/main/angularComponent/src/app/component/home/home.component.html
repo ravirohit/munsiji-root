@@ -1,7 +1,7 @@
 <app-promptMessage></app-promptMessage>
 <div class="home-container" *ngIf = "ifDataAvailable">
 
-    <div class="view-container" id="view-container">
+    <div class="well view-container" id="view-container">
             <div class="form-group"> 
 
                     <label for="viewType">Display:</label>
@@ -14,7 +14,7 @@
               </div>
 
         <div class="gridContainer" *ngIf = "homeModel.displayType != 1 ">
-            <table id="table-{{i}}" class="template-grid-cl table table-striped table-condensed table-bordered col-sm-12">
+            <table id="home-grid-cl" class="template-grid-cl table table-striped table-condensed table-bordered col-sm-12">
                 <thead><tr>
                     <th *ngFor="let thcol of data.th" class="text-center">
                             {{data.colTitle[thcol]}}
@@ -22,7 +22,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let tbcol of data.grdiData" (click)="gridRowClicked(tbcol)">
+                    <tr [ngClass]="isGridClickable ? 'hover-cl':''" *ngFor="let tbcol of data.grdiData" (click)="gridRowClicked(tbcol)">
                     <td *ngFor="let thcol of data.th" class="text-center">
                             {{tbcol[thcol]}}
                     </td>

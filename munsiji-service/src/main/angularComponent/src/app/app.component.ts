@@ -1,5 +1,5 @@
 import { Component, AfterContentInit, OnInit, OnChanges } from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, NavigationEnd} from '@angular/router';
 import {UserinfoService} from './services/userinfo.service';
 
 import { UrlConfig } from '../environments/url-config';
@@ -14,11 +14,29 @@ import * as d3 from 'd3';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, AfterContentInit, OnChanges {
-  isVisble = false;
+  isVisble = true;
   headerTitle:string = "Home";
   userData = {isLogedin:false};
   
   constructor(private userInfo:UserinfoService,private router: Router,  private dataService : DataService){
+
+    router.events.forEach((event) => {
+      if(event instanceof NavigationEnd) {
+        this.headerTitle = "Route end"+event;
+        this.isVisble = !this.isVisble;
+        switch(event.url){
+          case "/" : this.headerTitle = " Home "; break;          
+          case "/add" : this.headerTitle = " Add Expences "; break;
+          case "/profile" : this.headerTitle = " Manage Profile "; break;
+          case "/c_account" : this.headerTitle = " Create Account "; break;
+          default : this.headerTitle = " Expence Details "; break;
+        }
+      }
+      // NavigationEnd
+      // NavigationCancel
+      // NavigationError
+      // RoutesRecognized
+    });
   }
     
   ngOnInit(){
@@ -31,7 +49,7 @@ export class AppComponent implements OnInit, AfterContentInit, OnChanges {
   }
   ngAfterContentInit(){
     setTimeout(()=>{
-      d3.select("li").style("color", "red");
+      d3.select("li").style("color", "darkgrey");
     },0)
 
   }

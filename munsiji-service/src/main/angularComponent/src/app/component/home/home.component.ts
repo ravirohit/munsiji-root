@@ -1,11 +1,11 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
+import {Router,  ActivatedRoute } from '@angular/router';
 
-import {UserinfoService} from '../services/userinfo.service';
-import {DataService} from '../services/data.service';
-import {  ActivatedRoute } from '@angular/router';
-import {UrlConfig} from './../../environments/url-config';
-import {PromptMessageComponent} from '../template/promptMessage/promptMessage.component';
+import {UserinfoService} from '../../services/userinfo.service';
+import {DataService} from '../../services/data.service';
+import {UrlConfig} from './../../../environments/url-config';
+import {PromptMessageComponent} from '../../template/promptMessage/promptMessage.component';
 
 
 @Component({
@@ -16,6 +16,7 @@ import {PromptMessageComponent} from '../template/promptMessage/promptMessage.co
 export class HomeComponent implements OnInit {
 
   ifDataAvailable:boolean;
+  isGridClickable:boolean = true;
   chartDataModel:any = {
     chartData:{ 
       "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},
@@ -28,23 +29,22 @@ export class HomeComponent implements OnInit {
   homeModel = { displayType: 2}
   data:any = [];//{te:12000,td:20000,sa:8000};
 
-  constructor(private route: ActivatedRoute,private userService:UserinfoService, private dataService:DataService) { }
+  constructor(private route: ActivatedRoute,private userService:UserinfoService, private dataService:DataService, private router: Router) { }
   
    ngOnInit() {
      
     let flag:boolean = true, url,accName = this.route.snapshot.paramMap.get('accname'),
         accType = this.route.snapshot.paramMap.get('acctype');
 
-    console.log(accName, " ---> ", accType);
-
      this.promptMessageComponent.showLoader();
      this.data = this.userService.getDataModel();   
+     
      if(accName && accType && accName.length > 0 && accType.length > 0){
         url  = UrlConfig.GET_ALL_EXPENCE+accType+"&accName="+accName; 
         flag = false;
+        this.isGridClickable = false;
      }else{
         url  = UrlConfig.GET_ALL_EXPENCE+"personalexp";
-        
      }   
      console.log("URL - > " , url);
      this.setHomeData(url, flag);
@@ -80,6 +80,8 @@ export class HomeComponent implements OnInit {
 
   gridRowClicked(data){
     console.log("DATA ", data);
+    let url  ="detail/personalexp&accName/"+data.accName;
+    this.router.navigate([url]); 
   }
 
    displayType(e){
@@ -105,9 +107,9 @@ export class HomeComponent implements OnInit {
 
    chartDataModel1 = {"chartData":{ "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},
                       "data": [
-                          {"label":"MF","value": "50000", "link": "detail/acc/MF"},
-                          {"label":"LIC","value": "20000", "link":  "detail/acc2/MF2"},
-                          {"label":"PPF","value": "40000", "link":  "detail/acc4/MF4"}]                          
+                          {"label":"MF","value": "50000", "link": "detail/personalexp/MF"},
+                          {"label":"LIC","value": "20000", "link":  "detail/personalexp/MF2"},
+                          {"label":"PPF","value": "40000", "link":  "detail/personalexp/MF4"}]                          
    }}
 
    chartDataModel2 = {"chartData":{ "chart": { "caption": "Expences Summary for All accounts","theme": "fint"},

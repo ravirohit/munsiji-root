@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { UrlConfig } from './../../environments/url-config';
+import { UrlConfig } from './../../../environments/url-config';
 
-import {UserinfoService} from '../services/userinfo.service'; 
-import {DataService} from '../services/data.service'; 
-import {PromptMessageComponent} from '../template/promptMessage/promptMessage.component';
+import {UserinfoService} from '../../services/userinfo.service'; 
+import {DataService} from '../../services/data.service'; 
+import {PromptMessageComponent} from '../../template/promptMessage/promptMessage.component';
 
 @Component({
   selector: 'app-login',
