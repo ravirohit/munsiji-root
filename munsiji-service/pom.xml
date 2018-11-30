@@ -19,12 +19,16 @@
     </properties>
  
     <dependencies>
-        <dependency>
+    <!--<dependency>
         	<groupId>com.social</groupId>
             <artifactId>munsiji-persistance</artifactId>
             <version>${munsiji-version}</version>
-            <scope>provided</scope>
-        </dependency>
+        </dependency> -->
+        <dependency>
+        	<groupId>com.social</groupId>
+            <artifactId>munsiji-persistent</artifactId>
+            <version>${munsiji-version}</version>
+        </dependency> 
         
         <!-- Spring Security -->
         <dependency>

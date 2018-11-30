@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.social</groupId>
     <artifactId>munsiji-root</artifactId>
     <packaging>pom</packaging>
@@ -10,12 +9,10 @@
     <name>munsiji-root</name>
     <modules>
      <module>munsiji-common</module>
-     <module>munsiji-persistance</module>
      <module>munsiji-service</module>
-    <module>munsiji-website</module>
-  </modules>
-
-
+     <module>munsiji-website</module>
+     <module>munsiji-persistent</module>
+    </modules>
     <build>
         <finalName>munsiji-root</finalName>
         <plugins>
