@@ -1,14 +1,29 @@
 
 
 <div *ngIf="userData.isLogedin; then homeBlock else loginBlock "></div>
+<div class="desktop page-header">
+  <header class="header-banner">
+          <span>
+              <strong>Munshi G  </strong>
+              <span class="header-msg">{{headerTitle}}</span>
+          </span>    
+          <ul *ngIf="userData.isLogedin">
+          <li  class="pull-right" (click)="logout()">
+              <span>
+                  Logout <fa name="sign-out"></fa>
+                </span>        
+              </li>
+            </ul>      
+  </header> 
 
+</div>
 <ng-template #homeBlock>
-<div class="mobile-menu-bar" (click)="toogleMenu($event)">
+<div class="mobile-menu-bar " (click)="toogleMenu($event)">
     <span class="header-msg pull-left">{{headerTitle}}</span>
    <span class="menu-toolbar pull-right">MENU</span>
 </div>
-<div [ngClass]="isVisble ? '' : 'menuClicked'" class="main-toolbar">  
-  <ul class="main-ul-toolbar" >
+<div  class="row main-toolbar">  
+  <ul [ngClass]="isVisble ? '' : 'menuClicked'"    class="col-lg-3 col-sm-4 main-ul-toolbar" >
 
     <li routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
       Home
@@ -41,27 +56,13 @@
       </span>
   </li>
   </ul>
-</div>
 
-<div class="desktop page-header">
-    <header class="header-banner">
-            <span>
-                <strong>Munshi G : </strong>
-                <span class="header-msg">{{headerTitle}}</span>
-            </span>    
-            <ul>
-            <li  class="pull-right" (click)="logout()">
-                <span>
-                    Logout <fa name="sign-out"></fa>
-                  </span>        
-                </li>
-              </ul>      
-    </header> 
 
-  </div>
-<div class="app-container container well">
+
+<div class="col-lg-9 col-sm-8 app-container container well">
     <router-outlet > </router-outlet>
 </div>
+</div>  
 </ng-template>
 
 
