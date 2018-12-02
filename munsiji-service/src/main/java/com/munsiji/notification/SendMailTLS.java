@@ -1,6 +1,6 @@
 package com.munsiji.notification;
 
-/*import java.util.Properties;
+import java.util.Properties;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -8,13 +8,14 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;*/
+import javax.mail.internet.MimeMessage;
 
 
 //java-mail-1.4.4.jar
 public class SendMailTLS {
 
-	/*public static void main(String[] args) {
+	// reference link
+	public static void main(String[] args) {
 
 		final String username = "ravi.swd.rohit@gmail.com";
 		final String password = "exxaqjrtdejgufpi";
@@ -49,5 +50,5 @@ public class SendMailTLS {
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
-	}*/
+	}
 }
