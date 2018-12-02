@@ -15,7 +15,7 @@ import * as d3 from 'd3';
 })
 export class AppComponent implements OnInit, AfterContentInit, OnChanges {
   isVisble = true;
-  headerTitle:string = "Home";
+  headerTitle:string = "";
   userData = {isLogedin:false};
   
   constructor(private userInfo:UserinfoService,private router: Router,  private dataService : DataService){
@@ -23,9 +23,9 @@ export class AppComponent implements OnInit, AfterContentInit, OnChanges {
     router.events.forEach((event) => {
       if(event instanceof NavigationEnd) {
         this.headerTitle = "Route end"+event;
-        this.isVisble = !this.isVisble;
+        this.isVisble = false;
         switch(event.url){
-          case "/" : this.headerTitle = " Home "; break;          
+          case "/" : this.headerTitle = this.userData.isLogedin ? " Home " : ''; break;          
           case "/add" : this.headerTitle = " Add Expences "; break;
           case "/profile" : this.headerTitle = " Manage Profile "; break;
           case "/c_account" : this.headerTitle = " Create Account "; break;
@@ -54,7 +54,7 @@ export class AppComponent implements OnInit, AfterContentInit, OnChanges {
 
   }
   logout():void{  
-
+        this.headerTitle = "";
         let logoutURL = UrlConfig.LOGOUT;
         let sub = this.dataService.httpGetCall(logoutURL).subscribe(data =>{
             sub.unsubscribe();    
@@ -65,8 +65,8 @@ export class AppComponent implements OnInit, AfterContentInit, OnChanges {
           this.userInfo.setUSerData({});
           console.log("Error in LOGOUT HTTP call ", err);
           sub.unsubscribe();
+          this.router.navigate(['']);
         });
-        this.router.navigate(['']);
   }
 
 

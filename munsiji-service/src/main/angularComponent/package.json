@@ -24,6 +24,7 @@
     "@angular/router": "^7.1.0",
     "angular-font-awesome": "^3.1.2",
     "angular-localstorage": "^1.1.5",
+    "angular4-datepicker": "^1.0.1",
     "angular4-fusioncharts": "^1.0.0",
     "bootstrap": "^4.0.0-alpha.6",
     "core-js": "^2.5.7",

@@ -3,10 +3,22 @@
 @import "./assets/animate.css";
 /* You can add global styles to this file, and also import other style files */
 
-*{ font-family: sans-serif;color:#fff; Font-size:1.02em;list-style: none;}
+*{ 
+    font-family: sans-serif;
+    color:#fff; 
+    Font-size:1.02em;
+    list-style: none;
+}
 body{
     height: 100vh;
     background: #fb1844;
+}
+select option {
+    background: #fb1844;
+    box-shadow: 1px 1px grey;
+    outline: none;
+    border: none;
+    font-size: 1.2em;
 }
 fa i.fa {
     color: white;
@@ -58,6 +70,14 @@ label{font-weight: bold;}
 }
 .hide-msg{ display:none;}
 .show-msg{ display:block;}
+
+
+app-add-ledger-info,app-profile, app-create-account{
+    max-width: 51em;
+    width: 100%;
+}
+app-home{width: 100%;}
+
 
 @media screen and (max-width : 574px){
     a.back-btn {
