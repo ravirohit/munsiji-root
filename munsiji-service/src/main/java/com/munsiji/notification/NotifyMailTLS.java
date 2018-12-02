@@ -15,13 +15,13 @@ import javax.mail.internet.MimeMessage;
 public class NotifyMailTLS {
 
 	// reference link   https://support.google.com/accounts/answer/185833
-	static final String username = "abc@gmail.com";
-	static final String password = "pwd";
+	static final String username = "ravi.swd.rohit@gmail.com";
+	static final String password = "exxaqjrtdejgufpi";
 	public static void main(String[] args) {
 
 		sendMailTLS(username, password);
 	}
-	public static boolean sendMailTLS(String email, String pwd){
+	public static boolean sendMailTLS(String username, String password){
 	
 
 		Properties props = new Properties();
@@ -40,9 +40,9 @@ public class NotifyMailTLS {
 		try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("ravi.swd.rohit@gmail.com"));
+			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse("ravi.swd.rohit@gmail.com"));
+				InternetAddress.parse(username));
 			message.setSubject("Testing Subject");
 			message.setText("Dear Mail Crawler,"
 				+ "\n\n No spam to my email, please!");
