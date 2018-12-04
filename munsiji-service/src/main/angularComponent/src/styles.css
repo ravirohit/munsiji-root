@@ -3,12 +3,25 @@
 @import "./assets/animate.css";
 /* You can add global styles to this file, and also import other style files */
 
+@keyframes color {
+    to {color: #000;}
+}
+*:hover{  
+    color:blue;
+    animation: color 2s linear 1s infinite alternate;
+}
+.color-animaion{  
+    color:#fff;
+    animation: color 4s linear 2s infinite alternate;
+}
 *{ 
     font-family: sans-serif;
     color:#fff; 
     Font-size:1.02em;
     list-style: none;
+    transition: color 2s ease;
 }
+
 body{
     height: 100vh;
     background: #fb1844;
@@ -21,8 +34,10 @@ select option {
     font-size: 1.2em;
 }
 fa i.fa {
-    color: white;
+    
     font-size: 1.2em;
+    color:#fff;
+    animation: color 4s linear 2s infinite alternate;
 }
  .form-group:focus-within {
     box-shadow: 0px 1px 1px gray;
