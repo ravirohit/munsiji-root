@@ -12,7 +12,7 @@
      <module>munsiji-service</module>
      <module>munsiji-website</module>
      <module>munsiji-persistent</module>
-    </modules>
+  </modules>
     <build>
         <finalName>munsiji-root</finalName>
         <plugins>
@@ -52,8 +52,13 @@
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-moxy</artifactId>
-        </dependency>
-        -->
+        </dependency>  -->
+        <dependency> 
+      <groupId>org.sonatype.plexus</groupId> 
+      <artifactId>plexus-build-api</artifactId> 
+      <version>0.0.6</version> 
+    </dependency> 
+       
     </dependencies>
     <properties>
         <jersey.version>2.16</jersey.version>

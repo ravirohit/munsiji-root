@@ -24,7 +24,12 @@ import org.munsiji.commonUtil.MunsijiServiceConstants;
 //import org.munsiji.persistancetest.Test;
 import org.munsiji.hibernateUtil.HibernateCfg;
 import org.munsiji.model.Login;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,9 +54,32 @@ public class MyResourceController {
 	UserAccountMgr userAccountMgr;
 	@Autowired
 	ExpenseServiceMgr expenseServiceMgr;
+	@Autowired
+	@Qualifier("jobLauncher")
+	SimpleJobLauncher jobLauncher;
+	@Autowired
+	@Qualifier("expenseResultJob")
+	Job job;
+	
 	@PostConstruct
 	public void init(){
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+	}
+	
+	@RequestMapping(value="startbatch", method = RequestMethod.GET)
+	public String startBatch(){
+		System.out.println("batch starting endpoint get called");
+		System.out.println(jobLauncher);
+		System.out.println(job);
+		try {
+            JobExecution execution = jobLauncher.run(job, new JobParameters());
+            System.out.println("Job Exit Status : "+ execution.getStatus());
+      
+        } catch (Exception e) {
+            System.out.println("Job ExamResult failed");
+            e.printStackTrace();
+        }
+		return "batch started";
 	}
 	@RequestMapping(value="test", method = RequestMethod.GET)
     public String test(@RequestParam(value = "reqKey", required = false) String reqKey) {      // security related experiment
@@ -64,13 +92,13 @@ public class MyResourceController {
         List<Test> testlist = query.list();
         return ReqHoldingClass.getReqHoldingMap().get(reqKey);
     }
-	@RequestMapping(value="gettest", method = RequestMethod.GET)
+	@RequestMapping(value="getdata", method = RequestMethod.GET)
     public String getTest(@RequestParam(value = "reqKey", required = false) String reqKey) {
 		System.out.println("getTest  service get callled with req param:"+reqKey);
 		
         return ReqHoldingClass.getReqHoldingMap().get(reqKey);
     }
-	@RequestMapping(value="test12", method = RequestMethod.POST)
+	@RequestMapping(value="putdata", method = RequestMethod.POST)
     public ResponseEntity<ResponseInfo> test12(@RequestBody TestEnumReq testEnumReq, HttpServletResponse response ) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
