@@ -1,4 +1,5 @@
 munsiji-service/dist/runtime.ec2944dd8b20ec099bf3.js
+http://localhost:8080/munsiji-service/rest/myapp/getexpense?accType=personalexp&accName&accName=acc5
 SELECT * FROM sys.user_account a where a.crte_date > '2018-12-00 10:00:00';
 
 
