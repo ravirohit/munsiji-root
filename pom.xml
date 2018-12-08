@@ -8,9 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>munsiji-root</name>
     <modules>
-     <module>munsiji-common</module>
      <module>munsiji-service</module>
-     <module>munsiji-website</module>
      <module>munsiji-persistent</module>
   </modules>
     <build>
