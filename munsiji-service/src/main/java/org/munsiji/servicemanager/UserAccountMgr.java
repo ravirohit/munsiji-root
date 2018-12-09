@@ -10,6 +10,7 @@ import java.util.Random;
 
 import org.dozer.DozerBeanMapper;
 import org.munsiji.commonUtil.DateUtil;
+import org.munsiji.commonUtil.GeneratePassword;
 import org.munsiji.commonUtil.MunsijiServiceConstants;
 import org.munsiji.commonUtil.UserContextUtils;
 import org.munsiji.model.AccTypeMapToName;
@@ -25,6 +26,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.munsiji.notification.NotifyMailTLS;
+import com.munsiji.notification.PasswordResetNotif;
 
 @Component
 public class UserAccountMgr {
@@ -105,6 +108,58 @@ public class UserAccountMgr {
 			responseInfo.setReason("User is not authorized");
 			responseInfo.setStatusCode(MunsijiServiceConstants.AUTHORIZATION_ERROR_CODE);
 		}
+		return responseInfo;
+	}
+	public ResponseInfo resetPwd(String email, String newPwd){
+		ResponseInfo responseInfo = new ResponseInfo();
+		GeneratePassword generatePassword = null;
+		List<UserDetails> userList = null;
+		User userInfo = UserContextUtils.getUser();
+		if(newPwd != null){
+			email = userInfo.getUsername();
+		}
+		userList =  userDetailDaoImp.getUserInfo(email,null,null);
+		
+		try{
+			 if(userList.size() != 0){
+				 UserDetails userDetails = userList.get(0);
+				 if(newPwd == null){
+					 generatePassword = new GeneratePassword();
+					 newPwd = generatePassword.getPassword();
+					 PasswordResetNotif.mailPassword(userDetails.getEmailId(), newPwd);
+					 System.out.println("New password sent to your emailID:"+newPwd);
+					 responseInfo.setMsg("New password sent to your emailID");
+					 responseInfo.setReason("user forgot password");
+				 }
+				 else{
+					 responseInfo.setMsg("User password has been changed");
+					 responseInfo.setReason("Change password");
+				 }
+				 userDetails.setPwd(newPwd);
+				 userDetails.setKey("");
+				 userDetailDaoImp.registerUser(userDetails, true);
+				 System.out.println("password saved to the db:"+newPwd);
+				 responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+				 responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
+			 }
+			 else{
+				 responseInfo.setData(null);
+				 responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+				 responseInfo.setReason(MunsijiServiceConstants.SEVER_ERROR);
+				 responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+				 responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
+				 
+			 }
+		}
+		catch(Exception e){
+			System.out.println("Exception occur while reseting user password:"+e);
+			 responseInfo.setData(null);
+			 responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+			 responseInfo.setReason(MunsijiServiceConstants.SEVER_ERROR);
+			 responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+			 responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
+		}
+		System.out.println("status code in method:---------"+responseInfo.getStatusCode());
 		return responseInfo;
 	}
 	public ResponseInfo logout(){

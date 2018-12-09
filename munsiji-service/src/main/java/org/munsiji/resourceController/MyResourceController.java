@@ -156,6 +156,24 @@ public class MyResourceController {
 		}
 		
 	}
+	@RequestMapping(value="resetpassword",method=RequestMethod.POST)
+	public ResponseEntity<ResponseInfo> passwordReset(@RequestParam(value = "emailId", required = false) String emailId,@RequestBody(required = false) String newPwd){
+		System.out.println("Password reset method called----:"+emailId+"  newpwd:"+newPwd);
+		if(newPwd != null){
+			int sindex = newPwd.indexOf(":") + 2;
+			int lindex = newPwd.lastIndexOf("\"");
+			newPwd = newPwd.substring(sindex, lindex);
+			System.out.println("sent new pwd:"+newPwd);
+		}
+		ResponseInfo responseInfo = null;
+		responseInfo = userAccountMgr.resetPwd(emailId,newPwd);
+		if(responseInfo.getStatusCode() == MunsijiServiceConstants.SUCCESS_STATUS_CODE){
+			  return new ResponseEntity<>(responseInfo,HttpStatus.OK);
+		 }
+		 else{
+			  return new ResponseEntity<>(responseInfo,HttpStatus.BAD_REQUEST);
+		 }
+	}
 	@RequestMapping(value="logout",method=RequestMethod.GET)
 	public ResponseEntity<ResponseInfo> logout(){
 		ResponseInfo responseInfo = null;

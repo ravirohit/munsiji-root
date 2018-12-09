@@ -26,8 +26,12 @@ public class SessionManager implements HandlerInterceptor{
 	public void afterCompletion(HttpServletRequest req, HttpServletResponse res, Object arg2, Exception arg3)
 			throws Exception {
 		System.out.println("aftercompletioncalled");
-		UserContextUtils.clear();
-		
+		try{
+			UserContextUtils.clear();
+		}
+		catch(Exception e){
+			System.out.println("exception occur in the afterCompletion method called");
+		}
 		
 	}
 
@@ -42,19 +46,21 @@ public class SessionManager implements HandlerInterceptor{
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object arg2) throws Exception {
 		boolean flag = true;
 		List<UserDetails> userList = null;
-		System.out.println("preHandle called");
+		String endpointUrl = req.getRequestURI();
+		String queryStr = req.getQueryString();
+		System.out.println("preHandle called with URI with url:"+endpointUrl+" queryStr:"+queryStr);
 		List<GrantAuthCol> list= new ArrayList<>();
-		if((req.getHeader("auth-key") == null)){
-			res.setStatus(MunsijiServiceConstants.BAD_REQUEST_ERROR_CODE);
-			res.sendError(MunsijiServiceConstants.BAD_REQUEST_ERROR_CODE, "Bad Request");
-			return false;
-		}
-		
-		if(req.getHeader("auth-key").equals("login") || req.getHeader("auth-key").equals("register")){
+		if(endpointUrl.contains("login") || endpointUrl.contains("register") || 
+				(endpointUrl.contains("resetpassword") && ((queryStr != null) && (queryStr.contains("emailId"))))){
 			return flag;
 		}
 		System.out.println(req.getHeader("auth-key"));
 		System.out.println(userDetailDaoImp);
+		if((req.getHeader("auth-key") == null)||(req.getHeader("auth-key").trim() == "")){
+			res.setStatus(MunsijiServiceConstants.BAD_REQUEST_ERROR_CODE);
+			res.sendError(MunsijiServiceConstants.BAD_REQUEST_ERROR_CODE, "Bad Request");
+			return false;
+		}
 		userList = userDetailDaoImp.getUserInfo(null,null,req.getHeader("auth-key")); 
 		if(userList.size() == 0){
 			flag = false;

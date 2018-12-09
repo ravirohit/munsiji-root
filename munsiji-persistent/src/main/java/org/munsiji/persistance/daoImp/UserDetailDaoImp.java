@@ -36,6 +36,7 @@ public class UserDetailDaoImp {
 	}
 	public List<UserDetails> getUserInfo(String email,String pwd, String key){
 		List<UserDetails> userList = null; 
+		UserDetails userDetails = null;
 		String str = "from UserDetails where";
 		if(key != null){
 			str = new StringBuffer(str).append(" key = '" + key + "'").toString();
@@ -51,10 +52,12 @@ public class UserDetailDaoImp {
 		try{
 			  session = hibernateCfg.getSession();
 			  Query query = session.createQuery(str);
+			//  userDetails = session.get(UserDetails.class, email);
+			//  System.out.println("loading the user from db: >>>>>>>:"+userDetails.getEmailId()+"   "+userDetails.getPassword());
 			  userList = query.list();
 		  }
 		  catch(Exception e){
-			  System.out.println("exception occur while registering user:"+e);
+			  System.out.println("exception occur while getting userInfo:"+e);
 		  }
 		session.close();
 		return userList;
