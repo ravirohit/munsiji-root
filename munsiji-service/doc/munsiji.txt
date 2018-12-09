@@ -94,7 +94,8 @@ Response:
     "reason": "",
     "data": null
   }
-  
+========
+add expense: POST
 http://localhost:8080/munsiji-service/rest/myapp/addexpense
 Payload:
   {
@@ -120,13 +121,46 @@ For failure:
     "reason": "Account not found",
     "data": null
   }
-  
-http://localhost:8080/munsiji-service/rest/myapp/getexpense?accType=Bank
+==========
+ getExpense on home page: GET
+http://localhost:8080/munsiji-service/rest/myapp/getexpense?accType=personalexp
 There is no payload.
 Response:
   {
     "status": "Success",
-    "statusCode": null,
+    "statusCode": 200,
+    "msg": "data fetched for all account",
+    "reason": null,
+    "data": {
+        "expenseWithAccTypeList": [
+            {
+                "accType": "personalexp",
+                "accExpList": [
+                    {
+                        "accName": "acc2",
+                        "amnt": 10000,
+                        "date": "09-06-020",
+                        "desc": "acc2 desc"
+                    },
+                    {
+                        "accName": "acc1",
+                        "amnt": 6000,
+                        "date": "09-06-020",
+                        "desc": "acc1 desc"
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+==========
+ getExpense for a account name: GET
+ http://localhost:8080/munsiji-service/rest/myapp/getexpense?accType=personalexp&accName=acc2
+ response:
+ {
+    "status": "Success",
+    "statusCode": 200,
     "msg": "Operation Succeded Successfully",
     "reason": null,
     "data": {
@@ -142,60 +176,36 @@ Response:
             "date",
             "desc"
         ],
-        "accType": "Bank",
+        "accType": "personalexp",
         "content": [
             {
                 "header": {
-                    "title": "PFF",
-                    "bal": 3500
+                    "title": "acc1",
+                    "bal": 6000
                 },
                 "data": [
                     {
-                        "accName": "PFF",
-                        "amnt": 3500,
-                        "date": "2018-12-01 10:00:00.0",
-                        "desc": "insurance for Jan-dhan"
-                    }
-                ]
-            },
-            {
-                "header": {
-                    "title": "SIP",
-                    "bal": 8257
-                },
-                "data": [
-                    {
-                        "accName": "SIP",
-                        "amnt": 1234,
-                        "date": "2018-12-01 10:00:00.0",
-                        "desc": "insurance for Jan-dhan"
+                        "accName": "acc1",
+                        "amnt": 1000,
+                        "date": "10-06-018",
+                        "desc": "Monthe desc "
                     },
                     {
-                        "accName": "SIP",
-                        "amnt": 2341,
-                        "date": "2018-12-01 10:00:00.0",
-                        "desc": "insurance for Jan-dhan"
-                    },
-                    {
-                        "accName": "SIP",
-                        "amnt": 2341,
-                        "date": "2018-12-01 10:00:00.0",
-                        "desc": "insurance for Jan-dhan"
-                    },
-                    {
-                        "accName": "SIP",
-                        "amnt": 2341,
-                        "date": "2018-12-01 10:00:00.0",
-                        "desc": "insurance for Jan-dhan"
+                        "accName": "acc1",
+                        "amnt": 5000,
+                        "date": "09-06-020",
+                        "desc": "month jan"
                     }
                 ]
             }
         ]
     }
 }
+ 
   
 =================================
-http://localhost:8080/munsiji-service/rest/myapp/getacctypeandname?email=ravi.swd@gmail.com
+Get account name info based on account type:
+http://localhost:8080/munsiji-service/rest/myapp/getacctypeandname?accType=personalexp
 
 Response:
 {
@@ -205,7 +215,7 @@ Response:
     "reason": "",
     "data": {
         "accountDetail": {
-            "pexpence": [
+            "personalexp": [
                 "PPF"
             ],
             "Bank": [
@@ -219,52 +229,6 @@ Response:
         }
     }
 }
-
-=======
-Expense:
-{ 
-  data:{
-        "expense": []
-      }
-}
-
-[
-   {
-		"acc_type":"bank",
-		"expense":[
-				  {
-					"acc_name":"PPF",
-					"invested":"2145"
-				  },
-				  {
-					"acc_name":"SIP",
-					"invested":"2145"
-				  }
-				  {
-					 "acc_name":"MF",
-					 "invested":"2145"
-				  }
-			   ],
-   }
-    {
-		"acc_type":"insurance",
-		"expense":[
-				  {
-					"acc_name":"jan-dhan",
-					"invested":"2145"
-				  },
-				  {
-					"acc_name":"LIC",
-					"invested":"2145"
-				  }
-				  {
-					 "acc_name":"Pension-yojana",
-					 "invested":"2145"
-				  }
-			   ],
-   }
-]
-
 ================
 get expense for all account:
 http://localhost:8080/munsiji-service/rest/myapp/getexpense
@@ -306,6 +270,34 @@ http://localhost:8080/munsiji-service/rest/myapp/logout
     "reason": null,
     "data": null
 }
+======= 
+for change password: POST
+http://localhost:8080/munsiji-service/rest/myapp/resetpassword
+payload:
+{
+	"newPwd":"qwerty"
+	
+}
+response: 
+{
+    "status": "Success",
+    "statusCode": 200,
+    "msg": "User password has been changed",
+    "reason": "Change password",
+    "data": null
+}
+=========
+forget password: POST
+http://localhost:8080/munsiji-service/rest/myapp/resetpassword?emailId=ravi.swd.rohit@gmail.com
+Response;
+{
+    "status": "Success",
+    "statusCode": 200,
+    "msg": "New password sent to your emailID",
+    "reason": "user forgot password",
+    "data": null
+}
+
 
 
 
