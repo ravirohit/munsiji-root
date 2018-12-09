@@ -30,6 +30,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.munsiji.pdfutil.PDFGenerator;
 
 @Component
 public class ExpenseServiceMgr {
@@ -112,7 +113,7 @@ public class ExpenseServiceMgr {
 	    	  if(endDateStr != null)
 	    	   endDate = DateUtil.convertStringToString(endDateStr);
     	  }
-    		userObjectExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq,accName,userInfo.getUsername(), startDate, endDate); 
+    		userObjectExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq,accName,userInfo.getUsername(), startDate, endDate,null);
     		if(accName != null){
     			userExpensePerAccList = convertObjectArrayToModelForAcc(userObjectExpenseList);
 		    //userExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq, user.getEmailId());
@@ -282,5 +283,32 @@ public class ExpenseServiceMgr {
 	   responseInfo.setMsg(MunsijiServiceConstants.OPER_MSG); 
 	   return responseInfo;
 	 }
+	public boolean createExpFileToDownload(String accTypeReq,String[] accNameArr, String startDateStr,String endDateStr, String fileName){
+		boolean isFileCreated = true;
+		List<Object[]> userObjectExpenseList =null;
+		String startDate = null;
+	    String endDate = null;
+	    String userName = "ravi.swd.rohit@gmail.com";
+		User userInfo = UserContextUtils.getUser();
+		 try{
+		 if(startDateStr != null){
+	    	   startDate = DateUtil.convertStringToString(startDateStr);
+	    	  if(endDateStr != null)
+	    	   endDate = DateUtil.convertStringToString(endDateStr);
+		 }
+		 System.out.println("getting data from db-----");
+  		userObjectExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq,null,userName, startDate, endDate,accNameArr);
+  		System.out.println("got data from db----");
+  		PDFGenerator PDFGenerator = new PDFGenerator();
+  		PDFGenerator.createPDFFile(userObjectExpenseList,fileName,userName,accTypeReq, accNameArr);
+		 }
+		 catch(Exception e){
+			 System.out.println("exception occur while creating file:"+e);
+			 isFileCreated = false;
+		 }
+		
+		return isFileCreated;
+		
+	}
 
 }

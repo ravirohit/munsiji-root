@@ -1,5 +1,11 @@
 package org.munsiji.resourceController;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.util.Base64;
 import java.util.List;
 import java.util.Random;
@@ -33,6 +39,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -250,6 +257,36 @@ public class MyResourceController {
 		else{
 			  return new ResponseEntity<>(responseInfo,HttpStatus.BAD_REQUEST);
 		}
+	}
+	@RequestMapping(value="/download",method = RequestMethod.GET)
+	public void downloadExpenseFile(HttpServletResponse response){
+		File file = null;
+		boolean status;
+		System.out.println("download resource get called");
+		String accName[] = {"acc1","acc2"};
+		String fileName = "newFile.pdf";
+		status = expenseServiceMgr.createExpFileToDownload("personalexp",accName, null, null, fileName);
+		if(status){
+			try {
+			file = new File("C:/Project_Work/Other_learn/munsiji-root/munsiji-service/src/main/resources/pdf/"+fileName);  // for EXTERNAL_FILE_PATH
+	        String mimeType= URLConnection.guessContentTypeFromName(file.getName());
+	        if(mimeType==null){
+	            mimeType = "application/octet-stream";
+	        }
+	        System.out.println("mimetype : "+mimeType);
+	        response.setContentType(mimeType);
+	        response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() +"\""));
+	        response.setContentLength((int)file.length());
+	 
+	        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+	        //Copy bytes from source to destination(outputstream in this example), closes both streams.
+	        
+		    FileCopyUtils.copy(inputStream, response.getOutputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
    	
 }

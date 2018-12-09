@@ -297,6 +297,11 @@ Response;
     "reason": "user forgot password",
     "data": null
 }
+=====
+for download report:
+http://localhost:8080/munsiji-service/rest/myapp/download
+payload:
+accType, selected accNames, start date and end date
 
 
 

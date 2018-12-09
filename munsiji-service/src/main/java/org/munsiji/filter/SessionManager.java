@@ -50,7 +50,7 @@ public class SessionManager implements HandlerInterceptor{
 		String queryStr = req.getQueryString();
 		System.out.println("preHandle called with URI with url:"+endpointUrl+" queryStr:"+queryStr);
 		List<GrantAuthCol> list= new ArrayList<>();
-		if(endpointUrl.contains("login") || endpointUrl.contains("register") || 
+		if(endpointUrl.contains("login") || endpointUrl.contains("register") || endpointUrl.contains("download") || 
 				(endpointUrl.contains("resetpassword") && ((queryStr != null) && (queryStr.contains("emailId"))))){
 			return flag;
 		}

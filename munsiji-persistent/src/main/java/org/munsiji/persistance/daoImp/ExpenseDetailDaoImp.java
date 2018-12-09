@@ -49,22 +49,31 @@ public class ExpenseDetailDaoImp {
 	  session.close();
 	  return userAccountList;
 	}
-	public List<Object[]> getUsrExpense(String accType,String accName, String usrEmail, String startDate, String endDate){
+	public List<Object[]> getUsrExpense(String accType,String accName, String usrEmail, String startDate, String endDate, String[] accNameArr){
 	 // List<UserExpense> userExpenseList = null;
 	  List<Object[]> userObjectExpenseList = null;
 	  String queryStr = "";
-	  System.out.println("start date:"+startDate+" end date:"+endDate);
-	 
-	  if(accName != null) {
-		  queryStr = "select e.amount, e.dateOfExpnse, e.desc, e.userAccount, e.userDetails"
+	  System.out.println("start date:"+startDate+" end date:"+endDate);	  
+	  if(accNameArr != null){
+		  StringBuffer str = new StringBuffer("select e.amount, e.dateOfExpnse, e.userAccount, e.desc"                    // detailed exp for each account download
 			  		+ "  FROM UserExpense e join e.userAccount a where a.type='" + accType +"' and  e.userAccount = a.id "
-			  		+ " and e.userDetails = '"+usrEmail + "'";
-		  if(accName != null){
-			  queryStr = new StringBuffer(queryStr).append(" and a.name = '"+accName+"'").toString();
+			  		+ " and e.userDetails = '"+usrEmail + "'");
+		  for(String accEle: accNameArr){
+			  str.append(" or a.name = '"+accEle+"'");
 		  }
+		  queryStr = str.toString();
+		  System.out.println("query stirng to download:"+queryStr);
+	  }
+	  else if(accName != null) {
+		  queryStr = "select e.amount, e.dateOfExpnse, e.desc, e.userAccount, e.userDetails"                    // detailed exp for each account
+			  		+ "  FROM UserExpense e join e.userAccount a where a.type='" + accType +"' and  e.userAccount = a.id "
+			  		+ " and e.userDetails = '"+usrEmail + "'"+" and a.name = '"+accName+"'";
+		 /* if(accName != null){
+			  queryStr = new StringBuffer(queryStr).append(" and a.name = '"+accName+"'").toString();
+		  }*/
 	  }
 	  else {
-		  queryStr = "select a.type, a.name, e.amount, a.crteDate, a.desc from UserAccount a, UserExpense e "
+		  queryStr = "select a.type, a.name, e.amount, a.crteDate, a.desc from UserAccount a, UserExpense e "             // for home page
 	  		               + "where e.userDetails = '"+usrEmail+"' and e.userAccount = a.id and a.type = '" +accType +"'" ;
 	  }
 	  if(startDate != null){
@@ -92,7 +101,7 @@ public class ExpenseDetailDaoImp {
 	    System.out.println("quried run:"+query.list().getClass());
 	    //if(accType != null){
 	    	//userExpenseList = getUsrExpensePerAcctype(query);
-	    	userObjectExpenseList = query.list();
+	    userObjectExpenseList = query.list();
 	   // }
 	  }
 	  catch(Exception e){
