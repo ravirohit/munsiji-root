@@ -26,6 +26,7 @@ import org.munsiji.reqresObject.UserExpenseReq;
 import org.munsiji.servicemanager.ExpenseServiceMgr;
 import org.munsiji.servicemanager.UserAccountMgr;
 import org.munsiji.commonUtil.MunsijiServiceConstants;
+import org.munsiji.commonUtil.UserContextUtils;
 //import org.munsiji.persistancetest.HibernateCfg;
 //import org.munsiji.persistancetest.Test;
 import org.munsiji.hibernateUtil.HibernateCfg;
@@ -39,6 +40,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +52,8 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.munsiji.customthread.CustomExecutors;
+import com.munsiji.customthread.DocCleanThread;
 
 @RestController
 @RequestMapping("/myapp")
@@ -76,7 +80,7 @@ public class MyResourceController {
 	@RequestMapping(value="startbatch", method = RequestMethod.GET)
 	public String startBatch(){
 		System.out.println("batch starting endpoint get called");
-		System.out.println(jobLauncher);
+		System.out.println(jobLauncher);   // checking if autoInjection working fine for batch purpose
 		System.out.println(job);
 		try {
             JobExecution execution = jobLauncher.run(job, new JobParameters());
@@ -102,7 +106,6 @@ public class MyResourceController {
 	@RequestMapping(value="getdata", method = RequestMethod.GET)
     public String getTest(@RequestParam(value = "reqKey", required = false) String reqKey) {
 		System.out.println("getTest  service get callled with req param:"+reqKey);
-		
         return ReqHoldingClass.getReqHoldingMap().get(reqKey);
     }
 	@RequestMapping(value="putdata", method = RequestMethod.POST)
@@ -114,9 +117,7 @@ public class MyResourceController {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		ResponseInfo responseInfo =  new ResponseInfo();
-		System.out.println("test service get callled:");
-		
+		ResponseInfo responseInfo =  new ResponseInfo();		
 		EnumTest obj=EnumTest.SUNDAY;
         responseInfo.setData(obj);
         responseInfo.setMsg("msg");
@@ -127,9 +128,7 @@ public class MyResourceController {
 	@RequestMapping(value="registeruser",method = RequestMethod.POST)
 	public ResponseEntity<ResponseInfo> register(@RequestBody UserDetailReq userDetailReq){
 	  ResponseInfo responseInfo =  null;
-	  System.out.println("UserDetails is :" + userDetailReq.getPwd());
 	  responseInfo = userAccountMgr.registerUser(userDetailReq);
-	  System.out.println("register controllerd excuted:"+responseInfo);
 	  if(responseInfo.getStatusCode() == MunsijiServiceConstants.SUCCESS_STATUS_CODE){
 		  return new ResponseEntity<>(responseInfo,HttpStatus.OK);
 	  }
@@ -140,7 +139,6 @@ public class MyResourceController {
 	}
 	@RequestMapping(value="login",method=RequestMethod.POST)
 	public ResponseEntity<ResponseInfo> login(@RequestBody Login login){
-		System.out.println("hiiiiiiiiiiii");
 		ResponseInfo responseInfo = null;
 		try{
 			responseInfo = userAccountMgr.login(login);
@@ -235,7 +233,7 @@ public class MyResourceController {
 								   @RequestParam(value = "accName", required = false) String accName,
 								   @RequestParam(value = "startDate", required = false) String startDate,
 								   @RequestParam(value = "endDate", required = false) String endDate){
-	  System.out.println("accType  :"+accType+" accName:"+accName+ "  startDate:"+startDate+"  endDate:"+endDate);
+	  System.out.println("request param for getExpense call: \n accType  :"+accType+" accName:"+accName+ "  startDate:"+startDate+"  endDate:"+endDate);
 	  ResponseInfo responseInfo =  null;
 	 // ObjectMapper mapper  = new ObjectMapper();
 	  responseInfo = expenseServiceMgr.getExpense(accType,accName, startDate, endDate);
@@ -258,13 +256,15 @@ public class MyResourceController {
 			  return new ResponseEntity<>(responseInfo,HttpStatus.BAD_REQUEST);
 		}
 	}
+	//http://websystique.com/springmvc/spring-mvc-4-file-download-example/
 	@RequestMapping(value="/download",method = RequestMethod.GET)
 	public void downloadExpenseFile(HttpServletResponse response){
 		File file = null;
 		boolean status;
-		System.out.println("download resource get called");
 		String accName[] = {"acc1","acc2"};
-		String fileName = "newFile.pdf";
+		String emailId =   "ravi.swd.rohit@gmail.com";            // UserContextUtils.getUser().getUsername();
+		String fileName = emailId.substring(0, emailId.indexOf("@")) + ".pdf";
+		System.out.println("file name is:"+fileName);
 		status = expenseServiceMgr.createExpFileToDownload("personalexp",accName, null, null, fileName);
 		if(status){
 			try {
@@ -273,20 +273,31 @@ public class MyResourceController {
 	        if(mimeType==null){
 	            mimeType = "application/octet-stream";
 	        }
-	        System.out.println("mimetype : "+mimeType);
 	        response.setContentType(mimeType);
 	        response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() +"\""));
 	        response.setContentLength((int)file.length());
 	 
 	        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
 	        //Copy bytes from source to destination(outputstream in this example), closes both streams.
-	        
 		    FileCopyUtils.copy(inputStream, response.getOutputStream());
+		    
+		    CustomExecutors.executeThread(new DocCleanThread(file),"delete pdf doc file");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 
+	}
+	@RequestMapping(value="getprofile",method=RequestMethod.GET)
+	public ResponseEntity<ResponseInfo> getUserProfile(){
+		ResponseInfo responseInfo = null;
+		responseInfo = userAccountMgr.getUserProfile();
+		if(responseInfo.getStatusCode() == MunsijiServiceConstants.SUCCESS_STATUS_CODE){
+			  return new ResponseEntity<>(responseInfo,HttpStatus.OK);
+		}
+		else{
+			  return new ResponseEntity<>(responseInfo,HttpStatus.BAD_REQUEST);
+		}
 	}
    	
 }

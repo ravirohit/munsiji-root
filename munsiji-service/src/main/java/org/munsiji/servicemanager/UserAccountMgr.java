@@ -18,16 +18,19 @@ import org.munsiji.model.Login;
 import org.munsiji.persistance.daoImp.UserDetailDaoImp;
 import org.munsiji.persistance.resource.UserAccount;
 import org.munsiji.persistance.resource.UserDetails;
+import org.munsiji.reqresObject.AccExpenseData;
 import org.munsiji.reqresObject.ResponseInfo;
 import org.munsiji.reqresObject.UserAccountReq;
 import org.munsiji.reqresObject.UserDetailReq;
+import org.munsiji.reqresObject.UserProfileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.munsiji.notification.NotifyMailTLS;
-import com.munsiji.notification.PasswordResetNotif;
+import com.munsiji.customthread.CustomExecutors;
+import com.munsiji.customthread.MailThread;
 
 @Component
 public class UserAccountMgr {
@@ -126,7 +129,7 @@ public class UserAccountMgr {
 				 if(newPwd == null){
 					 generatePassword = new GeneratePassword();
 					 newPwd = generatePassword.getPassword();
-					 PasswordResetNotif.mailPassword(userDetails.getEmailId(), newPwd);
+					 CustomExecutors.executeThread(new MailThread(userDetails.getEmailId(), newPwd), "sending forget password service");
 					 System.out.println("New password sent to your emailID:"+newPwd);
 					 responseInfo.setMsg("New password sent to your emailID");
 					 responseInfo.setReason("user forgot password");
@@ -289,6 +292,54 @@ public class UserAccountMgr {
 		}
 		return responseInfo;
 		
+	}
+	public ResponseInfo getUserProfile(){
+		ResponseInfo responseInfo = new ResponseInfo();
+		List<UserDetails> userList = null;
+		List<UserAccount> userAccountList = null;
+		UserProfileInfo userProfileInfo = new UserProfileInfo();
+		String emailId = UserContextUtils.getUser().getUsername();
+		System.out.println("getting user info");
+		try{
+			userList = userDetailDaoImp.getUserInfo(emailId, null, null);
+			
+			if((userList.size() == 1)){
+				UserDetails userDetails = userList.get(0);
+				userProfileInfo.setEmailId(userDetails.getEmailId());
+				userProfileInfo.setUserName(userDetails.getUname());
+				userProfileInfo.setMobNo(userDetails.getMobileNo());
+			}
+			System.out.println("getting user account info");
+			userAccountList = userDetailDaoImp.getAccountInfo(emailId, null, null);
+			Map<String,List<AccExpenseData>> accountInfo = userProfileInfo.getAccountInfo();
+		
+			for(UserAccount userAccount: userAccountList){
+				if(accountInfo.get(userAccount.getType()) == null){
+					accountInfo.put(userAccount.getType(), new ArrayList<AccExpenseData>());
+				}
+				String name = userAccount.getName();
+				Float amount = userAccount.getInvestedAmnt();;
+			   String date = DateUtil.convertDBStringToViewString(userAccount.getCrteDate());
+			   String desc = userAccount.getDesc();
+				AccExpenseData accExpenseData = new AccExpenseData(name, amount, date, desc);
+				accountInfo.get(userAccount.getType()).add(accExpenseData);
+			}
+			responseInfo.setData(userProfileInfo);
+			responseInfo.setMsg("User profile details");
+			responseInfo.setReason("");
+			responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+			responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
+		}
+		catch(Exception e){
+			System.out.println("Exception occur while fetching profile data");
+			responseInfo.setData(null);
+			responseInfo.setMsg("Account Details for addExpense screen");
+			responseInfo.setReason("Exception occur while fetching data from DB");
+			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+			responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
+		}
+		
+		return responseInfo;
 	}
 
 }

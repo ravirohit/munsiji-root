@@ -1,5 +1,6 @@
 package org.munsiji.servicemanager;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +31,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.munsiji.customthread.CustomExecutors;
+import com.munsiji.customthread.DocCleanThread;
+import com.munsiji.customthread.MailThread;
 import com.munsiji.pdfutil.PDFGenerator;
 
 @Component
@@ -96,7 +100,6 @@ public class ExpenseServiceMgr {
 	}
 	public ResponseInfo getExpense(String accTypeReq,String accName, String startDateStr,String endDateStr){
 	  User userInfo = UserContextUtils.getUser();
-	  System.out.println("inside of service mgr method:"+userInfo.getUsername());
 	  List<String> list = null;
 	  List<Object[]> userObjectExpenseList =null;
 	  List<UserExpense> userExpensePerAccList = null;
@@ -150,7 +153,8 @@ public class ExpenseServiceMgr {
 		  String accType = (String)object[0]; 
 		  String accName = (String)object[1];
 		  Float amount = (Float)object[2];
-		  String crtDate = String.valueOf(object[3]);
+		  //String crtDate = String.valueOf(object[3]);
+		  Date crtDate = (Date)object[3];
 		  String desc = (String)object[4];
 		  AccExpenseData accExpenseData = new AccExpenseData(accName,amount,DateUtil.convertDBStringToViewString(crtDate),desc);
 		  if(accTypeToExp.get(accType) == null){
@@ -245,7 +249,7 @@ public class ExpenseServiceMgr {
 		     String name = accMap.get(userExpense.getUserAccount().getId()).getName();
 		     accType = accMap.get(userExpense.getUserAccount().getId()).getType();
 		     accExpnseData = new AccExpenseData(accMap.get(userExpense.getUserAccount().getId()).getName(),
-		    		 		userExpense.getAmount(),DateUtil.convertDBStringToViewString(String.valueOf(userExpense.getDateOfExpnse())), userExpense.getDesc());
+		    		 		userExpense.getAmount(),DateUtil.convertDBStringToViewString(userExpense.getDateOfExpnse()), userExpense.getDesc());
 		   /*  accExpnseData.setAccName();
 		     accExpnseData.setAmnt();
 		     accExpnseData.setDesc();
@@ -306,9 +310,6 @@ public class ExpenseServiceMgr {
 			 System.out.println("exception occur while creating file:"+e);
 			 isFileCreated = false;
 		 }
-		
 		return isFileCreated;
-		
 	}
-
 }

@@ -1,6 +1,7 @@
 package com.munsiji.pdfutil;
 
 import java.io.FileOutputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -46,16 +47,13 @@ public class PDFGenerator {
 	   addTableHeader(table,font);
 	   addRows(table,tableFont,userObjectExpenseList);
 	   document.add(table);
-
 	   document.close();
-	   System.out.println("pdf file generated");
 	   }
 	   catch(Exception e){
 		   System.out.println("Exception occur while creating pdf file:"+e);
 	   }
    }
    private void addTableHeader(PdfPTable table,Font font) {
-	   System.out.println("adding header to the table");
 	    Stream.of("Amount", "Date of Expense", "Account Name","Expense Desc")
 	      .forEach(columnTitle -> {
 	        PdfPCell header = new PdfPCell();
@@ -66,10 +64,9 @@ public class PDFGenerator {
 	    });
 	}
    private void addRows(PdfPTable table, Font font, List<Object[]> userObjectExpenseList) {
-	   System.out.println("adding row to the table");
 	   for(Object[] objEle:userObjectExpenseList){
 		   table.addCell(new PdfPCell(new Phrase(((Float)objEle[0]).toString(),font)));
-		   table.addCell(new PdfPCell(new Phrase(DateUtil.convertDBStringToViewString(String.valueOf(objEle[1])),font)));
+		   table.addCell(new PdfPCell(new Phrase(DateUtil.convertDBStringToViewString((Date)objEle[1]),font)));
 		   table.addCell(new PdfPCell(new Phrase(((UserAccount)objEle[2]).getName(),font)));
 		   table.addCell(new PdfPCell(new Phrase((String)objEle[3],font)));
 	   }

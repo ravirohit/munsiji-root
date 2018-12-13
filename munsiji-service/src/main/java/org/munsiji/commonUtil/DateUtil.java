@@ -9,11 +9,10 @@ public class DateUtil {
 	public static void main(String[] args){
 	//	System.out.println(convertStringToDate("18-07-2015"));
 		//System.out.println(convertStringToString("18-07-2015"));
-		System.out.println(convertDBStringToViewString("2015-05-15 12:06:55"));
+		//System.out.println(convertDBStringToViewString("2015-05-15 12:06:55")); // passing arg should be in Date format
 	}
 	
   public static Date convertStringToDate(String d){ // string date format is dd-MM-yyyy to util.date format to store the date in db
-	System.out.println("String Date:"+d);
 	Date date = null;
     try{
     DateFormat c = new SimpleDateFormat("dd-MM-yyyy");
@@ -25,7 +24,6 @@ public class DateUtil {
     return date;
   }
   public static String convertStringToString(String d){  //from  "dd-MM-yyyy" to "yyyy-MM-dd",  used for fetching data from db in between provided date
-		System.out.println("String Date:"+d);
 		Date date = null;
 		String outDate = null;
 	    try{
@@ -39,8 +37,8 @@ public class DateUtil {
 	    }
 	    return outDate;
 	  }
-  public static String convertDBStringToViewString(String d){  //from  "yyyy-MM-dd" to "dd-MM-yyyy", for showing db result to view
-		System.out.println("String Date from db read:"+d);
+  public static String convertDBStringToViewString(Date dbDate){  //from  "yyyy-MM-dd" to "dd-MM-yyyy", for showing db result to view
+	    String d = String.valueOf(dbDate);
 		Date date = null;
 		String outDate = null;
 	    try{
@@ -52,7 +50,6 @@ public class DateUtil {
 	    catch(Exception e){
 	     System.out.println("exception while date conversion:"+e);
 	    }
-	    System.out.println("String Date from db read appearing in view:"+outDate);
 	    return outDate;
 	  }
 }
