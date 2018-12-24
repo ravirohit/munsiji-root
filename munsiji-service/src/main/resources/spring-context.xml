@@ -13,10 +13,10 @@
 		                http://www.springframework.org/schema/security/spring-security-4.0.xsd">
  
  <!-- below two annotation is just required to work spring MVC -->
-    <context:component-scan base-package="org.munsiji" />
+    <context:component-scan base-package="com.munsiji" />
     <mvc:annotation-driven />
     <mvc:interceptors>
-      <bean class="org.munsiji.filter.SessionManager" />
+      <bean class="com.munsiji.filter.SessionManager" />
 	</mvc:interceptors> 
      <import resource="classpath*:hibernate-config.xml" />
      <import resource="classpath*:security-application-config.xml" />
