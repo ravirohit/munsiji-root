@@ -14,7 +14,7 @@ public class DocCleanThread implements Runnable{
 		try{
 			Thread.sleep(2000);
 			if(file.delete()){
-				System.out.println("file :"+file+"   has been deleted");
+				System.out.println("file :"+file+" deleted");
 			}
 			else{
 				System.out.println("file is not available");

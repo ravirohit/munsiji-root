@@ -12,7 +12,6 @@ public class MailThread implements Runnable{
 
 	@Override
 	public void run() {
-		System.out.println("run method called;");
 		notifyMailTLS.mailNewPassword();
 	}
 	
