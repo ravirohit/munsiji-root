@@ -1,4 +1,4 @@
-@import "~bootstrap/dist/css/bootstrap.min.css";
+/* @import "~bootstrap/dist/css/bootstrap.min.css"; */
 @import "~font-awesome/css/font-awesome.css";
 @import "./assets/animate.css";
 /* You can add global styles to this file, and also import other style files */
@@ -6,12 +6,47 @@
 *{ 
     font-family: sans-serif;
     color:#fff; 
-    Font-size:1.02em;
+    Font-size:1.05em;
     list-style: none;
+    transition: color 2s ease;
 }
+
+
+@keyframes color {
+    to {color: rgb(242, 246, 12);}
+}
+
+fa i.fa {
+    
+    font-size: 1.2em;
+    color:#fff;
+    animation: color 5s linear 5s infinite alternate;
+}
+.color-animaion{  
+    color:#fff;
+    animation: color 5s linear 5s infinite alternate;
+}
+
+
+@keyframes size_plus {
+    to {font-size: 1.2em;}
+}
+.size-plus{
+    animation: size_plus 25s linear 25s infinite alternate;
+}
+
+*:hover{  
+    color:blue;
+    animation: color 2s linear 1s infinite alternate;
+}
+
+
+
+
+
 body{
     height: 100vh;
-    background: #fb1844;
+    background: #7b0018;
 }
 select option {
     background: #fb1844;
@@ -20,10 +55,7 @@ select option {
     border: none;
     font-size: 1.2em;
 }
-fa i.fa {
-    color: white;
-    font-size: 1.2em;
-}
+
  .form-group:focus-within {
     box-shadow: 0px 1px 1px gray;
     margin: -7px -9px 8px -9px;

@@ -11,3 +11,16 @@
     </div>
 
  
+
+    <mz-modal #PromptModal [fixedFooter]="true" [bottomSheet]="true" [options]="modalOptions">
+        <mz-modal-header>
+          <h4>{{model.title}}</h4>
+        </mz-modal-header>
+        <mz-modal-content>
+         {{model.desc}}
+        </mz-modal-content>
+        <mz-modal-footer>
+          <button mz-button [flat]="true" mz-modal-close>{{model.noBtn}}</button>
+          <button mz-button [flat]="true" mz-modal-close>{{model.yesBtn}}</button>
+        </mz-modal-footer>
+      </mz-modal>

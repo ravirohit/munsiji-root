@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {UserinfoService} from './../../services/userinfo.service'
+import { Component, OnInit, ViewChild } from '@angular/core';
+import {UserinfoService} from './../../services/userinfo.service';
+
+import {  MzModalModule  } from 'ngx-materialize';
 
 @Component({
   selector: 'app-promptMessage',
@@ -7,11 +9,21 @@ import {UserinfoService} from './../../services/userinfo.service'
   styleUrls: ['./promptMessage.component.css']
 })
 export class PromptMessageComponent implements OnInit {
+
+  @ViewChild(MzModalModule) PromptModal:MzModalModule;
  
   dataModel = {
     isMsgToast:false,
-    isLoader:false
-  }
+    isLoader:false,
+    
+  };
+
+  model:any ={
+    title:"",
+    desc:"",
+    noBtn:"",
+    yesBtn:""
+  };
 
   constructor( private userService:UserinfoService) { }
 
@@ -26,4 +38,8 @@ export class PromptMessageComponent implements OnInit {
     this.dataModel.isLoader = false;
   } 
   
+  setModelInfo(model:any){
+    this.model = {...model};
+    this.PromptModal.openModal();
+  }
 }

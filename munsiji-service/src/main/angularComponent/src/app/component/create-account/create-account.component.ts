@@ -6,6 +6,7 @@ import { UrlConfig } from './../../../environments/url-config';
 import {DataService} from '../../services/data.service'; 
 import {PromptMessageComponent} from '../../template/promptMessage/promptMessage.component';
 
+
 @Component({
   selector: 'app-create-account',
   templateUrl: './create-account.component.html',
@@ -16,6 +17,11 @@ export class CreateAccountComponent implements OnInit {
   @ViewChild(PromptMessageComponent) promptMessageComponent:PromptMessageComponent;
 
   URL = UrlConfig;
+
+  public options: Pickadate.DateOptions = {
+    format: 'dddd, dd mmm, yyyy',
+    formatSubmit: 'yyyy-mm-dd',
+  };
 
   //name = "dfdf";
   acc:any = {name:"",type:"",desc:"",date:new Date() }
