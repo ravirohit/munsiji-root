@@ -47,7 +47,6 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
 
     this.promptMessageComponent.showLoader();
     let addDataModel, index =this.expence.account.split("#")[1];
-
     addDataModel = {
                     "accType"     : this.expence.accType,
                     "accName"     : this.expence.account,
@@ -67,7 +66,7 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
       sub.unsubscribe();
     });
   }
-
+  
   fromReset(){
     this.isMessage = false;
     this.clearForm();

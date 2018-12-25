@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, SystemJsNgModuleLoader } from '@angular/core';
 import {Router,  ActivatedRoute } from '@angular/router';
 
 import {UserinfoService} from '../../services/userinfo.service';
@@ -14,7 +14,7 @@ import {PromptMessageComponent} from '../../template/promptMessage/promptMessage
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
+  url = UrlConfig;
   ifDataAvailable:boolean;
   isGridClickable:boolean = true;
   chartDataModel:any = {
@@ -38,26 +38,52 @@ export class HomeComponent implements OnInit {
 
      this.promptMessageComponent.showLoader();
      this.data = this.userService.getDataModel();   
-     
+     console.log("rohit to route:"+accName);
      if(accName && accType && accName.length > 0 && accType.length > 0){
-        url  = UrlConfig.GET_ALL_EXPENCE+accType+"&accName="+accName; 
+       // url  = UrlConfig.GET_ALL_EXPENCE+accType +accName; 
+       url  = UrlConfig.GET_ALL_EXPENCE+"personalexp&accName=" +accName; 
         flag = false;
         this.isGridClickable = false;
+        this.setHomeExpOfAcc(url, flag);
      }else{
         url  = UrlConfig.GET_ALL_EXPENCE+"personalexp";
+        this.setHomeData(url, flag);
      }   
      console.log("URL - > " , url);
-     this.setHomeData(url, flag);
+     
   } 
   
 
   setHomeData(url, isLinkAvailable){
 
     var sub = this.dataService.httpGetCall(url).subscribe(res =>{
-
+     console.log(res);
       this.ifDataAvailable = false;
      if(res.data.expenseWithAccTypeList && res.data.expenseWithAccTypeList.length > 0){
           this.data.grdiData = res.data.expenseWithAccTypeList[0].accExpList;
+          this.chartDataModel.chartData.data = this.generateChartData(this.data.grdiData, isLinkAvailable);
+          sub.unsubscribe();
+          this.ifDataAvailable = true;
+        }
+        this.promptMessageComponent.hideLoader();
+      },err => {
+        this.ifDataAvailable = true;
+        this.chartDataModel = isLinkAvailable ? this.chartDataModel1 : this.chartDataModel2;
+        this.promptMessageComponent.hideLoader();
+        console.log(err);
+        sub.unsubscribe();
+      }
+
+   );
+
+  }
+  setHomeExpOfAcc(url, isLinkAvailable){
+
+    var sub = this.dataService.httpGetCall(url).subscribe(res =>{
+     console.log(res);
+      this.ifDataAvailable = false;
+     if(res.data.content && res.data.content.length > 0){
+          this.data.grdiData = res.data.content[0].data;
           this.chartDataModel.chartData.data = this.generateChartData(this.data.grdiData, isLinkAvailable);
           sub.unsubscribe();
           this.ifDataAvailable = true;

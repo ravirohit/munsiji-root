@@ -35,6 +35,7 @@ export class CreateAccountComponent implements OnInit {
                             crteDate : this.acc.date,
                             desc  : this.acc.desc
                           };
+    
     let sub = this.dataService.httpPostCall(createAccountUrl, createDataModel).subscribe( res => {
 
                       console.log("CREATE_ACCOUNT http call is success", res.msg);  
@@ -48,7 +49,11 @@ export class CreateAccountComponent implements OnInit {
                     });
     
   }
-
+  formatDate(d){   // from "mm/dd/yyyy" to "dd-mm-yyyy"
+    let s = d.split("/");
+    console.log(">>>>> s:"+s);
+    return s[1]+"-"+s[0]+"-"+s[2];
+  }
   fromReset(){
     this.model.isMessage = false;
     this.acc = {name:"",type:"",desc:"",date:new Date() 

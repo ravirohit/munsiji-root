@@ -36,7 +36,28 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <servlet-name>dispatcher</servlet-name>
     <url-pattern>/rest/*</url-pattern>
  </servlet-mapping>
- 
+
+
+<servlet>
+    <servlet-name>uipage</servlet-name>
+     <jsp-file>/index.html</jsp-file>
+ </servlet>
+ <servlet-mapping>
+    <servlet-name>uipage</servlet-name>
+    <url-pattern>/c_account</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+    <servlet-name>uipage</servlet-name>
+    <url-pattern>/profile</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+    <servlet-name>uipage</servlet-name>
+    <url-pattern>/add</url-pattern>
+ </servlet-mapping>  
+ <servlet-mapping>
+    <servlet-name>uipage</servlet-name>
+    <url-pattern>/detail</url-pattern>
+ </servlet-mapping>
   <!-- Add to enable "CORS" -->
 	<!-- <filter>
 	  <filter-name>cors</filter-name>
