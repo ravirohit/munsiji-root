@@ -33,12 +33,15 @@ export class CreateAccountComponent implements OnInit {
 
   createAccount():void{
     this.promptMessageComponent.showLoader();
+    console.log("<<<<< before date:" + this.acc.date);
+    let date = this.formatDate(this.acc.date);
+    console.log("<<<<< after date:" + date);
     let createAccountUrl = this.URL.CREATE_ACCOUNT,
         createDataModel = {
                             name : this.acc.name, 
                             type: 'personalexp', 
                             investedAmnt : this.acc.bal, 
-                            crteDate : this.acc.date,
+                            crteDate : date,
                             desc  : this.acc.desc
                           };
     
@@ -55,10 +58,10 @@ export class CreateAccountComponent implements OnInit {
                     });
     
   }
-  formatDate(d){   // from "mm/dd/yyyy" to "dd-mm-yyyy"
-    let s = d.split("/");
+  formatDate(d){   // from "2018-12-20" to "dd-mm-yyyy"
+    let s = d.split("-");
     console.log(">>>>> s:"+s);
-    return s[1]+"-"+s[0]+"-"+s[2];
+    return s[2]+"-"+s[1]+"-"+s[0];
   }
   fromReset(){
     this.model.isMessage = false;

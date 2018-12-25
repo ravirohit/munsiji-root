@@ -52,11 +52,14 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
 
     this.promptMessageComponent.showLoader();
     let addDataModel, index =this.expence.account.split("#")[1];
+    console.log("<<<<< before date:" + this.expence.date);
+    let date = this.formatDate(this.expence.date);
+    console.log("<<<<< after date:" + date);
     addDataModel = {
                     "accType"     : this.expence.accType,
                     "accName"     : this.expence.account,
                     "amount"      : this.expence.amount,
-                    "dateOfExpnse": this.expence.date,
+                    "dateOfExpnse": date,
                     "desc"        : this.expence.desc
                     };
       
@@ -71,7 +74,11 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
       sub.unsubscribe();
     });
   }
-  
+  formatDate(d){   // from "2018-12-20" to "dd-mm-yyyy"
+    let s = d.split("-");
+    console.log(">>>>> s:"+s);
+    return s[2]+"-"+s[1]+"-"+s[0];
+  }
   fromReset(){
     this.isMessage = false;
     this.clearForm();

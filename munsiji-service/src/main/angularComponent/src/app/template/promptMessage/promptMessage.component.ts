@@ -10,7 +10,7 @@ import {  MzModalModule  } from 'ngx-materialize';
 })
 export class PromptMessageComponent implements OnInit {
 
-  @ViewChild(MzModalModule) PromptModal:MzModalModule;
+  @ViewChild('PromptModal') PromptModal:MzModalModule;
  
   dataModel = {
     isMsgToast:false,
@@ -40,6 +40,6 @@ export class PromptMessageComponent implements OnInit {
   
   setModelInfo(model:any){
     this.model = {...model};
-    this.PromptModal.openModal();
+    //this.PromptModal.openModal();
   }
 }
