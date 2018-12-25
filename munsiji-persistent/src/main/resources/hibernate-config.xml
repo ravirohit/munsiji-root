@@ -14,8 +14,9 @@
      <context:annotation-config/>
      
      <!-- org.springframework.jdbc.datasource.DriverManagerDataSource -->
+     <!-- com.mysql.jdbc.Driver --> 
     <bean id="myDataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
 		<property name="url" value="jdbc:mysql://localhost:3306/sys"/>
 		<property name="username" value="root"/>
 		<!-- <property name="password" value="password"/> -->
@@ -32,7 +33,7 @@
 		<!-- <property name="packagesToScan" value="com.your.bean.package" /> -->
 		<property name="packagesToScan">
 		    <list>
-		        <value>org.munsiji.persistance.resource</value>
+		        <value>com.munsiji.persistance.resource</value>
 		    </list>
 		</property>
 		<property name="hibernateProperties">
@@ -118,7 +119,7 @@
         <property name="jobRepository" ref="jobRepository" />
     </bean>
     <!-- Defining a bean --> 
-   <bean id = "expenseTasklet" class = "org.munsiji.batch.ExpenseTasklet" />  
+   <bean id = "expenseTasklet" class = "com.munsiji.batch.ExpenseTasklet" />  
    <!-- Defining a job--> 
    <batch:job id = "expenseResultJob">  
       <!-- Defining a Step --> 

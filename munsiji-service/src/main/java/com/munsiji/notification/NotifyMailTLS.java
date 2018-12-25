@@ -15,15 +15,19 @@ import javax.mail.internet.MimeMessage;
 public class NotifyMailTLS {
 
 	// reference link   https://support.google.com/accounts/answer/185833
-	static final String username = "ravi.swd.rohit@gmail.com";
-	static final String password = "exxaqjrtdejgufpi";
+	final String username = "ravi.swd.rohit@gmail.com";
+	final String password = "exxaqjrtdejgufpi";
+	String pwd, toEmail;
+	
+	public NotifyMailTLS(String toEmail, String pwd){
+		this.toEmail = toEmail;
+		this.pwd = pwd;
+	}
 	public static void main(String[] args) {
 
-		sendMailTLS(username, password);
+		//sendMailTLS(username, password);
 	}
-	public static boolean sendMailTLS(String username, String password){
-	
-
+	public boolean mailNewPassword(){
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
@@ -42,14 +46,18 @@ public class NotifyMailTLS {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse(username));
-			message.setSubject("Testing Subject");
-			message.setText("Dear Mail Crawler,"
-				+ "\n\n No spam to my email, please!");
+				InternetAddress.parse(toEmail));
+			message.setSubject("Password Reset");
+			message.setText("Dear G user,"
+				+ "\n\n Your password has been reset. "
+				+ "\n\n Your new password is:"+ pwd
+				+ "\nFYI...\n process to change the password, please follow the steps: "
+				+ " \n\tlogin to your acccount with new password -> profile -> change password -> provide old password and new password -> "
+				+ "click the submit button. ");
 
 			Transport.send(message);
 
-			System.out.println("Done");
+			System.out.println("---------------Done");
 
 		} catch (MessagingException e) {
 			//throw new RuntimeException(e);
