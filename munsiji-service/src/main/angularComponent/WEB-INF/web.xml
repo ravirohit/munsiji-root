@@ -56,7 +56,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
  </servlet-mapping>  
  <servlet-mapping>
     <servlet-name>uipage</servlet-name>
-    <url-pattern>/detail</url-pattern>
+    <url-pattern>/detail/*</url-pattern>
  </servlet-mapping>
   <!-- Add to enable "CORS" -->
 	<!-- <filter>
