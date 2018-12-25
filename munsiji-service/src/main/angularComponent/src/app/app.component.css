@@ -1,3 +1,4 @@
+ul#logout-el{margin: 0px;}
 .header-banner{
     display: flex;
     justify-content: space-between;
@@ -24,10 +25,9 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
     position: absolute;
     width: 100%;
     top: 5rem;
-    left: 1rem;
     display: flex;
     flex-direction: row;
-    padding: 1em 1.4em;
+    padding: 1em 0.4em;
 }
 #profile {
     float: right;

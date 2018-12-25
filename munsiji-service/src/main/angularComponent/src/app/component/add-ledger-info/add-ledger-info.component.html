@@ -2,45 +2,110 @@
 <div  *ngIf="!isMessage" class="well add-container" >
   
 <div class="form-group">        
-      <label for="category"><sup>*</sup>Account Type: </label>        
+      <!-- <label for="category"><sup>*</sup>Account Type: </label>        
       <select name="add_typeDropDown" id="category" class="form-control" value="p_expence" (change)="expence.accType = $event.srcElement.value" disabled>
           <option value="personalexp" selected>Personal Expance</option>
           
-      </select>
+      </select> -->
+
+      <mz-select-container>
+        <select mz-select
+          id="options-select"
+          disabled="true"
+          [label]="'Account Type:'"
+        >
+          <optgroup label="GRP-1">
+            <option data-icon="assets/select-icon-1.jpg" class="left circle" value="personalexp" >Personal Expences</option>
+          </optgroup>
+          
+        </select>
+      </mz-select-container>
+
   </div>
   <div class="form-group">
-      <label for="add_expenceType"><sup>*</sup>Account:</label>
+      <!-- <label for="add_expenceType"><sup>*</sup>Account:</label>
       <select name="add_typeDropDown" id="add_expenceType" class="form-control" (change)="expence.account = $event.srcElement.value">
           <option value="0">Select account</option>
           
           <option  *ngFor= "let i of arrAccountName;index as t" [value]="i"> {{i}}  </option>            
-      </select> 
-      <div class="alert alert-info hidden">
-        <strong>Account: </strong> Select the Account for which you want to add Data.
-      </div>   
+      </select>   -->
+
+      <mz-select-container>
+        <select mz-select
+          id="options-select-acc"
+          [label]="'Select Account Name:'"
+          (change)="expence.account = $event.srcElement.value"
+        >
+          <optgroup label="GRP-1">
+            <option data-icon="assets/select-icon-1.jpg" *ngFor= "let i of arrAccountName;index as t" class="left circle"  [value]="i" > {{i}}  </option>
+          </optgroup>
+          
+        </select>
+      </mz-select-container>
+      
+
     </div>
 
   <div class="form-group">
-    <label for="amount"><sup>*</sup>Amount</label>
+    <!-- <label for="amount"><sup>*</sup>Amount</label>
     <input type="numner" id="amount" class="form-control"  [(ngModel)]="expence.amount"/> 
     <div class="alert alert-info hidden">
       <strong>Amount: </strong> Provide the total amount you want to add.
-    </div>   
+    </div>    -->
+
+
+    <mz-input-container>
+      <!-- <i mz-icon-mdi mz-input-prefix
+        [icon]="'email'">
+      </i> -->
+        <input mz-input
+              [(ngModel)]="expence.amount"  
+              [label]="'Enter Expence '"
+              [validate]="true"
+              [dataError]="'Amount is invalid'"
+              [dataSuccess]="'Vailed Name'"
+              id="ad_amount"
+              type="number">
+      </mz-input-container>
+
+
   </div>
 
   <div class="form-group">
-    <label for="sDate"><sup>*</sup>Expence Date:</label>
-    <input type="date" id="sDate" class="form-control"  [(ngModel)]="expence.date"/>    
+    <!-- <label for="sDate"><sup>*</sup>Expence Date:</label>
+    <input type="date" id="sDate" class="form-control"  [(ngModel)]="expence.date"/>     -->
+
+    <input mz-datepicker
+        [label]="'Select Account start date.'"
+        [options]="options"
+        [(ngModel)]="expence.date"
+        id="add_datepicker"
+        placeholder="Select your exoence  date"
+        type="text">
+
   </div>
+
+
   <div class="form-group">
-    <label for="desc"><sup>*</sup>Description:</label>
+    <!-- <label for="desc"><sup>*</sup>Description:</label>
     <textarea class="from-control" id="desc"  [(ngModel)]="expence.desc"></textarea>
     <div class="alert alert-info hidden">
       <strong>Description: </strong> Provide Description for the expences.
-    </div>
+    </div> -->
+
+    <mz-textarea-container>
+      <!-- <i mz-icon-mdi mz-textarea-prefix
+        [icon]="'message-reply-text'">
+      </i> -->
+      <textarea mz-textarea
+        [label]="'Enter your Expence Detatils'"
+        [(ngModel)]="expence.desc"
+        id="add_desc_textarea"
+        length="250"></textarea>
+    </mz-textarea-container>
     
   </div>
-  <button type="submit" class="btn btn-primary" (click)="submitExpence()">Submit</button>
+  <button type="submit" class="btn btn-primary btn-lg" (click)="submitExpence()">Submit</button>
 </div>
 
 

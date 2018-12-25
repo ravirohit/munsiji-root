@@ -2,19 +2,50 @@
 <div *ngIf="!model.isMessage" class="well add-container" >
     
     <div class="form-group">
-      <label for="add_typeDropDown"><sup>*</sup>Account Type:</label>
+      <!-- <label for="add_typeDropDown"><sup>*</sup>Account Type:</label>
       <select name="add_typeDropDown" id="add_typeDropDown" class="form-control" disabled>
         <option value="personalexp" selected>Personal Expance</option>
-        <!-- <option value="tourexp" disabled>Tour Expance</option>
-        <option value="groupexp" disabled>Group Expance</option> -->
-      </select>
+        <option value="tourexp" disabled>Tour Expance</option>
+        <option value="groupexp" disabled>Group Expance</option> 
+      </select> -->
+
+      <mz-select-container>
+        <select mz-select
+          id="options-select"
+          disabled="true"
+          [label]="'Account Type:'"
+        >
+          <optgroup label="GRP-1">
+            <option data-icon="assets/select-icon-1.jpg" class="left circle" value="personalexp" >Personal Expences</option>
+          </optgroup>
+          
+        </select>
+      </mz-select-container>
+
+
+
+
     </div>
     <div class="form-group">
-      <label for="acc_name"><sup>*</sup>Account Name:</label>
+      <!-- <label for="acc_name"><sup>*</sup>Account Name:</label>
       <div class="alert alert-info hidden">
         Account Name Uniqe and meaningful.
       </div>  
-      <input type="text" id="acc_name" class="form-control" [(ngModel)]="acc.name"/> 
+      <input type="text" id="acc_name" class="form-control" [(ngModel)]="acc.name"/>  -->
+      <mz-input-container>
+        <!-- <i mz-icon-mdi mz-input-prefix
+          [icon]="'email'">
+        </i> -->
+          <input mz-input
+                [(ngModel)]="acc.name"  
+                [label]="'Account Name:'"
+                [validate]="true"
+                [dataError]="'Name is invalid'"
+                [dataSuccess]="'Vailed Name'"
+                id="cr_accountName"
+                length="75"
+                type="text">
+        </mz-input-container>
        
     </div>
     <!-- <div class="form-group">
@@ -22,24 +53,53 @@
       <input type="number" id="avl_bal" class="form-control" [(ngModel)]="acc.bal"/>    
     </div> -->
     <div class="form-group">
-      <label for="acc_open_date"><sup>*</sup>Account open Date:</label>
+      <!-- <label for="acc_open_date"><sup>*</sup>Account open Date:</label>
       <div class="alert alert-info hidden">
          Select Account start date.
       </div> 
-      <input type="date" id="acc_open_date" class="form-control" [(ngModel)]="acc.date"/>   
+      <input type="date" id="acc_open_date" class="form-control" [(ngModel)]="acc.date"/>    -->
+      <input mz-datepicker
+        [label]="'Select Account start date.'"
+        [options]="options"
+        [(ngModel)]="acc.date"
+        id="datepicker"
+        placeholder="Select your account start date"
+        type="text">
        
     </div>
 
+    <!-- <mz-datepicker-container class="col s12">
+      <input mz-datepicker
+        [label]="'Date of birth'"
+        [options]="options"
+        [(ngModel)]="dateOfBirth"
+        id="datepicker"
+        placeholder="Select your birth date"
+        type="text">
+    </mz-datepicker-container> -->
+
     
     <div class="form-group">
-      <label for="acc_desc"><sup>*</sup>Description:</label>  <div class="alert alert-info hidden">
+      <!-- <label for="acc_desc"><sup>*</sup>Description:</label>  <div class="alert alert-info hidden">
         Provide Description for the Account
       </div> 
-      <textarea  id="acc_desc" class="form-control" [(ngModel)]="acc.desc" ></textarea> 
-      
+      <textarea  id="acc_desc" class="form-control" [(ngModel)]="acc.desc" ></textarea>  -->
+
+      <mz-textarea-container>
+        <!-- <i mz-icon-mdi mz-textarea-prefix
+          [icon]="'message-reply-text'">
+        </i> -->
+        <textarea mz-textarea
+          [label]="'Why are you cretaing this account ?'"
+          [(ngModel)]="acc.desc"
+          id="desc_textarea"
+          length="250"></textarea>
+      </mz-textarea-container>
+
+
     </div>
     
-    <button type="submit" class="btn btn-primary" (click)="createAccount()">Create Account</button>
+    <button type="submit" class="btn btn-primary btn-lg" (click)="createAccount()">Create Account</button>
 
   </div>
 

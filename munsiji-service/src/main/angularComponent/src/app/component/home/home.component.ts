@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit {
 
   gridRowClicked(data){
     console.log("DATA ", data);
-    let url  ="detail/personalexp&accName/"+data.accName;
+    let url  ="detail/personalexp/"+data.accName;
     this.router.navigate([url]); 
   }
 

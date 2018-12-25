@@ -4,12 +4,12 @@
 <div class="desktop page-header">
   <header class="header-banner">
           <span>
-              <strong class="color-animaion">Munshi G  </strong>
-              <span class="header-msg  color-animaion">{{headerTitle}}</span>
+              <strong class="size-plus color-animaion">Munshi G  </strong>
+              <span class="header-msg  color-animaion size-plus">{{headerTitle}}</span>
           </span>    
-          <ul *ngIf="userData.isLogedin">
+          <ul id="logout-el" *ngIf="userData.isLogedin">
           <li  class="pull-right" (click)="logout()">
-              <span class="color-animaion">
+              <span class="color-animaion size-plus">
                   Logout <fa name="sign-out"></fa>
                 </span>        
               </li>
@@ -19,8 +19,8 @@
 </div>
 <ng-template #homeBlock>
 <div class="mobile-menu-bar" (click)="toogleMenu($event)">
-    <span class="header-msg pull-left color-animaion">{{headerTitle}}</span>
-   <span class="menu-toolbar pull-right color-animaion">MENU</span>
+    <span class="header-msg pull-left color-animaion size-plus">{{headerTitle}}</span>
+   <span class="menu-toolbar pull-right color-animaion size-plus">MENU</span>
 </div>
 <div  class="row main-toolbar">  
   <ul [ngClass]="isVisble ? '' : 'menuClicked'"    class="col-lg-3 col-sm-4 main-ul-toolbar" >

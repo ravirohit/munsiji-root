@@ -18,6 +18,11 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
   expence:any; 
   arrAccountName = [];
   isMessage:boolean = false;
+
+  public options: Pickadate.DateOptions = {
+    format: 'dddd, dd mmm, yyyy',
+    formatSubmit: 'yyyy-mm-dd',
+  };
   
   constructor(  private dataService: DataService, private router: Router) { }
 
