@@ -6,7 +6,7 @@
 </div>
 
 <app-promptMessage></app-promptMessage>
-<div  *ngIf="!isSignup" id="loginFormCont" class="login-cont" [style.font-size.px]="size">
+<div  *ngIf="!isSignup && !forgetPassword" id="loginFormCont" class="login-cont" [style.font-size.px]="size">
   <!-- <button  class="btn btn-primary" (click) ="resize(-1)" > - </button>
   <button  class="btn btn-primary" (click) ="resize(1)" > + </button> -->
   <div class="form-group">
@@ -22,13 +22,14 @@
   </div> -->
   <div class="form-group">
       <a class="signup" id="signup" (click)="isSignup = !isSignup;isMessage=false;">Signup</a>
+      <a class="signup" id="forgetPWD" (click)="forgetPassword = !forgetPassword">Forget Password</a>
   <button  class="btn btn-primary pull-right" (click) ="loginFn(userID,userPWD)" >Login</button>
 </div>
 </div>
 
 
 <!-- <div class="well add-container" *ngIf="isSignup"> -->
-  <div  *ngIf="isSignup" class="login-cont">
+  <div  *ngIf="isSignup && !forgetPassword" class="login-cont">
   <div class="form-group">
     <span class="error-msg text-center" [ngClass]="signupErrorModel.commonMessage ? 'show-msg' :'hide-msg'"> Password is missmatch. </span> 
     <label for="s_name"><sup>*</sup>Account Name:</label>
@@ -53,5 +54,18 @@
   </div>
 </div>
 
+
+<div  *ngIf="forgetPassword" class="login-cont">
+ 
+  <div class="form-group">
+    <label for="s_email"><sup>*</sup>Email:</label>
+    <input rewuired type="email" id="reset_email" class="form-control" #resetEmail/>    
+  </div>
+  <div class="form-group pull-right">
+    <button class="btn btn-default" (click)="forgetPassword = !forgetPassword">Cancel</button>
+    <button class="btn btn-primary" (click)="resetPWD(resetEmail)">Send</button>
+    
+  </div>
+</div>
 
 

@@ -49,7 +49,7 @@ public class SessionManager implements HandlerInterceptor{
 		String queryStr = req.getQueryString();
 		List<GrantAuthCol> list= new ArrayList<>();
 		if(endpointUrl.contains("login") || endpointUrl.contains("register") || endpointUrl.contains("download") || 
-				(endpointUrl.contains("resetpassword") && ((queryStr != null) && (queryStr.contains("emailId"))))){
+				(endpointUrl.contains("forgetpassword") && ((queryStr != null) && (queryStr.contains("emailId"))))){
 			return flag;
 		}
 		if((req.getHeader("auth-key") == null)||(req.getHeader("auth-key").trim() == "")){

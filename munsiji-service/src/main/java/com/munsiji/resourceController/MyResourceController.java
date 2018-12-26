@@ -159,8 +159,9 @@ public class MyResourceController {
 		}
 		
 	}
-	@RequestMapping(value="resetpassword",method=RequestMethod.POST)
-	public ResponseEntity<ResponseInfo> passwordReset(@RequestParam(value = "emailId", required = false) String emailId,@RequestBody(required = false) String newPwd){
+	@RequestMapping(value="forgetpassword",method=RequestMethod.GET)
+	public ResponseEntity<ResponseInfo> passwordReset(@RequestParam(value = "emailId", required = false) String emailId,
+													  @RequestParam(required = false) String newPwd){
 		if(newPwd != null){
 			int sindex = newPwd.indexOf(":") + 2;
 			int lindex = newPwd.lastIndexOf("\"");

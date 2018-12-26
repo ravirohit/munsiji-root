@@ -29,6 +29,8 @@ export class CustomHttpInterceptorService implements HttpInterceptor {
             key = "login" 
         }else if(req.url.indexOf("registeruser") > 0){
             key = "register"
+        }else if(req.url.indexOf("forgetpassword") > 0){
+            key = "forgetpassword"
         }else{
             let userInfo = JSON.parse(localStorage.getItem("ui")).k;
             key = userInfo;

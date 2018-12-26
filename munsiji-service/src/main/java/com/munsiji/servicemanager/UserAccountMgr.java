@@ -141,7 +141,7 @@ public class UserAccountMgr {
 					 newPwd = generatePassword.getPassword();
 					 CustomExecutors.executeThread(new MailThread(userDetails.getEmailId(), newPwd), "sending forget password service");
 					 System.out.println("New password sent to your emailID:"+newPwd);
-					 responseInfo.setMsg("New password sent to your emailID");
+					 responseInfo.setMsg("New password sent to your emailID. If not received please try after sometime");
 					 responseInfo.setReason("user forgot password");
 				 }
 				 else{
@@ -157,8 +157,8 @@ public class UserAccountMgr {
 			 }
 			 else{
 				 responseInfo.setData(null);
-				 responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
-				 responseInfo.setReason(MunsijiServiceConstants.SEVER_ERROR);
+				 responseInfo.setMsg("User does not exist. Please Sing up to create a new account.");
+				 responseInfo.setReason("User does not exist");
 				 responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 				 responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 				 

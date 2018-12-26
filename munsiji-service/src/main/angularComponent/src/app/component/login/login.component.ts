@@ -14,6 +14,7 @@ import {PromptMessageComponent} from '../../template/promptMessage/promptMessage
 })
 export class LoginComponent implements OnInit {
 
+  forgetPassword : boolean = false;
   url = UrlConfig;
   isMessage:boolean = false;
   isSignup:boolean = false;
@@ -109,6 +110,22 @@ export class LoginComponent implements OnInit {
     }
     console.log(this.url.REGISTER_USER);
    
+  }
+
+  resetPWD(el){
+    console.log(el);
+    let emailId = el.value;
+    let forgetUrl = this.url.FORGETPWD + emailId;
+    let sub = this.dataService.httpGetCall(forgetUrl).subscribe(res => {
+      console.log("response:"+res);
+      this.isMessage=true;
+      this.forgetPassword = !this.forgetPassword;
+      sub.unsubscribe();
+    }, err => {
+      console.log("Error in FORGETPWD HTTP call ", err);
+      sub.unsubscribe();
+    });
+    //this.forgetPassword = false;
   }
 
 }

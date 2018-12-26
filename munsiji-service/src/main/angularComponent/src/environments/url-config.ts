@@ -8,6 +8,7 @@ export const UrlConfig = (function(){
                     "CREATE_ACCOUNT"        : "/munsiji-service/rest/myapp/createaccount",
                     "LOGIN"                 : "/munsiji-service/rest/myapp/login",
                     "LOGOUT"                : "/munsiji-service/rest/myapp/logout",
+                    "FORGETPWD"                : "/munsiji-service/rest/myapp/forgetpassword?emailId=",
                     "GET_ACCOUNT_TYPE"      : "/munsiji-service/rest/myapp/getacctypeandname?accType=",
                     "GET_ALL_EXPENCE"       : "/munsiji-service/rest/myapp/getexpense?accType="// personalexp
 
