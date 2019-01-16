@@ -22,8 +22,11 @@
   </div> -->
   <div class="form-group">
       <a class="signup" id="signup" (click)="isSignup = !isSignup;isMessage=false;">Signup</a>
-      <a class="signup" id="forgetPWD" (click)="forgetPassword = !forgetPassword">Forget Password</a>
+     
   <button  class="btn btn-primary pull-right" (click) ="loginFn(userID,userPWD)" >Login</button>
+</div>
+<div class="form-group forget-pwd-cl">
+  <a class="signup" id="forgetPWD" (click)="forgetPassword = !forgetPassword">Forget Password</a>
 </div>
 </div>
 

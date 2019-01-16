@@ -2,7 +2,7 @@
 <div class="home-container" *ngIf = "ifDataAvailable">
 
     <div class="well view-container" id="view-container">
-            <div class="form-group"> 
+            <!-- <div class="form-group"> 
 
                     <label for="viewType">Display:</label>
                     <select name="viewType" id="viewType" class="form-control col-lg-3 col-md-4 col-sm-6 col-xs-12" 
@@ -11,7 +11,19 @@
                         <option value="1">Graph</option>
                         <option value="2" selected>Table and Graph</option>
                     </select>
-              </div>
+              </div> -->
+
+              <mz-select-container>
+                <select mz-select
+                  id="viewType"
+                  (change)="homeModel.displayType = $event.srcElement.value" 
+                  [label]="'Display:'"
+                >
+                    <option value="0">Grid</option>
+                    <option value="1">Graph</option>
+                    <option value="2" selected>Table and Graph</option>                  
+                </select>
+              </mz-select-container>
 
         <div class="gridContainer" *ngIf = "homeModel.displayType != 1 ">
             <table id="home-grid-cl" class="template-grid-cl table table-striped table-condensed table-bordered col-sm-12">

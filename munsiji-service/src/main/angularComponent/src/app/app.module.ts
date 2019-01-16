@@ -7,7 +7,7 @@ import { FusionChartsModule } from 'angular4-fusioncharts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
-import { MzDatepickerModule, MzInputModule, MzTextareaModule, MzSelectModule, MzModalModule  } from 'ngx-materialize';
+import { MzDatepickerModule, MzInputModule, MzTextareaModule, MzSelectModule, MzModalModule, MzToastModule  } from 'ngx-materialize';
 
 import {CustomHttpInterceptorService} from './services/httpInterceptorService';
 
@@ -50,7 +50,8 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
   ],
   imports: [   
     BrowserModule,FusionChartsModule,BrowserAnimationsModule,AngularFontAwesomeModule,
-    HttpClientModule,FormsModule, MzDatepickerModule , MzInputModule,MzTextareaModule,MzSelectModule,MzModalModule ,
+    HttpClientModule,FormsModule, MzDatepickerModule , MzInputModule,MzTextareaModule,
+    MzSelectModule,MzModalModule,MzToastModule,
     RouterModule.forRoot(applicationRouter)
   ],
   providers: [UserinfoService, AuthGuard,DataService,  { provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptorService, multi: true }],

@@ -22,7 +22,7 @@
     <span class="header-msg pull-left color-animaion size-plus">{{headerTitle}}</span>
    <span class="menu-toolbar pull-right color-animaion size-plus">MENU</span>
 </div>
-<div  class="row main-toolbar">  
+<div  class="main-toolbar">  
   <ul [ngClass]="isVisble ? '' : 'menuClicked'"    class="col-lg-3 col-sm-4 main-ul-toolbar" >
 
     <li routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
@@ -59,7 +59,7 @@
 
 
 
-<div class="col-lg-9 col-sm-8 app-container container well">
+<div class="col-lg-9 col-sm-8 app-container ">
     <router-outlet > </router-outlet>
 </div>
 </div>  

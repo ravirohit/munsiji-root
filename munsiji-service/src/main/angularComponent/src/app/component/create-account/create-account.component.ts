@@ -20,22 +20,23 @@ export class CreateAccountComponent implements OnInit {
 
   public options: Pickadate.DateOptions = {
     format: 'dddd, dd mmm, yyyy',
-    formatSubmit: 'yyyy-mm-dd',
+    formatSubmit: 'dd-mm-yyyy',
   };
 
   //name = "dfdf";
-  acc:any = {name:"",type:"",desc:"",date:new Date() }
+  acc:any = {name:"",type:"",desc:"",date:'' }
 
   model = {isMessage: false}
-  constructor( private userService:UserinfoService, private dataService:DataService, private router: Router) { }
+  constructor(  private userService:UserinfoService,
+                private dataService:DataService, 
+                private router: Router) { }
 
   ngOnInit() { }
 
   createAccount():void{
     this.promptMessageComponent.showLoader();
-    console.log("<<<<< before date:" + this.acc.date);
-    let date = this.formatDate(this.acc.date);
-    console.log("<<<<< after date:" + date);
+    this.promptMessageComponent.showToastMessage("This is message toast","red",3000);
+    let date = this.acc.date;//this.formatDate(this.acc.date);
     let createAccountUrl = this.URL.CREATE_ACCOUNT,
         createDataModel = {
                             name : this.acc.name, 
@@ -58,10 +59,9 @@ export class CreateAccountComponent implements OnInit {
                     });
     
   }
-  formatDate(d){   // from "2018-12-20" to "dd-mm-yyyy"
-    let s = d.split("-");
-    console.log(">>>>> s:"+s);
-    return s[2]+"-"+s[1]+"-"+s[0];
+  formatDate(d:Date){   // from "2018-12-20" to "dd-mm-yyyy"
+  
+    return  d.getDate()+"-"+ d.getMonth() +"-"+d.getFullYear();
   }
   fromReset(){
     this.model.isMessage = false;

@@ -13,6 +13,7 @@ ul#logout-el{margin: 0px;}
 li:focus, li:active, li:hover, .main-ul-toolbar .active {
     box-shadow: 1px 1px 4px #fff;
     color: #fff;
+    outline: none;
 }
 
 .header-cont{
@@ -27,7 +28,7 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
     top: 5rem;
     display: flex;
     flex-direction: row;
-    padding: 1em 0.4em;
+    padding: 1em;
 }
 #profile {
     float: right;
@@ -37,9 +38,11 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
     list-style: none;
     padding: 0;
     z-index: 99;
-    font-size: 1.4rem;    
+    font-size: 1.4rem;
     padding-right: 1em;
+    width: 48rem;
     line-height: 39px;
+    max-width: 286px;
 }
 
 .main-ul-toolbar li {
@@ -48,8 +51,10 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
     padding-left: 15px;
     padding-right: 8px;
     line-height: 2.5em;
+    margin: 0 0 0.4rem 0;
 }
 .app-container {
+    width: 75%;
     box-shadow: 0px 0px 12px lightcyan;
     padding-bottom: 1.3rem;
     display: flex;
@@ -88,7 +93,9 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
     .header-cont{
         text-align: left; padding-left:10px;
         }
-    div.app-container{padding:0px;
+    div.app-container{
+        width: 98%;
+        padding:0px;
         margin-left: 0px;         
         margin-top: 3rem;
     }
@@ -118,11 +125,10 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
         display: block;
         position: fixed;
         right: 0;
-        left:0rem;
+        left: 0rem;
         top: 3rem;
         height: 100%;
-        padding: 3.4em 3rem;
-        width: 100vw;
+        padding: 6px 4px 0 1px;
         z-index: 99;
         background: #fb1844;
         transition: left 1s linear;
@@ -144,8 +150,6 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
     }
     .main-ul-toolbar li{
         padding-right: 10px;
-        text-align: center;
-        font-size: 1.1em;
         letter-spacing: 0.1em;
     }
 }

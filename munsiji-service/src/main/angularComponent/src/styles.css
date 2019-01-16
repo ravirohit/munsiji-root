@@ -6,38 +6,32 @@
 *{ 
     font-family: sans-serif;
     color:#fff; 
-    Font-size:1.05em;
+    Font-size:1.05rem;
     list-style: none;
     transition: color 2s ease;
 }
 
 
 @keyframes color {
-    to {color: rgb(242, 246, 12);}
+    to {color: #000;}
 }
 
 fa i.fa {
-    
-    font-size: 1.2em;
+    font-size: 1.2rem;
     color:#fff;
-    animation: color 5s linear 5s infinite alternate;
+    animation: color 15s linear 15s infinite alternate;
 }
 .color-animaion{  
     color:#fff;
-    animation: color 5s linear 5s infinite alternate;
+    animation: color 15s linear 15s infinite alternate;
 }
 
 
 @keyframes size_plus {
-    to {font-size: 1.2em;}
+    to {font-size: 1.2rem;}
 }
 .size-plus{
     animation: size_plus 25s linear 25s infinite alternate;
-}
-
-*:hover{  
-    color:blue;
-    animation: color 2s linear 1s infinite alternate;
 }
 
 
@@ -56,11 +50,7 @@ select option {
     font-size: 1.2em;
 }
 
- .form-group:focus-within {
-    box-shadow: 0px 1px 1px gray;
-    margin: -7px -9px 8px -9px;
-    padding: 7px 9px 4px 9px;
-}
+
 .hidden {display: none;}
 .btn:hover{cursor: pointer;}
 button.btn {
@@ -103,6 +93,13 @@ label{font-weight: bold;}
 .hide-msg{ display:none;}
 .show-msg{ display:block;}
 
+#toast-container {
+    min-width: 91%;
+    max-width: 100%;
+    width: 93%;
+    top: 3.8rem;
+}
+
 
 app-add-ledger-info,app-profile, app-create-account{
     max-width: 51em;
@@ -110,14 +107,34 @@ app-add-ledger-info,app-profile, app-create-account{
 }
 app-home{width: 100%;}
 
+div .select-wrapper input.select-dropdown:disabled{
+    color: #fff;
+    opacity: .7;
+}
 
+div .select-wrapper+label {
+    font-size: large;
+}
+.picker__month, .picker__year {
+    color: #000;
+}
+.picker__date-display{
+    display: none;
+}
+div.picker__frame {
+    max-width: 12rem;
+}
+.picker__day.picker__day--infocus.picker__day--selected.picker__day--highlighted {
+    border-radius: 12%;
+    padding: 15px 7px;
+}
+div.picker__table td{
+    line-height: 0rem;
+}
 @media screen and (max-width : 574px){
     a.back-btn {
         position: fixed;
         top: 10px;
         left: 15px;
     }
-        body{
-            padding:1rem;
-        }
 }

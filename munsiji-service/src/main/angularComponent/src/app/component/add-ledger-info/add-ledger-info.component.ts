@@ -21,7 +21,7 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
 
   public options: Pickadate.DateOptions = {
     format: 'dddd, dd mmm, yyyy',
-    formatSubmit: 'yyyy-mm-dd',
+    formatSubmit: 'dd-mm-yyyy',
   };
   
   constructor(  private dataService: DataService, private router: Router) { }
@@ -74,10 +74,8 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
       sub.unsubscribe();
     });
   }
-  formatDate(d){   // from "2018-12-20" to "dd-mm-yyyy"
-    let s = d.split("-");
-    console.log(">>>>> s:"+s);
-    return s[2]+"-"+s[1]+"-"+s[0];
+  formatDate(d:Date){   // from "2018-12-20" to "dd-mm-yyyy"
+  return  d.getDate()+"-"+ d.getMonth() +"-"+d.getFullYear();
   }
   fromReset(){
     this.isMessage = false;

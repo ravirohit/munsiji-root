@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {UserinfoService} from './../../services/userinfo.service';
 
-import {  MzModalModule  } from 'ngx-materialize';
+import {  MzModalModule, MzToastService  } from 'ngx-materialize';
 
 @Component({
   selector: 'app-promptMessage',
@@ -25,7 +25,10 @@ export class PromptMessageComponent implements OnInit {
     yesBtn:""
   };
 
-  constructor( private userService:UserinfoService) { }
+  constructor( 
+              private userService:UserinfoService,              
+              private toastService: MzToastService 
+              ) { }
 
   ngOnInit() {
   }
@@ -41,5 +44,10 @@ export class PromptMessageComponent implements OnInit {
   setModelInfo(model:any){
     this.model = {...model};
     //this.PromptModal.openModal();
+  }
+
+  showToastMessage(msg:string, status:string,duration:number){
+    
+    this.toastService.show(msg, duration, status);
   }
 }

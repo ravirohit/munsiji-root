@@ -15,3 +15,13 @@ a#signup.signup{
     font-weight: 600;
     vertical-align: middle;
 }
+.form-group.forget-pwd-cl[_ngcontent-c2] {
+    text-align: center;
+    clear: both;
+    position: relative;
+    top: 11px;
+    cursor: pointer;
+}
+.form-group.forget-pwd-cl a{
+    font-size: 1rem;
+}
