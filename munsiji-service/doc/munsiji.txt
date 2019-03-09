@@ -297,11 +297,65 @@ Response;
     "reason": "user forgot password",
     "data": null
 }
+
+=============
+get profile info:
+GET
+http://localhost:8080/munsiji-service/rest/myapp/getprofile
+Response:
+{
+    "status": "Success",
+    "statusCode": 200,
+    "msg": "User profile details",
+    "reason": "",
+    "data": {
+        "userName": null,
+        "emailId": "ravi",
+        "mobNo": "ravi",
+        "accountInfo": {
+            "personalexp": [
+                {
+                    "accName": "acc1",
+                    "amnt": null,
+                    "date": "26-12-2018",
+                    "desc": "acc1 desc"
+                },
+                {
+                    "accName": "acc2",
+                    "amnt": null,
+                    "date": "27-12-2018",
+                    "desc": "acc2 desc"
+                }
+            ]
+        }
+    }
+}
+
 =====
 for download report:
 http://localhost:8080/munsiji-service/rest/myapp/download
 payload:
 accType, selected accNames, start date and end date
+
+
+== backup
+
+<servlet>
+    <servlet-name>uipage</servlet-name>
+     <jsp-file>/index.html</jsp-file>
+ </servlet>
+ <servlet-mapping>
+    <servlet-name>uipage</servlet-name>
+    <url-pattern>/c_account</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+    <servlet-name>uipage</servlet-name>
+    <url-pattern>/profile</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+    <servlet-name>uipage</servlet-name>
+    <url-pattern>/add</url-pattern>
+ </servlet-mapping>
 
 
 
