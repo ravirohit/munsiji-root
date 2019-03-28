@@ -25,7 +25,7 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
 .main-toolbar {
     position: absolute;
     width: 100%;
-    top: 5rem;
+    top: 4.5rem;
     display: flex;
     flex-direction: row;
     padding: 1em;
@@ -37,12 +37,14 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
 .main-ul-toolbar {
     list-style: none;
     padding: 0;
-    z-index: 99;
     font-size: 1.4rem;
-    padding-right: 1em;
+    padding-top: 0.14em;
+    min-width: 175px;
     width: 48rem;
     line-height: 39px;
-    max-width: 286px;
+    max-width: 230px;
+    margin: 0 0.4em 0 0;
+    background: #004a7c;
 }
 
 .main-ul-toolbar li {
@@ -54,17 +56,18 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
     margin: 0 0 0.4rem 0;
 }
 .app-container {
-    width: 75%;
-    box-shadow: 0px 0px 12px lightcyan;
+    width: 100%;
+    box-shadow: 0px 0px 1px #fff;
     padding-bottom: 1.3rem;
-    display: flex;
+    display: flex;    
+    background: #2b73a2;
     justify-content: center;
 }
 
 .desktop.page-header {
     height: 4.5rem;
     padding: 0 1rem;
-    background: #3249e4;
+    background: #004a7c;
     line-height: 4.5rem;
     font-size: 1.2rem;
     font-weight: 600;
@@ -76,7 +79,7 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
 }
 .mobile-menu-bar, .logout-mobile-visibility{display: none;}
 
-@media screen and (max-width : 574px){
+@media screen and (max-width : 768px){
 
     .logout-mobile-visibility{display: block;}
     .desktop.page-header{display: none;}
@@ -97,7 +100,7 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
         width: 98%;
         padding:0px;
         margin-left: 0px;         
-        margin-top: 3rem;
+        margin-top: 2.3rem;
     }
     
     .mobile-menu-bar{
@@ -112,7 +115,7 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
         width: 100%;
         font-weight: bold;
         text-align: right;
-        background: #3249e4;
+        background: #2b73a2;
         line-height: 4.5rem;
         padding-right: 15px;
         margin: 0;
@@ -126,16 +129,17 @@ li:focus, li:active, li:hover, .main-ul-toolbar .active {
         position: fixed;
         right: 0;
         left: 0rem;
-        top: 3rem;
+        top: 4.5rem;
         height: 100%;
         padding: 6px 4px 0 1px;
         z-index: 99;
-        background: #fb1844;
-        transition: left 1s linear;
+        background: #004a7c;
+        transition: left 1s;
     }
 
     .main-toolbar{
         top: 2rem;
+        padding: 0.6em 0em 0.6em 0.6em;
     }
     .main-toolbar ul.menuClicked {
         left: 200rem;

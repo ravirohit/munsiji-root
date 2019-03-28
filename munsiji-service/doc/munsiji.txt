@@ -278,6 +278,12 @@ payload:
 	"newPwd":"qwerty"
 	
 }
+
+IT should be: {
+                  currentPwd:'',
+                  newPwd1:'',
+                  newPwd2:''
+                }
 response: 
 {
     "status": "Success",

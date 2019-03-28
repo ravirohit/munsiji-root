@@ -1,25 +1,29 @@
+label {
+    color: #fff;
+    font-size: 0.9em;
+}
 .login-cont{
     position: absolute;
     margin: auto;
     width: 28rem;
-    box-shadow: 1px 2px 5px lightcyan;
+    box-shadow: 3px 4px 8px grey;
     padding: 23px;
     left: 50%;
     top: 48%;
     transform: translate(-50%,-50%);
+    background: #2b73a2;
 }
 a#signup.signup{
-    color: #fff;
     cursor: pointer;
     letter-spacing: 0.1rem;
     font-weight: 600;
     vertical-align: middle;
 }
-.form-group.forget-pwd-cl[_ngcontent-c2] {
-    text-align: center;
+.form-group.forget-pwd-cl{
+    text-align: left;
     clear: both;
     position: relative;
-    top: 11px;
+    top: -4px;
     cursor: pointer;
 }
 .form-group.forget-pwd-cl a{

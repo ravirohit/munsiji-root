@@ -66,16 +66,19 @@ export class AddLedgerInfoComponent implements OnInit, OnDestroy {
     //this.userService.setDataModelForAccount(this.expence, index);
     let sub = this.dataService.httpPostCall(this.URL.ADD_EXPANCE, addDataModel).subscribe( res => {
       this.isMessage = true;
-      this.promptMessageComponent.hideLoader();
+      this.promptMessageComponent.hideLoader();      
+      this.promptMessageComponent.showToastMessage(res.msg,"green",3000);
       sub.unsubscribe();
 
     }, err => {
-      this.promptMessageComponent.hideLoader();
+      this.promptMessageComponent.hideLoader();                      
+      this.promptMessageComponent.showToastMessage("Error: Can not Add  account Details now. Please try after some time. ","red",3000);
       sub.unsubscribe();
     });
   }
   formatDate(d:Date){   // from "2018-12-20" to "dd-mm-yyyy"
-  return  d.getDate()+"-"+ d.getMonth() +"-"+d.getFullYear();
+  return d;
+  // return  d.getDate()+"-"+ d.getMonth() +"-"+d.getFullYear();
   }
   fromReset(){
     this.isMessage = false;

@@ -40,7 +40,10 @@ fa i.fa {
 
 body{
     height: 100vh;
-    background: #7b0018;
+    background: #fff;
+}
+div .input-field label {
+    color: #fff;
 }
 select option {
     background: #fb1844;
@@ -101,6 +104,11 @@ label{font-weight: bold;}
 }
 
 
+.profile-form-group .collection mz-collection-item.collection-item {
+    background: #2b73a2;
+    border-bottom: none;    
+    display: flex;
+}
 app-add-ledger-info,app-profile, app-create-account{
     max-width: 51em;
     width: 100%;
@@ -118,20 +126,7 @@ div .select-wrapper+label {
 .picker__month, .picker__year {
     color: #000;
 }
-.picker__date-display{
-    display: none;
-}
-div.picker__frame {
-    max-width: 12rem;
-}
-.picker__day.picker__day--infocus.picker__day--selected.picker__day--highlighted {
-    border-radius: 12%;
-    padding: 15px 7px;
-}
-div.picker__table td{
-    line-height: 0rem;
-}
-@media screen and (max-width : 574px){
+@media screen and (max-width : 768px){
     a.back-btn {
         position: fixed;
         top: 10px;

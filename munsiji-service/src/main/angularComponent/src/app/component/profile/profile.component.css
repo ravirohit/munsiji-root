@@ -1,0 +1,24 @@
+.profile-form-group {
+    padding: 0.5em 1em;
+}
+label.profile-lbl {
+    width: 12rem;
+    text-align: right;
+    margin-right: 0.3em;
+    color: #ffff;
+    padding-right: 0.5em;
+    font-size: 1rem;
+    min-width: 157px;
+}
+.reset-pwd-bl{
+    overflow: hidden;
+    transition: max-height 0.5s linear;    
+    width: 100%;
+}
+.hide-reset-pwd-bl{
+    max-height: 0px;
+    overflow: hidden;
+}
+.show-reset-pwd-bl{
+    max-height: 350px;
+}

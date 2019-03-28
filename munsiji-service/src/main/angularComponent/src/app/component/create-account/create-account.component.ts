@@ -35,7 +35,6 @@ export class CreateAccountComponent implements OnInit {
 
   createAccount():void{
     this.promptMessageComponent.showLoader();
-    this.promptMessageComponent.showToastMessage("This is message toast","red",3000);
     let date = this.acc.date;//this.formatDate(this.acc.date);
     let createAccountUrl = this.URL.CREATE_ACCOUNT,
         createDataModel = {
@@ -51,10 +50,12 @@ export class CreateAccountComponent implements OnInit {
                       console.log("CREATE_ACCOUNT http call is success", res.msg);  
                       this.model.isMessage = true;
                       sub.unsubscribe();
-                      this.promptMessageComponent.hideLoader();
+                      this.promptMessageComponent.hideLoader();                      
+                      this.promptMessageComponent.showToastMessage(res.msg,"green",3000);
                     }, err => {
                       console.log("Error in CREATE_ACCOUNT HTTP call ", err);
-                      this.promptMessageComponent.hideLoader();
+                      this.promptMessageComponent.hideLoader();                      
+                      this.promptMessageComponent.showToastMessage("Error: Can not create account now. Please try after some time. ","red",3000);
                       sub.unsubscribe();
                     });
     
