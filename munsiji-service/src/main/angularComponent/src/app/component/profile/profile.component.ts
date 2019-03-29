@@ -52,13 +52,14 @@ export class ProfileComponent implements OnInit {
     let sub = this.dataService.httpGetCall(UrlConfig.GET_PROFILE_INFO).subscribe((res)=>{
       sub.unsubscribe();
       console.log("Success:",res);
+      this.profileModel = res["data"];
       this.promptMessageComponent.hideLoader();
       
     },(err)=>{
       sub.unsubscribe();
       this.promptMessageComponent.hideLoader();
       console.log("ERROR: ",err);                            
-      this.promptMessageComponent.showToastMessage("Error: Can not create account now. Please try after some time. ","red",3000);
+      this.promptMessageComponent.showToastMessage(err["msg"],"red",3000);
       
     });
   }
@@ -85,6 +86,40 @@ export class ProfileComponent implements OnInit {
   cancelPWD(){
 
   }
+
+  myDataSource = {
+    "chart": {
+      "caption": "Recommended Portfolio Split",
+      "subcaption": "For a net-worth of $1M",
+      "showvalues": "1",
+      "showpercentintooltip": "0",
+      "numberprefix": "$",
+      "enablemultislicing": "1",
+      "theme": "fusion"
+    },
+    "data": [
+      {
+        "label": "Equity",
+        "value": "300000"
+      },
+      {
+        "label": "Debt",
+        "value": "230000"
+      },
+      {
+        "label": "Bullion",
+        "value": "180000"
+      },
+      {
+        "label": "Real-estate",
+        "value": "270000"
+      },
+      {
+        "label": "Insurance",
+        "value": "20000"
+      }
+    ]
+  };
 
 }
 

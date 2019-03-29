@@ -40,7 +40,7 @@ fa i.fa {
 
 body{
     height: 100vh;
-    background: #fff;
+    background:#1b3546;
 }
 div .input-field label {
     color: #fff;
@@ -70,6 +70,7 @@ select {
     margin-right: 10px;
 }
 sup {
+    margin-right: 0.3em;
     color: red;
     font-weight: bold;
 }
@@ -95,6 +96,22 @@ label{font-weight: bold;}
 }
 .hide-msg{ display:none;}
 .show-msg{ display:block;}
+.home-container .select-wrapper.initialized {
+    display: inline-block;
+}
+div input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]), input[type=password]:not(.browser-default):focus:not([readonly]), input[type=email]:not(.browser-default):focus:not([readonly]), input[type=url]:not(.browser-default):focus:not([readonly]), input[type=time]:not(.browser-default):focus:not([readonly]), input[type=date]:not(.browser-default):focus:not([readonly]), input[type=datetime]:not(.browser-default):focus:not([readonly]), input[type=datetime-local]:not(.browser-default):focus:not([readonly]), input[type=tel]:not(.browser-default):focus:not([readonly]), input[type=number]:not(.browser-default):focus:not([readonly]), input[type=search]:not(.browser-default):focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]){
+    background: #fff;
+    color: #000;
+    box-sizing: border-box;
+    padding: 0em 0.6em;
+    letter-spacing: 0.1em;
+    margin: 0.5em 0 1em 0;
+    box-shadow: 7px 8px 11px grey !important    ;
+}
+
+div.select-wrapper input.select-dropdown{
+    padding: 1em 0 0 0;
+}
 
 #toast-container {
     min-width: 91%;
