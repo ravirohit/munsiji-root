@@ -16,7 +16,8 @@ public interface MunsijiServiceConstants {
    public static final int AUTHORIZATION_ERROR_CODE = 403;
    public static final int MULTIPLE_RECORD_ERROR_CODE = 409;
    public static final int BAD_REQUEST_ERROR_CODE = 400;
-   
+   public static final String SUCCESS_PWD_RESET = "Password hass been changed successfully";
+   public static final String FAILURE_PWD_RESET = "Provided password is invalid";
    
    
 }

@@ -2,16 +2,12 @@ package com.munsiji.servicemanager;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +19,7 @@ import com.munsiji.customthread.CustomExecutors;
 import com.munsiji.customthread.MailThread;
 import com.munsiji.model.AccTypeMapToName;
 import com.munsiji.model.Login;
+import com.munsiji.model.PwdReset;
 import com.munsiji.persistance.daoImp.UserDetailDaoImp;
 import com.munsiji.persistance.resource.UserAccount;
 import com.munsiji.persistance.resource.UserDetails;
@@ -62,7 +59,7 @@ public class UserAccountMgr {
 				return responseInfo;
 			}
 	  }catch(Exception e){
-		  e.printStackTrace();
+		  System.out.println("exception occur while registering the user:"+e);
 		  responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 		  responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
 		  responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
@@ -117,16 +114,15 @@ public class UserAccountMgr {
 	public ResponseInfo resetPwd(String email, String newPwd){
 		ResponseInfo responseInfo = new ResponseInfo();
 		GeneratePassword generatePassword = null;
-		List<UserDetails> userList = null;
-		UserDetails userInfo = UserContextUtils.getUser();
+		UserDetails userDetails = UserContextUtils.getUser();
 		if(newPwd != null){
-			email = userInfo.getUsername();
+			email = userDetails.getUsername();
 		}
-		userList =  userDetailDaoImp.getUserInfo(email,null,null);
+		//userList =  userDetailDaoImp.getUserInfo(email,null,null);
 		
 		try{
-			 if(userList.size() != 0){
-				 UserDetails userDetails = userList.get(0);
+			// if(userList.size() != 0){
+				// UserDetails userDetails = userList.get(0);
 				 if(newPwd == null){
 					 generatePassword = new GeneratePassword();
 					 newPwd = generatePassword.getPassword();
@@ -145,15 +141,15 @@ public class UserAccountMgr {
 				 System.out.println("password saved to the db:"+newPwd);
 				 responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
 				 responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
-			 }
-			 else{
+			// }
+			/* else{
 				 responseInfo.setData(null);
 				 responseInfo.setMsg("User does not exist. Please Sing up to create a new account.");
 				 responseInfo.setReason("User does not exist");
 				 responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 				 responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 				 
-			 }
+			 }*/
 		}
 		catch(Exception e){
 			System.out.println("Exception occur while reseting user password:"+e);
@@ -164,6 +160,37 @@ public class UserAccountMgr {
 			 responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 		}
 		System.out.println("status code in method:---------"+responseInfo.getStatusCode());
+		return responseInfo;
+	}
+	public ResponseInfo pwdReset(PwdReset pwdReset){
+		ResponseInfo responseInfo = new ResponseInfo();
+		try{
+			UserDetails userDetails = UserContextUtils.getUser();
+			if(pwdReset.getCurrentPwd() == null){
+				responseInfo.setMsg(MunsijiServiceConstants.FAILURE_PWD_RESET);
+				responseInfo.setReason("");
+				responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+				responseInfo.setStatusCode(MunsijiServiceConstants.BAD_REQUEST_ERROR_CODE);
+			}
+			else if(userDetails.getPassword().equals(pwdReset.getCurrentPwd())){
+				userDetails.setPwd(pwdReset.getNewPwd1());
+				userDetails.setKey("");
+				userDetails.setCurrentLoginKey("");
+				userDetailDaoImp.registerUser(userDetails, true);
+				responseInfo.setMsg(MunsijiServiceConstants.SUCCESS_PWD_RESET);
+				responseInfo.setReason("");
+				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+				responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
+			}
+		}
+		catch(Exception e){
+			System.out.println("Exception while resetting password:"+e);
+			 responseInfo.setData(null);
+			 responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+			 responseInfo.setReason(MunsijiServiceConstants.SEVER_ERROR);
+			 responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+			 responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
+		}
 		return responseInfo;
 	}
 	public ResponseInfo logout(){
