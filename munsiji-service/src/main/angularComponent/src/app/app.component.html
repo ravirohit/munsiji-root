@@ -1,6 +1,3 @@
-
-
-<div *ngIf="userData.isLogedin; then homeBlock else loginBlock "></div>
 <div class="desktop page-header">
   <header class="header-banner">
           <span>
@@ -17,6 +14,9 @@
   </header> 
 
 </div>
+
+<div *ngIf="userData.isLogedin; then homeBlock else loginBlock "></div>
+
 <ng-template #homeBlock>
 <div class="mobile-menu-bar" (click)="toogleMenu($event)">
     <span class="header-msg pull-left color-animaion size-plus">{{headerTitle}}</span>
@@ -67,6 +67,9 @@
 
 
 <ng-template #loginBlock class="app-container container well">
+  <div class="mobile-menu-bar" (click)="toogleMenu($event)">
+    <span class="header-msg pull-left color-animaion size-plus">Munshi G  </span>
+</div>
   <app-login></app-login>
   
 </ng-template>

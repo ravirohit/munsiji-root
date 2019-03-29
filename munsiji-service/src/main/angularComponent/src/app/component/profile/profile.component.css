@@ -2,13 +2,12 @@
     padding: 0.5em 1em;
 }
 label.profile-lbl {
-    width: 12rem;
     text-align: right;
     margin-right: 0.3em;
     color: #ffff;
     padding-right: 0.5em;
     font-size: 1rem;
-    min-width: 157px;
+    min-width: 93px;
 }
 .reset-pwd-bl{
     overflow: hidden;

@@ -1,9 +1,9 @@
-<div *ngIf="isMessage" class="alert alert-success well add-container clearfix" >
+<!-- <div *ngIf="isMessage" class="alert alert-success well add-container clearfix" >
     <div class="text-center">
         <strong>Success!</strong> 
         Login account is created succesfully. Please enter your emailid and password to login.
         </div>
-</div>
+</div> -->
 
 <app-promptMessage></app-promptMessage>
 <div  *ngIf="!isSignup && !forgetPassword" id="loginFormCont" class="login-cont" [style.font-size.px]="size">
@@ -33,15 +33,17 @@
 
 <!-- <div class="well add-container" *ngIf="isSignup"> -->
   <div  *ngIf="isSignup && !forgetPassword" class="login-cont">
-  <div class="form-group">
-    <span class="error-msg text-center" [ngClass]="signupErrorModel.commonMessage ? 'show-msg' :'hide-msg'"> Password is missmatch. </span> 
-    <label for="s_name"><sup>*</sup>Account Name:</label>
-    <input type="text" id="usr_name" class="form-control" [(ngModel)]="signupModel.name"/>    
-  </div>
+  
   <div class="form-group">
     <label for="s_email"><sup>*</sup>Email:</label>
     <input rewuired type="email" id="s_email" class="form-control" [(ngModel)]="signupModel.email"/>    
   </div>
+  <div class="form-group">
+    <span class="error-msg text-center" [ngClass]="signupErrorModel.commonMessage ? 'show-msg' :'hide-msg'"> Password is missmatch. </span> 
+    <label for="s_name"><sup>*</sup>Mobile No:</label>
+    <input type="text" id="usr_name" class="form-control" [(ngModel)]="signupModel.mobileNo"/>    
+  </div>
+
   <div class="form-group">
     <label for="s_pwd"><sup>*</sup>Password:</label>
     <input type="password" id="s_pwd" class="form-control" [(ngModel)]="signupModel.pwd1"/>    

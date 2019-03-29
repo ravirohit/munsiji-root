@@ -16,9 +16,9 @@ export class LoginComponent implements OnInit {
 
   forgetPassword : boolean = false;
   url = UrlConfig;
-  isMessage:boolean = false;
+  //isMessage:boolean = false;
   isSignup:boolean = false;
-  signupModel = {  name:"",  pwd1:"",  pwd2:"",  email:""  };
+  signupModel = {  mobileNo:"",  pwd1:"",  pwd2:"",  email:""  };
   signupErrorModel = {  name:"",  pwd1:"",  pwd2:"",  email:"", commonMessage:false };
 
   constructor(private userService:UserinfoService, private router: Router, private dataService : DataService) { }
@@ -31,8 +31,7 @@ export class LoginComponent implements OnInit {
   }  
 
   loginFn(userID, userPWD){
-    this.isMessage=false;
-        
+
     if(userID.value.length > 3 && userPWD.value.length > 3){
 
       let loginURL:string = this.url.LOGIN, data:any = {};
@@ -42,6 +41,7 @@ export class LoginComponent implements OnInit {
       };
       this.promptMessageComponent.showLoader();
       let sub = this.dataService.httpPostCall(loginURL,data).subscribe(res =>{
+        sub.unsubscribe();
        
         if(res.status != 403){
             let userObj = {
@@ -53,12 +53,13 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['']);   
             this.promptMessageComponent.hideLoader();
         }else{
-          alert("Invailed user/pwd. Please try again.");
+          
+        this.promptMessageComponent.showToastMessage(res["msg"],"red",3000);
         }
-        sub.unsubscribe();
       },(err) =>{
         console.log("Error in LOGIN HTTP call ", err);
         sub.unsubscribe();
+        this.promptMessageComponent.showToastMessage(err["msg"],"red",3000);        
         this.promptMessageComponent.hideLoader();
       });
       }
@@ -83,27 +84,30 @@ export class LoginComponent implements OnInit {
  * 
  */
   signUp(){
-
-    this.isMessage=false;
+    
     if(this.signupModel.pwd1 !== this.signupModel.pwd2){
       this.signupErrorModel.commonMessage = true;
     }else{
       let signUpUrl = this.url.REGISTER_USER, data = {};
       data = { emailId : this.signupModel.email,
-              mobileNo: this.signupModel.name,
+              mobileNo: this.signupModel.mobileNo,
               pwd     : this.signupModel.pwd1,
               role    : ""
             };
       this.signupErrorModel.commonMessage = false;
 
-      let sub = this.dataService.httpPostCall(signUpUrl, data).subscribe( res => {
-        
-        this.isMessage=true;
+      let sub = this.dataService.httpPostCall("dfd/dfd/dfd/"+signUpUrl+"ddfd", data).subscribe( res => {
+        this.promptMessageComponent.showToastMessage(res["msg"],"green",3000);
+        //this.isMessage=true;
         this.isSignup = !this.isSignup;
+
         sub.unsubscribe();
       
       }, err => {
+        
+        this.isSignup = !this.isSignup;
         console.log("Error in SIGNUP HTTP call ", err);
+        this.promptMessageComponent.showToastMessage(err["msg"],"red",3000);
         sub.unsubscribe();
       });
 
@@ -118,12 +122,13 @@ export class LoginComponent implements OnInit {
     let forgetUrl = this.url.FORGETPWD + emailId;
     let sub = this.dataService.httpGetCall(forgetUrl).subscribe(res => {
       console.log("response:"+res);
-      this.isMessage=true;
-      this.forgetPassword = !this.forgetPassword;
+      this.forgetPassword = !this.forgetPassword;      
+      this.promptMessageComponent.showToastMessage(res["msg"],"green",3000);
       sub.unsubscribe();
     }, err => {
       console.log("Error in FORGETPWD HTTP call ", err);
-      sub.unsubscribe();
+      sub.unsubscribe();      
+      this.promptMessageComponent.showToastMessage(err["msg"],"red",3000);
     });
     //this.forgetPassword = false;
   }
