@@ -7,6 +7,8 @@ public interface MunsijiServiceConstants {
    public static final Character UNACTIVE = 'U';
    public static final Character DELETED = 'D';
    public static final String SUCCESS_MSG = "Saved Data Successfully";
+   public static final String SUCCESS_REGISTER_MSG = "Account Created Successfully";
+   public static final String FAILURE_REGISTER_MSG = "User Account already exists for the given email ID";
    public static final String OPER_MSG = "Operation Succeded Successfully";
    public static final String SEVER_ERROR = "Server Error! Please try after sometime";
    public static final int SUCCESS_STATUS_CODE = 200;

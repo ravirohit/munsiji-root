@@ -2,15 +2,17 @@ package com.munsiji.commonUtil;
 
 import org.springframework.security.core.userdetails.User;
 
+import com.munsiji.persistance.resource.UserDetails;
+
 public class UserContextUtils {
 	
-	private static final ThreadLocal<User> CONTEXT = new ThreadLocal<>();
+	private static final ThreadLocal<UserDetails> CONTEXT = new ThreadLocal<>();
 
-    public static void setUser(User user) {
+    public static void setUser(UserDetails user) {
         CONTEXT.set(user);
     }
 
-    public static User getUser() {
+    public static UserDetails getUser() {
         return CONTEXT.get();
     }
 

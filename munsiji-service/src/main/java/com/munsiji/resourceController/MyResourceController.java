@@ -123,7 +123,7 @@ public class MyResourceController {
         //return responseInfo;
         return new ResponseEntity<>(responseInfo,HttpStatus.FORBIDDEN);
     }
-	@RequestMapping(value="registeruser",method = RequestMethod.POST)
+	@RequestMapping(value="registeruser",method = RequestMethod.POST)   // done
 	public ResponseEntity<ResponseInfo> register(@RequestBody UserDetailReq userDetailReq){
 	  ResponseInfo responseInfo =  null;
 	  responseInfo = userAccountMgr.registerUser(userDetailReq);

@@ -42,84 +42,75 @@ public class UserAccountMgr {
 	
 	public ResponseInfo registerUser(UserDetailReq userDetailReq){
 		List<UserDetails> userList = null;
-		// validate the reqObj
-		//map it to the entity class object
 		ResponseInfo responseInfo = new ResponseInfo();
-		Boolean status = null;
 		UserDetails userDetails = dozerBeanMapper.map(userDetailReq, UserDetails.class);
 		System.out.println("registerUser userDetailDaoImp:"+userDetails.getEmailId()+" :"+userDetails.getPwd());
-		userList = userDetailDaoImp.getUserInfo(userDetails.getEmailId(),null,null);    //TODO ...
-		if(userList == null){
-			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
-			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
-			responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
-			responseInfo.setReason("");
-			return responseInfo;
-		}else if((userList.size() == 0)){
-			status = userDetailDaoImp.registerUser(userDetails,false);
-			if(status){
+		try{
+			userList = userDetailDaoImp.getUserInfo(userDetails.getEmailId(),null,null);   
+			if((userList.size() == 0)){
+				userDetailDaoImp.registerUser(userDetails,false);
 				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
-				responseInfo.setMsg("Account Created Successfully");
+				responseInfo.setMsg(MunsijiServiceConstants.SUCCESS_REGISTER_MSG);
 				responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
 				return responseInfo;
 			}
 			else{
 				responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
-				responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
-				responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
+				responseInfo.setMsg(MunsijiServiceConstants.FAILURE_REGISTER_MSG);
 				responseInfo.setReason("");
+				responseInfo.setStatusCode(MunsijiServiceConstants.MULTIPLE_RECORD_ERROR_CODE);
 				return responseInfo;
 			}
-		}
-		else{
-			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
-			responseInfo.setMsg("User Account already exists for the given email ID");
-			responseInfo.setReason("");
-			responseInfo.setStatusCode(MunsijiServiceConstants.MULTIPLE_RECORD_ERROR_CODE);
-			return responseInfo;
-		}
+	  }catch(Exception e){
+		  e.printStackTrace();
+		  responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+		  responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+		  responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
+		  responseInfo.setReason("");
+		  return responseInfo;
+	  }
+		
 	}
 	public ResponseInfo login(Login login) throws UnsupportedEncodingException{
 		ResponseInfo responseInfo = new ResponseInfo();
 		List<UserDetails> userList = null;
-		Boolean status = null;
-		userList = userDetailDaoImp.getUserInfo(login.getUserName(),login.getPwd(),null);
-		if((userList.size() == 1)){
-			UserDetails userDetails = userList.get(0);
-			Random random = new Random();
-			int n = random.nextInt(1000);
-			String str = login.getUserName() + n +login.getPwd();
-			byte[] byteArray = str.getBytes("utf-8");
-			String base64String =Base64.getEncoder().encodeToString(byteArray);
-			String keyToStore = new StringBuffer("|").append(Base64.getEncoder().encodeToString(byteArray)).append("|").toString();
-			if((userDetails.getKey() == null)||(userDetails.getKey().trim().equals("")))
-			{
-				userDetails.setKey(keyToStore);
-			}
-			else{
-				String storeKey = userDetails.getKey();
-				String keyAfterAppendNewKey = new StringBuffer(storeKey).append(keyToStore).toString();
-				userDetails.setKey(keyAfterAppendNewKey);
-				
-			}
-			status = userDetailDaoImp.registerUser(userDetails, true);
-			if(status){
+		try{
+			userList = userDetailDaoImp.getUserInfo(login.getUserName(),login.getPwd(),null);
+			if((userList.size() == 1)){
+				UserDetails userDetails = userList.get(0);
+				/*Random random = new Random();
+				int n = random.nextInt(1000);
+				String str = login.getUserName() + n +login.getPwd();
+				byte[] byteArray = str.getBytes("utf-8");
+				String base64String =Base64.getEncoder().encodeToString(byteArray);
+				String keyToStore = new StringBuffer("|").append(Base64.getEncoder().encodeToString(byteArray)).append("|").toString();
+				if((userDetails.getKey() == null)||(userDetails.getKey().trim().equals("")))
+				{
+					userDetails.setKey(keyToStore);
+				}
+				else{
+					String storeKey = userDetails.getKey();
+					String keyAfterAppendNewKey = new StringBuffer(storeKey).append(keyToStore).toString();
+					userDetails.setKey(keyAfterAppendNewKey);
+					
+				}*/
+				String base64String = userDetails.addCurrentKeyForLogin(login.getUserName(), login.getPwd());
+				userDetailDaoImp.registerUser(userDetails, true);				
 				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
 				responseInfo.setMsg(base64String);
 				responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
 			}
 			else{
 				responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
-				responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
-				responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
-				responseInfo.setReason("");
+				responseInfo.setMsg("Username or password is wrong");
+				responseInfo.setReason("User is not authorized");
+				responseInfo.setStatusCode(MunsijiServiceConstants.AUTHORIZATION_ERROR_CODE);
 			}
-		}
-		else{
+		}catch(Exception e){
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
-			responseInfo.setMsg("Username or password is wrong");
-			responseInfo.setReason("User is not authorized");
-			responseInfo.setStatusCode(MunsijiServiceConstants.AUTHORIZATION_ERROR_CODE);
+			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+			responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
+			responseInfo.setReason("");
 		}
 		return responseInfo;
 	}
@@ -127,7 +118,7 @@ public class UserAccountMgr {
 		ResponseInfo responseInfo = new ResponseInfo();
 		GeneratePassword generatePassword = null;
 		List<UserDetails> userList = null;
-		User userInfo = UserContextUtils.getUser();
+		UserDetails userInfo = UserContextUtils.getUser();
 		if(newPwd != null){
 			email = userInfo.getUsername();
 		}
@@ -179,36 +170,27 @@ public class UserAccountMgr {
 		List<UserDetails> userList = null;
 		boolean status = false;
 		ResponseInfo responseInfo = new ResponseInfo();
-		User userInfo = UserContextUtils.getUser();
-		userList = userDetailDaoImp.getUserInfo(userInfo.getUsername(),null,null);    //TODO ...
-		System.out.println("user id while logging out:"+userInfo.getUsername());
-		if((userList.size() == 1)){
-			UserDetails userDetails = userList.get(0);
-			String storeKey = userDetails.getKey();
-			String logOutKeyStr = new StringBuffer("|").append(userInfo.getPassword()).append("|").toString();
-			int keyIndex = storeKey.indexOf(logOutKeyStr);
-			String strBeforeKey = storeKey.substring(0,keyIndex);
-			String strAfterKey = storeKey.substring(keyIndex+logOutKeyStr.length());
-			String remainKey = new StringBuffer(strBeforeKey).append(strAfterKey).toString();
-			userDetails.setKey(remainKey);
-			status = userDetailDaoImp.registerUser(userDetails, true);
-			if(status){
-				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
-				responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
-				responseInfo.setMsg("User logout successfully");
-			}
-			else{
-				responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
-				responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
-				responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
-				responseInfo.setReason("");
-			}
+		UserDetails userDetails = UserContextUtils.getUser();
+		System.out.println("user id while logging out:"+userDetails.getUsername());
+		/*String storeKey = userDetails.getKey();
+		String logOutKeyStr = new StringBuffer("|").append(userDetails.getCurrentLoginKey()).append("|").toString();
+		int keyIndex = storeKey.indexOf(logOutKeyStr);
+		String strBeforeKey = storeKey.substring(0,keyIndex);
+		String strAfterKey = storeKey.substring(keyIndex+logOutKeyStr.length());
+		String remainKey = new StringBuffer(strBeforeKey).append(strAfterKey).toString();
+		userDetails.setKey(remainKey); */
+		userDetails.removeCurrentKeyForLogout();
+		status = userDetailDaoImp.registerUser(userDetails, true);
+		if(status){
+			responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+			responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
+			responseInfo.setMsg("User logout successfully");
 		}
 		else{
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
-			responseInfo.setMsg("multiple user exist for the provided emailId");
-			responseInfo.setStatusCode(MunsijiServiceConstants.MULTIPLE_RECORD_ERROR_CODE);
-			responseInfo.setReason("One emailId can't for multiple user");
+			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+			responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
+			responseInfo.setReason("");
 		}
 		return responseInfo;
 		
@@ -232,7 +214,7 @@ public class UserAccountMgr {
 	  UserAccount uerAccount = dozerBeanMapper.map(userAccountReq, UserAccount.class); // does not convert String date to Date
 	  uerAccount.setCrteDate(date);
 	  uerAccount.setStatus(MunsijiServiceConstants.ACTIVE);
-	  User userInfo = UserContextUtils.getUser();
+	  UserDetails userInfo = UserContextUtils.getUser();
 	  user = new UserDetails();      //TODO...
 	  user.setEmailId(userInfo.getUsername());
 	  System.out.println("<<<< userId for create account:"+userInfo.getUsername());   // username is email_id
@@ -283,7 +265,7 @@ public class UserAccountMgr {
 		AccTypeMapToName accountInfo = new AccTypeMapToName();
 		Map<String,List<String>> accTypeMaptoName = accountInfo.getAccountDetail();
 		try{
-			User userInfo = UserContextUtils.getUser();
+			UserDetails userInfo = UserContextUtils.getUser();
 			List<UserAccount> userAccountList = userDetailDaoImp.getAccountInfo(userInfo.getUsername(),null,null);   // username is email Id
 			for(UserAccount userAccount: userAccountList){
 				String accType = userAccount.getType();
