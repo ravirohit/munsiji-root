@@ -42,6 +42,7 @@ import com.munsiji.customthread.CustomExecutors;
 import com.munsiji.customthread.DocCleanThread;
 import com.munsiji.hibernateUtil.HibernateCfg;
 import com.munsiji.model.Login;
+import com.munsiji.model.PwdReset;
 import com.munsiji.persistance.resource.Test;
 import com.munsiji.persistance.resource.UserDetails;
 import com.munsiji.reqresObject.EnumTest;
@@ -123,7 +124,7 @@ public class MyResourceController {
         //return responseInfo;
         return new ResponseEntity<>(responseInfo,HttpStatus.FORBIDDEN);
     }
-	@RequestMapping(value="registeruser",method = RequestMethod.POST)
+	@RequestMapping(value="registeruser",method = RequestMethod.POST)   // done
 	public ResponseEntity<ResponseInfo> register(@RequestBody UserDetailReq userDetailReq){
 	  ResponseInfo responseInfo =  null;
 	  responseInfo = userAccountMgr.registerUser(userDetailReq);
@@ -176,6 +177,13 @@ public class MyResourceController {
 		 else{
 			  return new ResponseEntity<>(responseInfo,HttpStatus.BAD_REQUEST);
 		 }
+	}
+	@RequestMapping(value="resetpassword",method=RequestMethod.POST)
+	public ResponseEntity<ResponseInfo> resetPwd(@RequestBody PwdReset pwdReset){
+		System.out.println("pwdreset resource method get called:");
+		ResponseInfo responseInfo = null;
+		responseInfo = userAccountMgr.pwdReset(pwdReset);
+		return new ResponseEntity<>(responseInfo,HttpStatus.OK);
 	}
 	@RequestMapping(value="logout",method=RequestMethod.GET)
 	public ResponseEntity<ResponseInfo> logout(){

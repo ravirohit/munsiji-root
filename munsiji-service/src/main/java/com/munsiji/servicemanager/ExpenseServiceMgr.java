@@ -50,7 +50,7 @@ public class ExpenseServiceMgr {
 	
 	public ResponseInfo addExpense(UserExpenseReq userExpenseReq){
 	  //user.setEmailId("ravi.swd@gmail.com");
-	  User userInfo = UserContextUtils.getUser();
+		UserDetails userInfo = UserContextUtils.getUser();
 	  Date date = null;
 	  List<UserAccount> userAccountList = null;
 	  Boolean status = null;
@@ -99,7 +99,7 @@ public class ExpenseServiceMgr {
 	  return responseInfo;
 	}
 	public ResponseInfo getExpense(String accTypeReq,String accName, String startDateStr,String endDateStr){
-	  User userInfo = UserContextUtils.getUser();
+		UserDetails userInfo = UserContextUtils.getUser();
 	  List<String> list = null;
 	  List<Object[]> userObjectExpenseList =null;
 	  List<UserExpense> userExpensePerAccList = null;
@@ -293,7 +293,7 @@ public class ExpenseServiceMgr {
 		String startDate = null;
 	    String endDate = null;
 	    String userName = null;
-		User userInfo = UserContextUtils.getUser();
+	    UserDetails userInfo = UserContextUtils.getUser();
 		if((userInfo == null) || (userInfo.getUsername() == null)){
 			userName = email;  // TODO  need to delete email param
 		}

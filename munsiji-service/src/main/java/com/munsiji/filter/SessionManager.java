@@ -50,27 +50,28 @@ public class SessionManager implements HandlerInterceptor{
 		List<GrantAuthCol> list= new ArrayList<>();
 		if(endpointUrl.contains("login") || endpointUrl.contains("register") || endpointUrl.contains("download") || 
 				(endpointUrl.contains("forgetpassword") && ((queryStr != null) && (queryStr.contains("emailId"))))){
-			return flag;
+			return true;
 		}
 		if((req.getHeader("auth-key") == null)||(req.getHeader("auth-key").trim() == "")){
 			res.setStatus(MunsijiServiceConstants.BAD_REQUEST_ERROR_CODE);
 			res.sendError(MunsijiServiceConstants.BAD_REQUEST_ERROR_CODE, "Bad Request");
 			return false;
 		}
-		String key = new StringBuffer("|%").append(req.getHeader("auth-key")).append("%|").toString();
-		System.out.println("calling from filter");
+		String key = new StringBuffer("%|").append(req.getHeader("auth-key")).append("|%").toString();
+		System.out.println("Authenticating User");
 		userList = userDetailDaoImp.getUserInfo(null,null,key);
-		System.out.println("called from filter");
 		if(userList.size() == 0){
+			System.out.println("User is not authorized");
 			flag = false;
 			res.setStatus(MunsijiServiceConstants.AUTHORIZATION_ERROR_CODE);
-			res.sendError(MunsijiServiceConstants.AUTHORIZATION_ERROR_CODE, "User is not Authorized");
+			res.sendError(MunsijiServiceConstants.AUTHORIZATION_ERROR_CODE, "User is not suthorized");
 			res.setContentType("application/json;charset=UTF-8");
 		}
-		else{
+		else if(userList.size() == 1){
 			UserDetails userDetails = userList.get(0);
-			User user = new User(userDetails.getEmailId(),req.getHeader("auth-key"),list);
-			UserContextUtils.setUser(user);
+			userDetails.setCurrentLoginKey(req.getHeader("auth-key"));
+			//User user = new User(userDetails.getEmailId(),req.getHeader("auth-key"),list);
+			UserContextUtils.setUser(userDetails);
 		}
 		//Thread.sleep(5000);
 		return flag;
