@@ -53,8 +53,8 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['']);   
             this.promptMessageComponent.hideLoader();
         }else{
-          
-        this.promptMessageComponent.showToastMessage(res["msg"],"red",3000);
+          console.log("ERROR",res);
+          this.promptMessageComponent.showToastMessage(res["msg"],"red",3000);
         }
       },(err) =>{
         console.log("Error in LOGIN HTTP call ", err);
@@ -96,7 +96,7 @@ export class LoginComponent implements OnInit {
             };
       this.signupErrorModel.commonMessage = false;
 
-      let sub = this.dataService.httpPostCall("dfd/dfd/dfd/"+signUpUrl+"ddfd", data).subscribe( res => {
+      let sub = this.dataService.httpPostCall(signUpUrl, data).subscribe( res => {
         this.promptMessageComponent.showToastMessage(res["msg"],"green",3000);
         //this.isMessage=true;
         this.isSignup = !this.isSignup;

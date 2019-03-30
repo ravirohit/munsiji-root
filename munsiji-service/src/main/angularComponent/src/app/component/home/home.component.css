@@ -15,10 +15,6 @@ tr.hover-cl{
     overflow: auto;
     width: 100%;
 }
-label {
-    font-weight: 100;
-    margin:0 7px;
-}
 .input-field:not(.inline){
     display: inline-block;
 }

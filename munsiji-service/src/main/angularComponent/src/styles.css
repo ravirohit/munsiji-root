@@ -45,14 +45,46 @@ body{
 div .input-field label {
     color: #fff;
 }
-select option {
-    background: #fb1844;
-    box-shadow: 1px 1px grey;
-    outline: none;
+select.c-select {
+    background-color: rgba(255,255,255,0.9);
+    width: auto;
+    padding: 5px;
     border: none;
-    font-size: 1.2em;
+    border-radius: 0px;
+    height: 3rem;
+    display: inline-block;
+    color: #000;
+    cursor: pointer;
+    margin: 0.7em 0;
 }
 
+select.c-select:hover, select.c-select:focus, textarea.c-textarea:hover, textarea.c-textarea:focus{
+    box-shadow: 0.2em 0.2em 0.2em #000;
+    letter-spacing: 0.1em;
+}
+select option {
+    background: #467da0;
+    padding: 1.5em;
+    box-shadow: 3px 3px 1px #000;
+    outline: none;
+    border: none;
+    height: 2em;
+    margin: 3em;
+    font-size: x-large;
+    cursor: pointer;
+}
+label.c-label {
+    font-weight: 600;
+    margin: 0px;
+    display: block;
+    font-size: large;
+    color: #fff;
+}
+textarea.c-textarea {    
+    padding: 6px 0 0 12px;
+    background: #eaf1f6;
+    color: #000;
+}
 
 .hidden {display: none;}
 .btn:hover{cursor: pointer;}

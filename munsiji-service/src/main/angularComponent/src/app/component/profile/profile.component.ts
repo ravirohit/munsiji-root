@@ -22,9 +22,9 @@ export class ProfileComponent implements OnInit {
                   newPwd2:''
                 };
   profileModel = {
-    "userName": null,
-    "emailId": "ravi",
-    "mobNo": "ravi",
+    "userName": '',
+    "emailId": "",
+    "mobNo": "",
     "accountInfo": {
         "personalexp": [
             {

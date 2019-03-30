@@ -1,0 +1,7 @@
+select.c-select{
+    width: 100%;
+}
+select.disabled.c-select:not(disabled):hover, select.disabled.c-select:not(disabled):focus{
+    box-shadow: none;
+    cursor: none;
+}
