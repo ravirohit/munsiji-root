@@ -19,7 +19,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 
 @Entity
 @Table(name="user_details")
-public class UserDetails implements org.springframework.security.core.userdetails.UserDetails{
+public class UserDetails{
   @Id
   @Column(name = "email_id", nullable = false, unique = true)
   String emailId;
@@ -79,36 +79,6 @@ public class UserDetails implements org.springframework.security.core.userdetail
 	public void setRole(String role) {
 		this.role = role;
 	}
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		String[] roleList = {this.role};
-		return AuthorityUtils.createAuthorityList(roleList);   //TODO... need to create role variable
-	}
-	@Override
-	public String getPassword() {
-		return pwd;
-	}
-	@Override
-	public String getUsername() {
-		return emailId;             //  here username is the login user name which is emailID
-	}
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
-	  
     public void removeCurrentKeyForLogout(){
     	//String storeKey = userDetails.getKey();
 		String currentKey = new StringBuffer("|").append(getCurrentLoginKey()).append("|").toString();
@@ -119,11 +89,12 @@ public class UserDetails implements org.springframework.security.core.userdetail
     }
     public String addCurrentKeyForLogin(String uName, String pwd) throws UnsupportedEncodingException{
     	Random random = new Random();
-		int n = random.nextInt(1000);
+		int n = random.nextInt(10000);
 		String str = uName + n + pwd;
 		byte[] byteArray = str.getBytes("utf-8");
-		String base64String =Base64.getEncoder().encodeToString(byteArray);
-		String keyToStore = new StringBuffer("|").append(Base64.getEncoder().encodeToString(byteArray)).append("|").toString();
+	//	String base64String =Base64.getEncoder().encodeToString(byteArray);
+		String base64String = convertStringToHexString(Base64.getEncoder().encodeToString(byteArray));
+		String keyToStore = new StringBuffer("|").append(base64String).append("|").toString();
 		if((getKey() == null)||(getKey().trim().equals("")))
 		{
 		   setKey(keyToStore);
@@ -136,7 +107,18 @@ public class UserDetails implements org.springframework.security.core.userdetail
 		}
 		return base64String;
     }
-  
+    private String convertStringToHexString(String base64String){
+    	StringBuffer sb = new StringBuffer();
+    	try {
+			byte[] base64StringByteArray = base64String.getBytes("utf-8");
+			for(byte b:base64StringByteArray){
+				sb.append(String.format("%02X", b));
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+    	return sb.toString();
+    }
   
 	
 }

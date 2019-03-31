@@ -28,7 +28,7 @@ public class CustomUserDetialsService implements UserDetailsService{
 	  if(usrDetailsList == null || usrDetailsList.size() == 0)
 		  return null;
 	  com.munsiji.persistance.resource.UserDetails usrDetails = usrDetailsList.get(0);
-	  return usrDetails;
+	  return null;//usrDetails;
 	}
 
 }

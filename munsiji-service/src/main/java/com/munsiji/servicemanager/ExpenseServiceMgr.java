@@ -63,7 +63,7 @@ public class ExpenseServiceMgr {
 		UserExpense userExpense = dozerBeanMapper.map(userExpenseReq, UserExpense.class); // does not convert String date to Date
 		userExpense.setDateOfExpnse(date);
 		  //TODO...
-		List<UserAccount> userAccountLst = userDetailDaoImp.getAccountInfo(userInfo.getUsername(), userExpenseReq.getAccType(), userExpenseReq.getAccName());
+		List<UserAccount> userAccountLst = userDetailDaoImp.getAccountInfo(userInfo.getEmailId(), userExpenseReq.getAccType(), userExpenseReq.getAccName());
 		UserAccount userAccount = null;
 		if((userAccountLst == null) ||(userAccountLst.size() == 0)){
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
@@ -75,7 +75,7 @@ public class ExpenseServiceMgr {
 		}
 		userAccount = userAccountLst.get(0);
 		userExpense.setUserAccount(userAccount);
-		UserDetails userDetails = userDetailDaoImp.getUserInfo(userInfo.getUsername(),null,null).get(0);
+		UserDetails userDetails = userDetailDaoImp.getUserInfo(userInfo.getEmailId(),null,null).get(0);
 	    userExpense.setUserDetails(userDetails);
 	    //System.out.println("expense saved to the db:"+mapper.writeValueAsString(userExpense));
 	    status = expenseDetailDaoImp.saveExpense(userExpense);
@@ -116,11 +116,11 @@ public class ExpenseServiceMgr {
 	    	  if(endDateStr != null)
 	    	   endDate = DateUtil.convertStringToString(endDateStr);
     	  }
-    		userObjectExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq,accName,userInfo.getUsername(), startDate, endDate,null);
+    		userObjectExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq,accName,userInfo.getEmailId(), startDate, endDate,null);
     		if(accName != null){
     			userExpensePerAccList = convertObjectArrayToModelForAcc(userObjectExpenseList);
 		    //userExpenseList = expenseDetailDaoImp.getUsrExpense(accTypeReq, user.getEmailId());
-    			responseInfo = getExpensePerAccType(userExpensePerAccList,userInfo.getUsername());
+    			responseInfo = getExpensePerAccType(userExpensePerAccList,userInfo.getEmailId());
     		}
     		else{
     			//userTotalExepense = convertObjectArrayToModel(userObjectExpenseList);
@@ -294,11 +294,11 @@ public class ExpenseServiceMgr {
 	    String endDate = null;
 	    String userName = null;
 	    UserDetails userInfo = UserContextUtils.getUser();
-		if((userInfo == null) || (userInfo.getUsername() == null)){
+		if((userInfo == null) || (userInfo.getEmailId() == null)){
 			userName = email;  // TODO  need to delete email param
 		}
 		else{
-			userName = userInfo.getUsername();
+			userName = userInfo.getEmailId();
 		}
 		 try{
 		 if(startDateStr != null){

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.munsiji.commonUtil.DateUtil;
+import com.munsiji.commonUtil.EncryptDecryptData;
 import com.munsiji.commonUtil.GeneratePassword;
 import com.munsiji.commonUtil.MunsijiServiceConstants;
 import com.munsiji.commonUtil.UserContextUtils;
@@ -39,12 +40,16 @@ public class UserAccountMgr {
 	
 	public ResponseInfo registerUser(UserDetailReq userDetailReq){
 		List<UserDetails> userList = null;
+		EncryptDecryptData encryptDecryptData = new EncryptDecryptData();
 		ResponseInfo responseInfo = new ResponseInfo();
 		UserDetails userDetails = dozerBeanMapper.map(userDetailReq, UserDetails.class);
 		System.out.println("registerUser userDetailDaoImp:"+userDetails.getEmailId()+" :"+userDetails.getPwd());
 		try{
 			userList = userDetailDaoImp.getUserInfo(userDetails.getEmailId(),null,null);   
 			if((userList.size() == 0)){
+				String hashedPwdValue = encryptDecryptData.convertTextToHashedValue(userDetails.getPwd());
+				System.out.println("text value for pwd:"+userDetails.getPwd()+"  hashed value:"+hashedPwdValue);
+				userDetails.setPwd(hashedPwdValue);
 				userDetailDaoImp.registerUser(userDetails,false);
 				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
 				responseInfo.setMsg(MunsijiServiceConstants.SUCCESS_REGISTER_MSG);
@@ -71,8 +76,10 @@ public class UserAccountMgr {
 	public ResponseInfo login(Login login) throws UnsupportedEncodingException{
 		ResponseInfo responseInfo = new ResponseInfo();
 		List<UserDetails> userList = null;
+		EncryptDecryptData encryptDecryptData = new EncryptDecryptData();
 		try{
-			userList = userDetailDaoImp.getUserInfo(login.getUserName(),login.getPwd(),null);
+			String pwd = encryptDecryptData.convertTextToHashedValue(login.getPwd());
+			userList = userDetailDaoImp.getUserInfo(login.getUserName(),pwd,null);
 			if((userList.size() == 1)){
 				UserDetails userDetails = userList.get(0);
 				/*Random random = new Random();
@@ -116,7 +123,7 @@ public class UserAccountMgr {
 		GeneratePassword generatePassword = null;
 		UserDetails userDetails = UserContextUtils.getUser();
 		if(newPwd != null){
-			email = userDetails.getUsername();
+			email = userDetails.getEmailId();
 		}
 		//userList =  userDetailDaoImp.getUserInfo(email,null,null);
 		
@@ -167,17 +174,23 @@ public class UserAccountMgr {
 		try{
 			UserDetails userDetails = UserContextUtils.getUser();
 			if(pwdReset.getCurrentPwd() == null){
-				responseInfo.setMsg(MunsijiServiceConstants.FAILURE_PWD_RESET);
+				responseInfo.setMsg(MunsijiServiceConstants.FAILURE_NEW_PWD_RESET);
 				responseInfo.setReason("");
 				responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 				responseInfo.setStatusCode(MunsijiServiceConstants.BAD_REQUEST_ERROR_CODE);
 			}
-			else if(userDetails.getPassword().equals(pwdReset.getCurrentPwd())){
+			else if(userDetails.getPwd().equals(pwdReset.getCurrentPwd())){
 				userDetails.setPwd(pwdReset.getNewPwd1());
 				userDetails.setKey("");
 				userDetails.setCurrentLoginKey("");
 				userDetailDaoImp.registerUser(userDetails, true);
 				responseInfo.setMsg(MunsijiServiceConstants.SUCCESS_PWD_RESET);
+				responseInfo.setReason("");
+				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+				responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
+			}
+			else{
+				responseInfo.setMsg(MunsijiServiceConstants.FAILURE_OLD_PWD_RESET);
 				responseInfo.setReason("");
 				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
 				responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
@@ -198,7 +211,7 @@ public class UserAccountMgr {
 		boolean status = false;
 		ResponseInfo responseInfo = new ResponseInfo();
 		UserDetails userDetails = UserContextUtils.getUser();
-		System.out.println("user id while logging out:"+userDetails.getUsername());
+		System.out.println("user id while logging out:"+userDetails.getEmailId());
 		/*String storeKey = userDetails.getKey();
 		String logOutKeyStr = new StringBuffer("|").append(userDetails.getCurrentLoginKey()).append("|").toString();
 		int keyIndex = storeKey.indexOf(logOutKeyStr);
@@ -223,7 +236,7 @@ public class UserAccountMgr {
 		
 	}
 	public ResponseInfo createAccount(UserAccountReq userAccountReq){ 
-	  UserDetails user = null;
+	//  UserDetails user = null;
 	  Date date = null;
 	  List<UserAccount> userAccountList = null;
 	  Boolean status = null;
@@ -241,51 +254,53 @@ public class UserAccountMgr {
 	  UserAccount uerAccount = dozerBeanMapper.map(userAccountReq, UserAccount.class); // does not convert String date to Date
 	  uerAccount.setCrteDate(date);
 	  uerAccount.setStatus(MunsijiServiceConstants.ACTIVE);
-	  UserDetails userInfo = UserContextUtils.getUser();
-	  user = new UserDetails();      //TODO...
-	  user.setEmailId(userInfo.getUsername());
-	  System.out.println("<<<< userId for create account:"+userInfo.getUsername());   // username is email_id
+	  UserDetails user = UserContextUtils.getUser();
+	//  user = new UserDetails();      //TODO...
+	  //user.setEmailId(userInfo.getUsername());
+	  System.out.println("userId for create account:"+user.getEmailId());   // username is email_id
 	  uerAccount.setUserDetails(user);
 	  try{ 
 		   System.out.println("object before mapping to entity:"+mapper.writeValueAsString(uerAccount));
+		 
+		  userAccountList = userDetailDaoImp.getAccountInfo(user.getEmailId(), uerAccount.getType(), uerAccount.getName());
+		  if(userAccountList == null){
+		    responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+			responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
+			responseInfo.setReason("");
+			//return responseInfo;
 		  }
-		  catch(Exception e){
-			  System.out.println("exception occur in mapper:"+e);
-			  
+		  else if(userAccountList.size() == 0){
+			  status = userDetailDaoImp.saveAccountInfo(uerAccount);
+				if(status){
+					responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+					responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
+					responseInfo.setMsg(MunsijiServiceConstants.SUCCESS_ACCT_CREATE);
+					//return responseInfo;
+				}
+				else{
+					responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+					responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+					responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
+					responseInfo.setReason("");
+					//return responseInfo;
+				}
 		  }
-	  userAccountList = userDetailDaoImp.getAccountInfo(user.getEmailId(), uerAccount.getType(), uerAccount.getName());
-	  if(userAccountList == null){
-	    responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
-		responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
-		responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
-		responseInfo.setReason("");
-		return responseInfo;
+		  else{
+			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+			responseInfo.setStatusCode(MunsijiServiceConstants.MULTIPLE_RECORD_ERROR_CODE);
+			responseInfo.setMsg(MunsijiServiceConstants.FAILURE_DUPLICATE_ACCOUNT);
+			responseInfo.setReason("");
+			//return responseInfo;
+		  }
 	  }
-	  else if(userAccountList.size() == 0){
-		  status = userDetailDaoImp.saveAccountInfo(uerAccount);
-			if(status){
-				responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
-				responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
-				responseInfo.setMsg("Investment account type Created Successfully");
-				return responseInfo;
-			}
-			else{
-				responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
-				responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
-				responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
-				responseInfo.setReason("");
-				return responseInfo;
-			}
+	  catch(Exception e){
+		  System.out.println("exception occur in mapper:"+e);
+		  responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+		  responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+		  responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 	  }
-	  else{
-		responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
-		responseInfo.setStatusCode(MunsijiServiceConstants.MULTIPLE_RECORD_ERROR_CODE);
-		responseInfo.setMsg("Investment account type already exist for the given name and type");
-		responseInfo.setReason("Dublicate account under one account type can't be created");
-		return responseInfo;
-		  
-	  }
-	  
+	  return responseInfo;
 	}
 	public ResponseInfo getAccountInfo(String accTypeToBeUsed){
 		ResponseInfo responseInfo = new ResponseInfo() ;
@@ -293,7 +308,7 @@ public class UserAccountMgr {
 		Map<String,List<String>> accTypeMaptoName = accountInfo.getAccountDetail();
 		try{
 			UserDetails userInfo = UserContextUtils.getUser();
-			List<UserAccount> userAccountList = userDetailDaoImp.getAccountInfo(userInfo.getUsername(),null,null);   // username is email Id
+			List<UserAccount> userAccountList = userDetailDaoImp.getAccountInfo(userInfo.getEmailId(),null,null);   // username is email Id
 			for(UserAccount userAccount: userAccountList){
 				String accType = userAccount.getType();
 				if(accTypeMaptoName.get(accType) == null){
@@ -302,16 +317,15 @@ public class UserAccountMgr {
 				accTypeMaptoName.get(accType).add(userAccount.getName());
 			}
 			responseInfo.setData(accountInfo);
-			responseInfo.setMsg("Account Details for addExpense screen");
+			responseInfo.setMsg(MunsijiServiceConstants.ACCT_INFO);
 			responseInfo.setReason("");
 			responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
 			responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
 		}
 		catch(Exception e){
-			System.out.println("Exception occur while fetching data from DB");
+			System.out.println("Exception occur while fetching data from DB:"+e);
 			responseInfo.setData(null);
-			responseInfo.setMsg("Account Details for addExpense screen");
-			responseInfo.setReason("Exception occur while fetching data from DB");
+			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 			responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 		}
@@ -323,43 +337,42 @@ public class UserAccountMgr {
 		List<UserDetails> userList = null;
 		List<UserAccount> userAccountList = null;
 		UserProfileInfo userProfileInfo = new UserProfileInfo();
-		String emailId = UserContextUtils.getUser().getUsername();
+		//String emailId = UserContextUtils.getUser().getUsername();
+		UserDetails userDetails = UserContextUtils.getUser();
 		System.out.println("getting user info");
 		try{
-			userList = userDetailDaoImp.getUserInfo(emailId, null, null);
+			//userList = userDetailDaoImp.getUserInfo(emailId, null, null);
 			
-			if((userList.size() == 1)){
-				UserDetails userDetails = userList.get(0);
+		//	if((userList.size() == 1)){
+				// UserDetails userDetails = userList.get(0);
 				userProfileInfo.setEmailId(userDetails.getEmailId());
 				userProfileInfo.setUserName(userDetails.getUname());
 				userProfileInfo.setMobNo(userDetails.getMobileNo());
-			}
+			//}
 			System.out.println("getting user account info");
-			userAccountList = userDetailDaoImp.getAccountInfo(emailId, null, null);
+			userAccountList = userDetailDaoImp.getAccountInfo(userDetails.getEmailId(), null, null);
 			Map<String,List<AccExpenseData>> accountInfo = userProfileInfo.getAccountInfo();
-		
 			for(UserAccount userAccount: userAccountList){
 				if(accountInfo.get(userAccount.getType()) == null){
 					accountInfo.put(userAccount.getType(), new ArrayList<AccExpenseData>());
 				}
 				String name = userAccount.getName();
 				Float amount = userAccount.getInvestedAmnt();;
-			   String date = DateUtil.convertDBStringToViewString(userAccount.getCrteDate());
-			   String desc = userAccount.getDesc();
+			    String date = DateUtil.convertDBStringToViewString(userAccount.getCrteDate());
+			    String desc = userAccount.getDesc();
 				AccExpenseData accExpenseData = new AccExpenseData(name, amount, date, desc);
 				accountInfo.get(userAccount.getType()).add(accExpenseData);
 			}
 			responseInfo.setData(userProfileInfo);
-			responseInfo.setMsg("User profile details");
+			responseInfo.setMsg(MunsijiServiceConstants.USER_PROFILE_INFO);
 			responseInfo.setReason("");
 			responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
 			responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
 		}
 		catch(Exception e){
-			System.out.println("Exception occur while fetching profile data");
+			System.out.println("Exception occur while fetching profile data:"+e);
 			responseInfo.setData(null);
-			responseInfo.setMsg("Account Details for addExpense screen");
-			responseInfo.setReason("Exception occur while fetching data from DB");
+			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 			responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
 		}

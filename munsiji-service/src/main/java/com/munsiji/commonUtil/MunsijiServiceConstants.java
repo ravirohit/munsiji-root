@@ -17,7 +17,12 @@ public interface MunsijiServiceConstants {
    public static final int MULTIPLE_RECORD_ERROR_CODE = 409;
    public static final int BAD_REQUEST_ERROR_CODE = 400;
    public static final String SUCCESS_PWD_RESET = "Password hass been changed successfully";
-   public static final String FAILURE_PWD_RESET = "Provided password is invalid";
+   public static final String FAILURE_OLD_PWD_RESET = "Provided old password is invalid";
+   public static final String FAILURE_NEW_PWD_RESET = "Provided new password is invalid";
+   public static final String SUCCESS_ACCT_CREATE = "Investment account type Created Successfully";
+   public static final String FAILURE_DUPLICATE_ACCOUNT = "Investment account type already exist for the given name and type";
+   public static final String ACCT_INFO = "Account Details for addExpense screen";
+   public static final String USER_PROFILE_INFO = "User profile information";
    
    
 }
