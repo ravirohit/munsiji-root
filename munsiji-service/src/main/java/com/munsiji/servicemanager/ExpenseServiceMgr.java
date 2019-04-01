@@ -156,7 +156,7 @@ public class ExpenseServiceMgr {
 		  //String crtDate = String.valueOf(object[3]);
 		  Date crtDate = (Date)object[3];
 		  String desc = (String)object[4];
-		  AccExpenseData accExpenseData = new AccExpenseData(accName,amount,DateUtil.convertDBStringToViewString(crtDate),desc);
+		  AccExpenseData accExpenseData = new AccExpenseData(accName,amount,DateUtil.convertDBStringToViewString(crtDate),desc,true);
 		  if(accTypeToExp.get(accType) == null){
 			  accToExp.put(accName, accExpenseData);
 			  accTypeToExp.put(accType, accToExp);
@@ -249,7 +249,7 @@ public class ExpenseServiceMgr {
 		     String name = accMap.get(userExpense.getUserAccount().getId()).getName();
 		     accType = accMap.get(userExpense.getUserAccount().getId()).getType();
 		     accExpnseData = new AccExpenseData(accMap.get(userExpense.getUserAccount().getId()).getName(),
-		    		 		userExpense.getAmount(),DateUtil.convertDBStringToViewString(userExpense.getDateOfExpnse()), userExpense.getDesc());
+		    		 		userExpense.getAmount(),DateUtil.convertDBStringToViewString(userExpense.getDateOfExpnse()), userExpense.getDesc(), true);
 		   /*  accExpnseData.setAccName();
 		     accExpnseData.setAmnt();
 		     accExpnseData.setDesc();

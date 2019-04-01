@@ -253,7 +253,7 @@ public class UserAccountMgr {
 	  userAccountReq.setCrteDate(null);
 	  UserAccount uerAccount = dozerBeanMapper.map(userAccountReq, UserAccount.class); // does not convert String date to Date
 	  uerAccount.setCrteDate(date);
-	  uerAccount.setStatus(MunsijiServiceConstants.ACTIVE);
+	  uerAccount.setStatus(true);
 	  UserDetails user = UserContextUtils.getUser();
 	//  user = new UserDetails();      //TODO...
 	  //user.setEmailId(userInfo.getUsername());
@@ -334,7 +334,6 @@ public class UserAccountMgr {
 	}
 	public ResponseInfo getUserProfile(){
 		ResponseInfo responseInfo = new ResponseInfo();
-		List<UserDetails> userList = null;
 		List<UserAccount> userAccountList = null;
 		UserProfileInfo userProfileInfo = new UserProfileInfo();
 		//String emailId = UserContextUtils.getUser().getUsername();
@@ -360,7 +359,8 @@ public class UserAccountMgr {
 				Float amount = userAccount.getInvestedAmnt();;
 			    String date = DateUtil.convertDBStringToViewString(userAccount.getCrteDate());
 			    String desc = userAccount.getDesc();
-				AccExpenseData accExpenseData = new AccExpenseData(name, amount, date, desc);
+			    boolean status = userAccount.getStatus();
+				AccExpenseData accExpenseData = new AccExpenseData(name, amount, date, desc,status);
 				accountInfo.get(userAccount.getType()).add(accExpenseData);
 			}
 			responseInfo.setData(userProfileInfo);

@@ -5,12 +5,23 @@ public class AccExpenseData {
 	Float amnt;
 	String date;
 	String desc;
-	public AccExpenseData(String accName,Float amnt, String date, String desc){
+	boolean status;
+	public AccExpenseData(String accName,Float amnt, String date, String desc,boolean status){
 		this.accName = accName;
 		this.amnt = amnt;
 		this.date = date;
 		this.desc = desc;
+		this.status = status;
 	}
+	
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
 	public String getAccName() {
 		return accName;
 	}

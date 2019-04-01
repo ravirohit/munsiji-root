@@ -30,8 +30,8 @@ public class UserAccount {
 	String desc;
 	@Column(name="crte_date")
 	Date crteDate;
-	@Column(name="acc_status")
-	Character status;
+	@Column(name="acc_status", nullable = false)
+	boolean status;
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="email_id", referencedColumnName="email_id")
 	UserDetails userDetails;
@@ -73,10 +73,10 @@ public class UserAccount {
 	public void setCrteDate(Date crteDate) {
 		this.crteDate = crteDate;
 	}
-	public Character getStatus() {
+	public boolean getStatus() {
 		return status;
 	}
-	public void setStatus(Character status) {
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
 	public UserDetails getUserDetails() {

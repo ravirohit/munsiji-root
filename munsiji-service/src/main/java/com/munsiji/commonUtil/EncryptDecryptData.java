@@ -23,6 +23,7 @@ public class EncryptDecryptData {
 	        }
 	        return sb.toString();
 	  } 
+	
 	 public String convertTextToHashedValue(String text){
 		 String hashedValue = null;
 		try{

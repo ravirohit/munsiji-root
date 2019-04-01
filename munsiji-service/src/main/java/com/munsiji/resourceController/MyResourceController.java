@@ -6,10 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
-import java.util.Base64;
 import java.util.List;
-import java.util.Random;
-
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,20 +21,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.munsiji.commonUtil.MunsijiServiceConstants;
-import com.munsiji.commonUtil.UserContextUtils;
 import com.munsiji.customthread.CustomExecutors;
 import com.munsiji.customthread.DocCleanThread;
 import com.munsiji.hibernateUtil.HibernateCfg;
