@@ -303,6 +303,15 @@ Response;
     "reason": "user forgot password",
     "data": null
 }
+======
+reset pwd:
+http://localhost:8080/munsiji-service/rest/myapp/resetpassword
+payload: 
+{
+  "currentPwd": "currentpwd", 
+  "newPwd1": "newpwd", 
+  "newPwd2": "newpwd"
+}
 
 =============
 get profile info:
@@ -324,13 +333,15 @@ Response:
                     "accName": "acc1",
                     "amnt": null,
                     "date": "26-12-2018",
-                    "desc": "acc1 desc"
+                    "desc": "acc1 desc",
+                    "status":true
                 },
                 {
                     "accName": "acc2",
                     "amnt": null,
                     "date": "27-12-2018",
-                    "desc": "acc2 desc"
+                    "desc": "acc2 desc",
+                    "status":true
                 }
             ]
         }

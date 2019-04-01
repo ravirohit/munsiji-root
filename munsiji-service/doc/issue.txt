@@ -1,0 +1,2 @@
+========= Raj ===================
+-> after password reset, the UI should go to the login prompt
