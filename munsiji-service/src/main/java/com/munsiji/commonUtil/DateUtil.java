@@ -13,13 +13,14 @@ public class DateUtil {
 	}
 	
   public static Date convertStringToDate(String d){ // string date format is dd-MM-yyyy to util.date format to store the date in db
-	Date date = null;
+	Date date = null;                               // "27 April, 2019" to date 
     try{
-    DateFormat c = new SimpleDateFormat("dd-MM-yyyy");
-    date = c.parse(d);
+    //DateFormat c = new SimpleDateFormat("dd-MM-yyyy");
+       DateFormat c = new SimpleDateFormat("dd MMMM, yyyy");
+       date = c.parse(d);
     }
     catch(Exception e){
-     System.out.println("exception while date conversion:"+e);
+     System.out.println("exception while date conversion: "+e);
     }
     return date;
   }

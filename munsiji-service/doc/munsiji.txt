@@ -304,6 +304,7 @@ Response;
     "data": null
 }
 ======
+ exception while date conversion:java.text.ParseException: Unparseable date: "25 April, 2019"
 reset pwd:
 http://localhost:8080/munsiji-service/rest/myapp/resetpassword
 payload: 
@@ -346,6 +347,24 @@ Response:
             ]
         }
     }
+}
+
+
+========================= set account active and deactive state post url =========
+post url:
+http://localhost:8080/munsiji-service/rest/myapp/changeaccountstate
+payload:
+{
+  "banking":true,
+  "insurance":false
+}
+response:
+{
+    "status": "Success",
+    "statusCode": 200,
+    "msg": "successfully saved",
+    "reason": null,
+    "data": null
 }
 
 =====

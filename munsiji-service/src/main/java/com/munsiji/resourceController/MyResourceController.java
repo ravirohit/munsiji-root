@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.List;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 
@@ -297,6 +299,13 @@ public class MyResourceController {
 		else{
 			  return new ResponseEntity<>(responseInfo,HttpStatus.BAD_REQUEST);
 		}
+	}
+	@RequestMapping(value = "changeaccountstate",method=RequestMethod.POST)
+	public ResponseEntity<ResponseInfo> changeAccountState(@RequestBody Map<String,Boolean> map){
+		System.out.println("changeAccountState called:"+map);
+		ResponseInfo responseInfo = null;
+		responseInfo = userAccountMgr.changeAccountState(map);
+		return new ResponseEntity<>(responseInfo, HttpStatus.OK);
 	}
    	
 }

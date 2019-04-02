@@ -379,5 +379,22 @@ public class UserAccountMgr {
 		
 		return responseInfo;
 	}
+	public ResponseInfo changeAccountState(Map<String,Boolean> map){
+		ResponseInfo responseInfo = new ResponseInfo();
+		List<UserAccount> userAccountList = null;
+		UserDetails userDetails = UserContextUtils.getUser();
+		userAccountList = userDetailDaoImp.getAccountInfo(userDetails.getEmailId(), null, null);
+		for(UserAccount userAccount: userAccountList){
+			if(map.containsKey(userAccount.getName())){
+				userAccount.setStatus(map.get(userAccount.getName()));
+				userDetailDaoImp.saveAccountInfo(userAccount);
+			}
+		}
+		responseInfo.setMsg("successfully saved");
+		responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+		responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
+		return responseInfo;
+	}
+	
 
 }

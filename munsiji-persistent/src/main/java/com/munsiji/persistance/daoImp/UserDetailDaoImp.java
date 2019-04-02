@@ -75,7 +75,7 @@ public class UserDetailDaoImp {
 	  Boolean status = false;
 	  try{
 		  session = hibernateCfg.getSession();
-		  session.save(userAccount);
+		  session.saveOrUpdate(userAccount);
 		  session.flush();
 	      status = true;
 	      System.out.println("saved Account data");
