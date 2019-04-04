@@ -12,7 +12,8 @@ export const UrlConfig = (function(){
                     "GET_ACCOUNT_TYPE"      : "/munsiji-service/rest/myapp/getacctypeandname?accType=",
                     "GET_ALL_EXPENCE"       : "/munsiji-service/rest/myapp/getexpense?accType=",// personalexp
                     "GET_PROFILE_INFO"      : "/munsiji-service/rest/myapp/getprofile",
-                    "RESET_PASSWORD"        : "/munsiji-service/rest/myapp/resetpassword"
+                    "RESET_PASSWORD"        : "/munsiji-service/rest/myapp/resetpassword",
+                    "UPDATE_ACC_SCOPE"      : "/munsiji-service/rest/myapp/changeaccountstate"
 
         };
 })();

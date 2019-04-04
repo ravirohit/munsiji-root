@@ -2,86 +2,117 @@
 <div class="profile-form-group">
     <div class="profile-user-info-bl">
             <div class="profile-user-info-bl">
-                <mz-collection>
-                    <div [ngClass] = "!resetPwd ? 'show-reset-pwd-bl':'hide-reset-pwd-bl'" >
-                        <mz-collection-item>
+                
+            <mz-collapsible
+                [mode]="'expandable'"
+                [popout]="true">
+                <mz-collapsible-item [active]="true">
+                    <mz-collapsible-item-header> User Details: </mz-collapsible-item-header>
+                    <mz-collapsible-item-body>
+                        <div class="form-group bl-1">
                             <label class="profile-lbl">Name : </label>  
                             <div class="profile-item">{{profileModel.userName}}</div>
-                        </mz-collection-item>
-                        <mz-collection-item>
+                        </div>
+
+                        <div class="form-group bl-1">
                             <label class="profile-lbl">Email ID : </label> 
                             <div class="profile-item">{{profileModel.emailId}}</div>
-                        </mz-collection-item>
-                        <mz-collection-item>
+                        </div>
+
+                        <div class="form-group bl-1">            
                             <label class="profile-lbl">Contact No : </label>
                             <div class="profile-item">{{profileModel.mobNo}}</div>
-                        </mz-collection-item>
-                        <mz-collection-item>
-                            <a class="waves-effect waves-light btn" (click)="resetPwd = !resetPwd">Reset Password</a>
-                        </mz-collection-item>
-                    </div>
-                    <mz-collection-item>
-                            <div [ngClass] = "resetPwd ? 'show-reset-pwd-bl':'hide-reset-pwd-bl'" class="reset-pwd-bl">
+                        </div>
+                    </mz-collapsible-item-body>
+                </mz-collapsible-item>
+                <!-- (change)="switchChanges(item,$event)" 
                     
-                                    <div class="form-group">
-                                            <mz-input-container>
-                                                <input mz-input
-                                                    [(ngModel)]="resetPwdModel.currentPwd"  
-                                                    [label]="'Enter Current Password : '"
-                                                    [validate]="true"
-                                                    [dataError]="'Password is not correct'"
-                                                    [dataSuccess]="'Vailed Name'"
-                                                    type="password">
-                                            </mz-input-container>
-                                            <mz-input-container>
-                                                <input mz-input
-                                                    [(ngModel)]="resetPwdModel.newPwd1"  
-                                                    [label]="'Enter New Password : '"
-                                                    [validate]="true"
-                                                    [dataError]="'Both Password is not same.'"
-                                                    [dataSuccess]="'Vailed Name'"
-                                                    type="password">
-                                            </mz-input-container>
-                                            <mz-input-container>
-                                                <input mz-input
-                                                    [(ngModel)]="resetPwdModel.newPwd2"  
-                                                    [label]="'Re-enter new Password : '"
-                                                    [validate]="true"
-                                                    [dataError]="'Both Password is not same.'"
-                                                    [dataSuccess]="'Vailed Name'"
-                                                    type="password">
-                                            </mz-input-container>
-                                                     
+                [onOpen]="openFunctionCallback"
+                [onClose]="closeFunctionCallback"-->
+                <mz-collapsible-item>
+                    <mz-collapsible-item-header> Manage Accounts </mz-collapsible-item-header>
+                    <mz-collapsible-item-body>
+                        <div class="form-group">
+                            
+                                <table class="c-tabel manageAccountCl">
+                                    <thead>
+                                        <th>Account Name</th>
+                                        <th>Start Date</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of profileModel.accountInfo.personalexp">
+                                            <td>{{item.accName}}</td>
+                                            <td>{{item.date}}</td>
+                                            <td>{{item.desc}}</td>
+                                            <td><mz-switch-container>
+                                                    <input mz-switch
+                                                      id="switch-id"                                                     
+                                                      [off]="'Hide'"
+                                                      [(ngModel)] ="item.status"
+                                                      [on]="'Show'"
+                                                      type="checkbox">
+                                                  </mz-switch-container></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+
+                                <div class = "form-group pull-right">
+                                        <button  class="btn btn-primary"  (click)="updateAccount()">Update Account</button>
+                                    </div>
+                        </div>
+                    </mz-collapsible-item-body>
+                </mz-collapsible-item>
+                
+                <mz-collapsible-item>
+                    <mz-collapsible-item-header> Rest Password </mz-collapsible-item-header>
+                    <mz-collapsible-item-body>
+                        <div class="form-group">
+                                <div class="form-group">
+                                        <label for="exPwd"class="c-label">Enter Current Password:</label>
+                                        <input
+                                            [(ngModel)]="resetPwdModel.currentPwd"
+                                            id="exPwd"
+                                            type="password">
+                                        <label for="enNewPwd" class="c-label">Enter New Password:</label>
+                                        <input
+                                            [(ngModel)]="resetPwdModel.newPwd1"
+                                            id="enNewPwd"
+                                            type="password">
+                                        <label for="reEnterPWD" class="c-label">Re-enter new Password:</label>
+                                        <input
+                                            [(ngModel)]="resetPwdModel.newPwd2"
+                                            id="reEnterPWD"
+                                            type="password">                                                     
                                         </div>
                 
                                         <div class = "form-group pull-right">
-                                            <button class="btn btn-primary" (click)="resetPwd = !resetPwd">Cancel</button>
+                                            <button class="btn btn-primary" (click)="cancelPWD()">Cancel</button>
                                             <button  class="btn btn-primary"  (click)="passwordReset()">Save</button>
                                         </div>
+                        </div>
+                    </mz-collapsible-item-body>
+                </mz-collapsible-item>
+                
+                <mz-collapsible-item >
+                    <mz-collapsible-item-header> Manage Dashboard </mz-collapsible-item-header>
+                    <mz-collapsible-item-body>                    
+                            <div ng-app="myApp" ng-controller="MyController">
+                                
+                                    <fusioncharts
+                                    bgColor="red"
+                                    type="pie3d"
+                                    width="100%"
+                                    height="100%"
+                                    [dataSource]="myDataSource">
+                                </fusioncharts>                                
                             </div>
-                    </mz-collection-item>
-
-                </mz-collection>               
-            </div>   
-          
+                    </mz-collapsible-item-body>
+                </mz-collapsible-item>
+            </mz-collapsible>
+        </div>  
     </div>
-
-
-
-    <!-- <div class="user-accounts-info-bl">
-        <div ng-app="myApp" ng-controller="MyController">
-            
-               <fusioncharts
-               bgColor="red"
-               type="pie3d"
-               width="100%"
-               height="100%"
-               [dataFormat]="dataFormat"
-               [dataSource]="myDataSource"></fusioncharts>
-            
-         </div>        
-    </div> -->
-
-
 </div>
    

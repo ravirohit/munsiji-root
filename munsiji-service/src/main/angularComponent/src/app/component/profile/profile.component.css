@@ -7,17 +7,25 @@ label.profile-lbl {
     color: #ffff;
     padding-right: 0.5em;
     font-size: 1rem;
-    min-width: 93px;
+    min-width:108px
 }
 .reset-pwd-bl{
     overflow: hidden;
     transition: max-height 0.5s linear;    
     width: 100%;
 }
-.hide-reset-pwd-bl{
-    max-height: 0px;
-    overflow: hidden;
+.form-group.pull-right {
+    margin-top: -15px;
 }
-.show-reset-pwd-bl{
-    max-height: 350px;
+
+.form-group.bl-1 {
+    display: flex;
+    letter-spacing: 0.1rem;
+}
+mz-collapsible-item-header {
+    color: #000;
+    cursor: pointer;
+}
+table.c-tabel.manageAccountCl {
+    margin: 0em 0 1em 0;
 }

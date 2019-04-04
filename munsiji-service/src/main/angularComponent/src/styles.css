@@ -89,9 +89,16 @@ textarea.c-textarea {
 .hidden {display: none;}
 .btn:hover{cursor: pointer;}
 button.btn {
-    margin-right: 5px;
+    margin-left: 5px;
 }
 span.badge{color:rgb(241, 114, 114);}
+.switch label {
+    cursor: pointer;
+    font-weight: 100;
+}
+ul.collapsible.popout>li, ul.collapsible.popout>li.active {
+    margin: 0px;
+}
 
 .block{display: block;}
 .well {
@@ -145,11 +152,11 @@ div.select-wrapper input.select-dropdown{
     padding: 1em 0 0 0;
 }
 
-#toast-container {
-    min-width: 91%;
-    max-width: 100%;
-    width: 93%;
-    top: 3.8rem;
+div#toast-container {
+        display: inline-block !important;
+        top: 0rem !important;
+        left: 50%;
+        transform: translate(-50%);
 }
 
 
@@ -180,5 +187,8 @@ div .select-wrapper+label {
         position: fixed;
         top: 10px;
         left: 15px;
+    }
+    label span.off, label span.on {
+        display: none;
     }
 }
