@@ -170,6 +170,18 @@ app-add-ledger-info,app-profile, app-create-account{
     width: 100%;
 }
 app-home{width: 100%;}
+.collapsible-header.active {
+    background: #66b5b7;
+    font-weight: 600;
+}
+.collapsible-header:hover {
+    background: #6ec5c8;
+    font-weight: 600;
+}
+.collapsible-body:nth-child(2) {
+    padding: 0.3em 0em !important;
+}
+
 
 div .select-wrapper input.select-dropdown:disabled{
     color: #fff;

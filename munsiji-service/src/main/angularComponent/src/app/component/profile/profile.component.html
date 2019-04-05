@@ -6,7 +6,7 @@
             <mz-collapsible
                 [mode]="'expandable'"
                 [popout]="true">
-                <mz-collapsible-item [active]="true">
+                <mz-collapsible-item>
                     <mz-collapsible-item-header> User Details: </mz-collapsible-item-header>
                     <mz-collapsible-item-body>
                         <div class="form-group bl-1">
@@ -29,6 +29,26 @@
                     
                 [onOpen]="openFunctionCallback"
                 [onClose]="closeFunctionCallback"-->
+
+
+                
+                <mz-collapsible-item  [active]="true">
+                    <mz-collapsible-item-header> Accounts Overview </mz-collapsible-item-header>
+                    <mz-collapsible-item-body>                    
+                            <div ng-app="myApp" ng-controller="MyController">
+                                
+                                    <fusioncharts
+                                    bgColor="red"
+                                    type="pie3d"
+                                    width="100%"
+                                    height="100%"
+                                    [dataSource]="myDataSource">
+                                </fusioncharts>                                
+                            </div>
+                    </mz-collapsible-item-body>
+                </mz-collapsible-item>
+
+
                 <mz-collapsible-item>
                     <mz-collapsible-item-header> Manage Accounts </mz-collapsible-item-header>
                     <mz-collapsible-item-body>
@@ -52,6 +72,7 @@
                                                       [off]="'Hide'"
                                                       [(ngModel)] ="item.status"
                                                       [on]="'Show'"
+                                                      (change)="switchChange($event)"
                                                       type="checkbox">
                                                   </mz-switch-container></td>
                                         </tr>
@@ -64,8 +85,8 @@
                                     </div>
                         </div>
                     </mz-collapsible-item-body>
-                </mz-collapsible-item>
-                
+                </mz-collapsible-item>                              
+                 
                 <mz-collapsible-item>
                     <mz-collapsible-item-header> Rest Password </mz-collapsible-item-header>
                     <mz-collapsible-item-body>
@@ -93,22 +114,6 @@
                                             <button  class="btn btn-primary"  (click)="passwordReset()">Save</button>
                                         </div>
                         </div>
-                    </mz-collapsible-item-body>
-                </mz-collapsible-item>
-                
-                <mz-collapsible-item >
-                    <mz-collapsible-item-header> Manage Dashboard </mz-collapsible-item-header>
-                    <mz-collapsible-item-body>                    
-                            <div ng-app="myApp" ng-controller="MyController">
-                                
-                                    <fusioncharts
-                                    bgColor="red"
-                                    type="pie3d"
-                                    width="100%"
-                                    height="100%"
-                                    [dataSource]="myDataSource">
-                                </fusioncharts>                                
-                            </div>
                     </mz-collapsible-item-body>
                 </mz-collapsible-item>
             </mz-collapsible>

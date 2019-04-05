@@ -111,11 +111,16 @@ export class ProfileComponent implements OnInit {
                 "label"  : item.accName,
                 "value"  : item.amnt,
                 "tooltip": item.desc,
-                "data"   : item.date
+                "date"   : item.date
               }
+        else
+              return {}
     });
     this.myDataSource.data = result;
-    console.log(result);
+  }
+
+  switchChange(e){
+    this.generateChartData(this.profileModel.accountInfo.personalexp);
   }
 
   passwordReset(){

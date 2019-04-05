@@ -18,3 +18,7 @@ tr.hover-cl{
 .input-field:not(.inline){
     display: inline-block;
 }
+.form-group.select {
+    display: inline-block;
+    margin-right: 0.5em;
+}

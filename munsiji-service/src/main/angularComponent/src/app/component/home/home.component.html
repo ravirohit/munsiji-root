@@ -2,7 +2,7 @@
 <div class="home-container" *ngIf = "ifDataAvailable">
 
     <div class="well view-container" id="view-container">
-            <div class="form-group"> 
+            <div class="form-group select"> 
 
                     <label for="viewType" class="c-label">Display:</label>
                     <select name="viewType" id="viewType" class="c-select" 
@@ -13,17 +13,22 @@
                     </select>
               </div>
 
-              <!-- <mz-select-container>
-                <select mz-select
-                  id="viewType"
-                  (change)="homeModel.displayType = $event.srcElement.value" 
-                  [label]="'Display:'"
-                >
-                    <option value="0">Grid</option>
-                    <option value="1">Graph</option>
-                    <option value="2" selected>Table and Graph</option>                  
+              <div class="form-group select" *ngIf="accountTypeData.length > 0"> 
+
+                <label for="viewType" class="c-label">Change Account:</label>
+                <select name="viewType" id="viewType" class="c-select" 
+                  (change)="updateView()" > 
+                    <ng-container *ngFor="let item of accountTypeData" >
+                      <option *ngIf="item['field'] == homeModel.selAccName; else elseContainer" selected [attr.value]="item.key">{{item["field"]}}</option>
+                        
+                      <ng-template #elseContainer>
+                        <option [attr.value]="item.key">{{item["field"]}}</option>
+                      </ng-template>                   
+                    </ng-container>
+                    
                 </select>
-              </mz-select-container> -->
+          </div>
+              
 
         <div class="gridContainer" *ngIf = "homeModel.displayType != 1 ">
             <table id="home-grid-cl" class="template-grid-cl table table-striped table-condensed table-bordered col-sm-12">

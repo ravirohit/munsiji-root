@@ -26,33 +26,49 @@ export class HomeComponent implements OnInit {
   @ViewChild(PromptMessageComponent) promptMessageComponent:PromptMessageComponent;
   
   //userName:any = {};
-  homeModel = { displayType: 2}
+  homeModel = { displayType: 2,selAccName:'', selAccType:'' }
   data:any = [];//{te:12000,td:20000,sa:8000};
+  accountTypeData:any[] = [];
+  selectedAccountName:string;
 
   constructor(private route: ActivatedRoute,private userService:UserinfoService, private dataService:DataService, private router: Router) { }
   
    ngOnInit() {
      
-    let flag:boolean = true, url,accName = this.route.snapshot.paramMap.get('accname'),
+    this.promptMessageComponent.showLoader();
+    let url,
+        accName = this.route.snapshot.paramMap.get('accname'),
         accType = this.route.snapshot.paramMap.get('acctype');
 
-     this.promptMessageComponent.showLoader();
-     this.data = this.userService.getDataModel();   
-     console.log("rohit to route:"+accName);
-     if(accName && accType && accName.length > 0 && accType.length > 0){
-       // url  = UrlConfig.GET_ALL_EXPENCE+accType +accName; 
-       url  = UrlConfig.GET_ALL_EXPENCE+"personalexp&accName=" +accName; 
-        flag = false;
-        this.isGridClickable = false;
-        this.setHomeExpOfAcc(url, flag);
-     }else{
-        url  = UrlConfig.GET_ALL_EXPENCE+"personalexp";
-        this.setHomeData(url, flag);
-     }   
-     console.log("URL - > " , url);
-     
+    this.homeModel.selAccName = accName;
+    this.homeModel.selAccType = accType;
+    this.data = this.userService.getDataModel();   
+    if(accName && accType && accName.length > 0 && accType.length > 0){
+      // url  = UrlConfig.GET_ALL_EXPENCE+accType+"&accName=" +accName; 
+      // this.isGridClickable = false;
+      // this.setHomeExpOfAcc(url, false);
+      this.updateView();
+    }else{
+      url  = UrlConfig.GET_ALL_EXPENCE+accType;
+      this.setHomeData(url, true);
+    }        
   } 
+
+  setAllAcountName(data){
+
+    let resultData = data.map (item =>{
+      return {field: item['accName'], key: item['accName']}
+    })
+    
+    this.dataService.setData(resultData);
+  }
   
+
+  updateView(){
+    let url  = UrlConfig.GET_ALL_EXPENCE+this.homeModel.selAccType+"&accName=" +this.homeModel.selAccName; 
+    this.isGridClickable = false;
+    this.setHomeExpOfAcc(url, false);
+  }
 
   setHomeData(url, isLinkAvailable){
 
@@ -64,9 +80,12 @@ export class HomeComponent implements OnInit {
           this.chartDataModel.chartData.data = this.generateChartData(this.data.grdiData, isLinkAvailable);
           sub.unsubscribe();
           this.ifDataAvailable = true;
+          this.setAllAcountName(this.data.grdiData);
         }
         this.promptMessageComponent.hideLoader();
       },err => {
+        
+        this.setAllAcountName(this.data.grdiData);
         this.ifDataAvailable = true;
         this.chartDataModel = isLinkAvailable ? this.chartDataModel1 : this.chartDataModel2;
         this.promptMessageComponent.hideLoader();
@@ -77,6 +96,8 @@ export class HomeComponent implements OnInit {
    );
 
   }
+
+
   setHomeExpOfAcc(url, isLinkAvailable){
 
     var sub = this.dataService.httpGetCall(url).subscribe(res =>{
@@ -95,6 +116,7 @@ export class HomeComponent implements OnInit {
         this.promptMessageComponent.hideLoader();
         console.log(err);
         sub.unsubscribe();
+        this.accountTypeData = this.dataService.getData();
       }
 
    );
@@ -105,7 +127,6 @@ export class HomeComponent implements OnInit {
 
 
   gridRowClicked(data){
-    console.log("DATA ", data);
     let url  ="detail/personalexp/"+data.accName;
     this.router.navigate([url]); 
   }

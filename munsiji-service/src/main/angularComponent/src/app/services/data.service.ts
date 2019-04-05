@@ -8,10 +8,10 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class DataService implements OnDestroy,OnInit{
-    data:any = {}; 
+    data:any[] = []; 
     constructor(private http: HttpClient){}
     ngOnInit(){}
-    ngOnDestroy(){ this.data = {};}
+    ngOnDestroy(){ this.data = [];}
     setData(data:any){this.data = data;}
     getData(){return this.data;}
 
