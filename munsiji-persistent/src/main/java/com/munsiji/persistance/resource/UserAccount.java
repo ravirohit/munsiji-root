@@ -1,5 +1,6 @@
 package com.munsiji.persistance.resource;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -16,8 +17,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="user_account")
-public class UserAccount {
-    @Id
+public class UserAccount  implements Serializable{
+	private static final long serialVersionUID = 1L;
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;               // should be incremented automatically
 	@Column(name="acc_name")

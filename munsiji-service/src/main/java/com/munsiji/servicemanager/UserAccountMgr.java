@@ -395,6 +395,81 @@ public class UserAccountMgr {
 		responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
 		return responseInfo;
 	}
+	public ResponseInfo editProfile(Map<String,?> map){
+		ResponseInfo responseInfo = new ResponseInfo();
+		EncryptDecryptData encryptToHash = new EncryptDecryptData();
+		List<UserAccount> userAccountList = null;
+		UserDetails userDetails = UserContextUtils.getUser();
+		String editProfileFlag = (String)map.get("editProfileFlag");
+		try{
+			if(editProfileFlag.equals("accountStatus")){
+				System.out.println("Changing acount status");
+				userAccountList = userDetailDaoImp.getAccountInfo(userDetails.getEmailId(), null, null,false);
+				for(UserAccount userAccount: userAccountList){
+					if(map.containsKey(userAccount.getName())){
+						userAccount.setStatus((boolean)map.get(userAccount.getName()));
+						userDetailDaoImp.saveAccountInfo(userAccount);
+					}
+				}
+				responseInfo.setMsg("Account status changed sucessfully");
+				
+			}
+			else if(editProfileFlag.equals("passwordReset")){
+				System.out.println("reset password operation is getting execute");
+				String oldPwd = (String)map.get("oldPwd");
+				String oldPwdHashValue = encryptToHash.convertTextToHashedValue(oldPwd);
+				System.out.println("old pwd hash value:"+userDetails.getPwd()+" store old pwd value:"+userDetails.getPwd());
+				if(userDetails.getPwd().equals(oldPwdHashValue)){   // need to convert enter pwd to hash and then compare
+					String newPwd = (String)map.get("newPwd1");
+					String newPwdHashValue = encryptToHash.convertTextToHashedValue(newPwd);
+					System.out.println("new pwd hash value:"+newPwdHashValue);
+					userDetails.setPwd(newPwdHashValue);
+					userDetails.setKey("");
+					userDetails.setCurrentLoginKey("");
+					userDetailDaoImp.registerUser(userDetails, true);
+					responseInfo.setMsg(MunsijiServiceConstants.SUCCESS_PWD_RESET);
+				}
+			}
+			else if(editProfileFlag.equals("userInfoEdit")){
+				System.out.println("user info edit operation called");
+				if((map.get("newUname") != null)&&(!((String)map.get("newUname")).trim().equals("")))
+				{
+					if((userDetails.getUname() !=  null) && (userDetails.getUname().equals((String)map.get("oldUname")))){
+						userDetails.setUname(((String)map.get("newUname")).trim());
+					}
+					else{
+						userDetails.setUname(((String)map.get("newUname")).trim());    // need to be comment.... right now there is no username at signup ..so to check functionality
+					}
+				}
+				if((map.get("newEmailId") != null)&&(!((String)map.get("newEmailId")).trim().equals(""))){
+					if((userDetails.getEmailId() != null) && userDetails.getEmailId().equals((String)map.get("oldEmailId"))){
+						userDetails.setEmailId(((String)map.get("newEmailId")).trim());
+					}
+				}
+				if((map.get("newContactNo") != null)&&(!((String)map.get("newContactNo")).trim().equals(""))){
+					if((userDetails.getMobileNo() != null) && userDetails.getMobileNo().equals((String)map.get("oldContactNo"))){
+						userDetails.setMobileNo(((String)map.get("newContactNo")).trim());
+					}
+				}
+					userDetailDaoImp.registerUser(userDetails, true);
+					responseInfo.setMsg("user info updatd successfully");
+					responseInfo.setReason("");
+					responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+					responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
+				}
+		}
+		catch(Exception e){
+			System.out.println("Exception occur while upadte profile operation:"+e);
+			responseInfo.setData(null);
+			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
+			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
+			responseInfo.setStatusCode(MunsijiServiceConstants.SERVER_ERROR_CODE);
+		}
+		responseInfo.setReason("");
+		responseInfo.setStatus(MunsijiServiceConstants.SUCCESS);
+		responseInfo.setStatusCode(MunsijiServiceConstants.SUCCESS_STATUS_CODE);
+		return responseInfo;
+	}
 	
 
 }

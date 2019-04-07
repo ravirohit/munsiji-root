@@ -367,6 +367,40 @@ response:
     "data": null
 }
 
+============ edit profile update url =============
+
+payload:
+{
+ "editProfileFlag":"accountStatus/passwordReset/userInfoEdit"         // to enable/disable account
+  "accountName":accountStatus,    //boolean   for account
+  "oldPwd":"old password",
+  "newPwd1":"new passsword",
+  "newPwd2":"new passsword",
+  "oldUname": username,
+  "newUname": username,
+  "oldEmailId": emailId,
+  "newEmailId": emailId,
+  "oldContactNo":"contact number",
+  "newContactNo":"contact number",
+  
+}
+Example:
+{
+ "editProfileFlag":"userInfoEdit",
+  "oldUname": "rohit",
+  "newUname": "raju",
+  "oldEmailId": "rohit",                // either of all  or one can be edited at a time. 
+  "newEmailId": "raju",
+  "oldContactNo":"rohit",
+  "newContactNo":"54321"
+}
+{
+ "editProfileFlag":"passwordReset",
+ "oldPwd":"rohit",
+ "newPwd1":"Roi@gmmailjl",
+  "newPwd2":"Roi@gmmailjl"
+}
+
 =====
 for download report:
 http://localhost:8080/munsiji-service/rest/myapp/download

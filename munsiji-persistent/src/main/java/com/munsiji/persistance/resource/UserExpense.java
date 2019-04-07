@@ -1,5 +1,6 @@
 package com.munsiji.persistance.resource;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -14,7 +15,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="user_expense")
-public class UserExpense {
+public class UserExpense  implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;   

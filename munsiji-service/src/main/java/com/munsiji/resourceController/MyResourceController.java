@@ -307,5 +307,12 @@ public class MyResourceController {
 		responseInfo = userAccountMgr.changeAccountState(map);
 		return new ResponseEntity<>(responseInfo, HttpStatus.OK);
 	}
+	@RequestMapping(value = "editprofile",method=RequestMethod.POST)
+	public ResponseEntity<ResponseInfo> editProfile(@RequestBody Map<String,?> map){
+		System.out.println("edit acccount api called:"+map);
+		ResponseInfo responseInfo = null;
+		responseInfo = userAccountMgr.editProfile(map);
+		return new ResponseEntity<>(responseInfo, HttpStatus.OK);
+	}
    	
 }

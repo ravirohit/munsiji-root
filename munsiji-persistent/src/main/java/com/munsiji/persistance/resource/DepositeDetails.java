@@ -1,5 +1,6 @@
 package com.munsiji.persistance.resource;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -13,7 +14,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="deposite_details")
-public class DepositeDetails {
+public class DepositeDetails  implements Serializable{
+ 
+  private static final long serialVersionUID = 1L;
   @Id
   Long id;
   @Column(name="acc_name")

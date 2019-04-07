@@ -1,26 +1,31 @@
 package com.munsiji.persistance.resource;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collection;
-import java.util.List;
 import java.util.Random;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
 import javax.persistence.Table;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
 @Table(name="user_details")
-public class UserDetails{
+public class UserDetails implements Serializable{
+	
+ 
+  private static final long serialVersionUID = 1L;
+
   @Id
+  @GeneratedValue(generator = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
+  private String id;
+	
   @Column(name = "email_id", nullable = false, unique = true)
   String emailId;
   @Column(name="uname")
