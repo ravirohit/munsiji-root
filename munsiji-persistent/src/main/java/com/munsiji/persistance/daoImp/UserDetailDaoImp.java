@@ -51,13 +51,16 @@ public class UserDetailDaoImp {
 		return userList;
 	}
 	
-	public List<UserAccount> getAccountInfo(String email, String accType, String accName){
+	public List<UserAccount> getAccountInfo(String email, String accType, String accName, boolean forProfile){
 		List<UserAccount> userAccountList = null;
 		StringBuffer str = new StringBuffer("from UserAccount where email_id = '"+email+ "'");
 		/*String str = "from UserAccount where email_id = '"+email+ "' and type = '"
 				+ accType + "' and name = '"+accName+"'";*/
 		if((accType != null) && (accName != null)){
 			str.append(" and type = '" + accType + "' and name = '"+accName+"'");
+		}
+		if(!forProfile){
+			str.append("  and status = "+ true);
 		}
 		String queryStr = str.toString();
 		try{

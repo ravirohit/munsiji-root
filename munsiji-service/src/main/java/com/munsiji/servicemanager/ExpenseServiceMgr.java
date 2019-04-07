@@ -63,7 +63,7 @@ public class ExpenseServiceMgr {
 		UserExpense userExpense = dozerBeanMapper.map(userExpenseReq, UserExpense.class); // does not convert String date to Date
 		userExpense.setDateOfExpnse(date);
 		  //TODO...
-		List<UserAccount> userAccountLst = userDetailDaoImp.getAccountInfo(userInfo.getEmailId(), userExpenseReq.getAccType(), userExpenseReq.getAccName());
+		List<UserAccount> userAccountLst = userDetailDaoImp.getAccountInfo(userInfo.getEmailId(), userExpenseReq.getAccType(), userExpenseReq.getAccName(), false);
 		UserAccount userAccount = null;
 		if((userAccountLst == null) ||(userAccountLst.size() == 0)){
 			responseInfo.setStatus(MunsijiServiceConstants.FAILURE);

@@ -262,7 +262,7 @@ public class UserAccountMgr {
 	  try{ 
 		   System.out.println("object before mapping to entity:"+mapper.writeValueAsString(uerAccount));
 		 
-		  userAccountList = userDetailDaoImp.getAccountInfo(user.getEmailId(), uerAccount.getType(), uerAccount.getName());
+		  userAccountList = userDetailDaoImp.getAccountInfo(user.getEmailId(), uerAccount.getType(), uerAccount.getName(),false);
 		  if(userAccountList == null){
 		    responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 			responseInfo.setMsg(MunsijiServiceConstants.SEVER_ERROR);
@@ -308,7 +308,7 @@ public class UserAccountMgr {
 		Map<String,List<String>> accTypeMaptoName = accountInfo.getAccountDetail();
 		try{
 			UserDetails userInfo = UserContextUtils.getUser();
-			List<UserAccount> userAccountList = userDetailDaoImp.getAccountInfo(userInfo.getEmailId(),null,null);   // username is email Id
+			List<UserAccount> userAccountList = userDetailDaoImp.getAccountInfo(userInfo.getEmailId(),null,null,false);   // username is email Id
 			for(UserAccount userAccount: userAccountList){
 				String accType = userAccount.getType();
 				if(accTypeMaptoName.get(accType) == null){
@@ -349,7 +349,7 @@ public class UserAccountMgr {
 				userProfileInfo.setMobNo(userDetails.getMobileNo());
 			//}
 			System.out.println("getting user account info");
-			userAccountList = userDetailDaoImp.getAccountInfo(userDetails.getEmailId(), null, null);
+			userAccountList = userDetailDaoImp.getAccountInfo(userDetails.getEmailId(), null, null, true);
 			Map<String,List<AccExpenseData>> accountInfo = userProfileInfo.getAccountInfo();
 			for(UserAccount userAccount: userAccountList){
 				if(accountInfo.get(userAccount.getType()) == null){
@@ -383,7 +383,7 @@ public class UserAccountMgr {
 		ResponseInfo responseInfo = new ResponseInfo();
 		List<UserAccount> userAccountList = null;
 		UserDetails userDetails = UserContextUtils.getUser();
-		userAccountList = userDetailDaoImp.getAccountInfo(userDetails.getEmailId(), null, null);
+		userAccountList = userDetailDaoImp.getAccountInfo(userDetails.getEmailId(), null, null,false);
 		for(UserAccount userAccount: userAccountList){
 			if(map.containsKey(userAccount.getName())){
 				userAccount.setStatus(map.get(userAccount.getName()));
