@@ -9,6 +9,7 @@
                 <mz-collapsible-item>
                     <mz-collapsible-item-header> User Details: </mz-collapsible-item-header>
                     <mz-collapsible-item-body>
+                        <div class="form-group-bl">
                         <div class="form-group bl-1">
                             <label class="profile-lbl">Name : </label>  
                             <div class="profile-item">{{profileModel.userName}}</div>
@@ -23,6 +24,7 @@
                             <label class="profile-lbl">Contact No : </label>
                             <div class="profile-item">{{profileModel.mobNo}}</div>
                         </div>
+                    </div>
                     </mz-collapsible-item-body>
                 </mz-collapsible-item>
                 <!-- (change)="switchChanges(item,$event)" 
@@ -35,7 +37,7 @@
                 <mz-collapsible-item  [active]="true">
                     <mz-collapsible-item-header> Accounts Overview </mz-collapsible-item-header>
                     <mz-collapsible-item-body>                    
-                            <div ng-app="myApp" ng-controller="MyController">
+                            <div class="">
                                 
                                     <fusioncharts
                                     bgColor="red"
@@ -52,7 +54,7 @@
                 <mz-collapsible-item>
                     <mz-collapsible-item-header> Manage Accounts </mz-collapsible-item-header>
                     <mz-collapsible-item-body>
-                        <div class="form-group">
+                        <div class="form-group accordion">
                             
                                 <table class="c-tabel manageAccountCl">
                                     <thead>
@@ -90,7 +92,7 @@
                 <mz-collapsible-item>
                     <mz-collapsible-item-header> Rest Password </mz-collapsible-item-header>
                     <mz-collapsible-item-body>
-                        <div class="form-group">
+                        <div class="form-group accordion">
                                 <div class="form-group">
                                         <label for="exPwd"class="c-label">Enter Current Password:</label>
                                         <input

@@ -17,7 +17,12 @@ label.profile-lbl {
 .form-group.pull-right {
     margin-top: -15px;
 }
-
+.form-group-bl{
+    padding: 0.5em 1em;
+}
+.form-group.accordion{
+    padding: 0.5em 1em 1.7em 1em;
+}
 .form-group.bl-1 {
     display: flex;
     letter-spacing: 0.1rem;

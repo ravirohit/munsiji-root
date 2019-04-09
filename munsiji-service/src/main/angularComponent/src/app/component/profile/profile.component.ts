@@ -2,6 +2,8 @@ import { Component, OnInit,ViewChild } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { UrlConfig } from './../../../environments/url-config';
 import { PromptMessageComponent } from '../../template/promptMessage/promptMessage.component';
+import { Router } from '@angular/router';
+import { UserinfoService } from '../../services/userinfo.service';
 
 
 @Component({
@@ -17,15 +19,21 @@ export class ProfileComponent implements OnInit {
   disManageAccount: boolean = false;
   resetPwd:boolean = false;
 
-  resetPwdModel:ResetPwdModel;
+  resetPwdModel1:ResetPwdModel;
+  resetPwdModel = {
+    currentPwd:'',
+    newPwd1: '', 
+    newPwd2:''  }
 
   
   profileModel:ResultDataModel<AccountTypes<AccountInfo>>;
 
   constructor(
+    private userInfo:UserinfoService,
     private dataService:DataService, 
+    private router: Router
     ) {
-      this.resetPwdModel = new ResetPwdModel();
+     // this.resetPwdModel = new ResetPwdModel();
      };
 
   ngOnInit() {
@@ -86,7 +94,8 @@ export class ProfileComponent implements OnInit {
 
   updateAccount(){
 
-    let sub, payloadData = {}; 
+    let sub, payloadData = {};     
+    this.promptMessageComponent.showLoader();
     this.profileModel.accountInfo.personalexp.forEach((item,i) =>{
       payloadData[item["accName"]] = item["status"]
       });
@@ -94,9 +103,12 @@ export class ProfileComponent implements OnInit {
       sub = this.dataService.httpPostCall(UrlConfig.UPDATE_ACC_SCOPE,payloadData).subscribe(res=>{
         sub.unsubscribe();
         console.log("Success -> ", res);
-        this.promptMessageComponent.showToastMessage(res.msg,"green",2000);
+        this.promptMessageComponent.showToastMessage(res.msg,"green",2000);        
+        this.promptMessageComponent.hideLoader();
       },err=>{
         console.log("ERROR -> ", err);
+        
+        this.promptMessageComponent.hideLoader();
         sub.unsubscribe();
         this.promptMessageComponent.showToastMessage("Error: Can not Update profile. Please try after some time. ","red",2000);
 
@@ -126,6 +138,7 @@ export class ProfileComponent implements OnInit {
   passwordReset(){
 
     this.promptMessageComponent.showLoader();
+    console.log(this.resetPwdModel);
     let sub = this.dataService.httpPostCall(UrlConfig.RESET_PASSWORD, this.resetPwdModel).subscribe((res)=>{
       
       this.clearPWD();
@@ -135,8 +148,13 @@ export class ProfileComponent implements OnInit {
       this.promptMessageComponent.hideLoader();      
       this.promptMessageComponent.showToastMessage(res.msg,"green",2000);
       
+      this.userInfo.setUSerData({});
+      this.router.navigate(['']);
+      
     },(err)=>{
       
+      this.userInfo.setUSerData({});
+      this.router.navigate(['']);
       this.clearPWD();
       sub.unsubscribe();
       this.resetPwd = false;
@@ -171,7 +189,11 @@ export class ProfileComponent implements OnInit {
   };
 
   clearPWD(){
-    this.resetPwdModel =  new ResetPwdModel();
+    this.resetPwdModel =  {
+      currentPwd:'',
+      newPwd1: '', 
+      newPwd2:''  };
+    //new ResetPwdModel();
   }
 }
 

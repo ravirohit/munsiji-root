@@ -64,16 +64,17 @@ export class LoginComponent implements OnInit {
       });
       }
       else{
+        this.promptMessageComponent.showToastMessage("Some network issue. Kindly try after some time.","red",3000);
         console.log("USERID OR PASSWORD is not correct.");
 
-        let userObj = {
-          isLogedin : true, 
-          name:"Raj kumar singh",
-          k:"@@@@@@@@@@@@@@@"
-        };
-      this.userService.setUSerData(userObj);
+      //   let userObj = {
+      //     isLogedin : true, 
+      //     name:"Raj kumar singh",
+      //     k:"@@@@@@@@@@@@@@@"
+      //   };
+      // this.userService.setUSerData(userObj);
       
-      this.router.navigate(['']);  
+      // this.router.navigate(['']);  
       }
     }
  
@@ -97,7 +98,7 @@ export class LoginComponent implements OnInit {
       this.signupErrorModel.commonMessage = false;
 
       let sub = this.dataService.httpPostCall(signUpUrl, data).subscribe( res => {
-        this.promptMessageComponent.showToastMessage(res["msg"],"green",3000);
+        this.promptMessageComponent.showToastMessage(res["msg"],"green",2000);
         //this.isMessage=true;
         this.isSignup = !this.isSignup;
 
@@ -105,9 +106,9 @@ export class LoginComponent implements OnInit {
       
       }, err => {
         
-        this.isSignup = !this.isSignup;
+        //this.isSignup = !this.isSignup;
         console.log("Error in SIGNUP HTTP call ", err);
-        this.promptMessageComponent.showToastMessage(err["msg"],"red",3000);
+        this.promptMessageComponent.showToastMessage(err["msg"],"red",2000);
         sub.unsubscribe();
       });
 
@@ -123,12 +124,12 @@ export class LoginComponent implements OnInit {
     let sub = this.dataService.httpGetCall(forgetUrl).subscribe(res => {
       console.log("response:"+res);
       this.forgetPassword = !this.forgetPassword;      
-      this.promptMessageComponent.showToastMessage(res["msg"],"green",3000);
+      this.promptMessageComponent.showToastMessage(res["msg"],"green",2000);
       sub.unsubscribe();
     }, err => {
       console.log("Error in FORGETPWD HTTP call ", err);
       sub.unsubscribe();      
-      this.promptMessageComponent.showToastMessage(err["msg"],"red",3000);
+      this.promptMessageComponent.showToastMessage(err["msg"],"red",2000);
     });
     //this.forgetPassword = false;
   }

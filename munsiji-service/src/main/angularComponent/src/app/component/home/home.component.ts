@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit {
         accName = this.route.snapshot.paramMap.get('accname'),
         accType = this.route.snapshot.paramMap.get('acctype');
 
+    accType = "personalexp";
     this.homeModel.selAccName = accName;
     this.homeModel.selAccType = accType;
     this.data = this.userService.getDataModel();   
@@ -66,8 +67,15 @@ export class HomeComponent implements OnInit {
 
   updateView(){
     let url  = UrlConfig.GET_ALL_EXPENCE+this.homeModel.selAccType+"&accName=" +this.homeModel.selAccName; 
-    this.isGridClickable = false;
-    this.setHomeExpOfAcc(url, false);
+    
+    this.accountTypeData = this.dataService.getData();
+    if(this.accountTypeData.length > 0){
+      this.isGridClickable = false;
+      this.setHomeExpOfAcc(url, false);
+    }else{
+      this.router.navigate(['']);
+    }
+    
   }
 
   setHomeData(url, isLinkAvailable){
@@ -116,7 +124,6 @@ export class HomeComponent implements OnInit {
         this.promptMessageComponent.hideLoader();
         console.log(err);
         sub.unsubscribe();
-        this.accountTypeData = this.dataService.getData();
       }
 
    );
