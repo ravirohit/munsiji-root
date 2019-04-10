@@ -73,9 +73,13 @@ public class ExpenseDetailDaoImp {
 			  queryStr = new StringBuffer(queryStr).append(" and a.name = '"+accName+"'").toString();
 		  }*/
 	  }
-	  else {
+	  else if(accType != null){
 		  queryStr = "select a.type, a.name, e.amount, a.crteDate, a.desc from UserAccount a, UserExpense e "             // for home page
 	  		               + "where e.userDetails = '"+usrEmail+"' and e.userAccount = a.id and a.type = '" +accType +"' and a.status="+true ;
+	  }
+	  else {
+		  queryStr = "select a.type, a.name, e.amount, a.crteDate, a.desc, a.status from UserAccount a, UserExpense e "             // for home page
+		               + "where e.userDetails = '"+usrEmail+"' and e.userAccount = a.id";
 	  }
 	  if(startDate != null){
 		  queryStr = new StringBuffer(queryStr).append(" and e.dateOfExpnse >= '"+startDate+"'").toString();

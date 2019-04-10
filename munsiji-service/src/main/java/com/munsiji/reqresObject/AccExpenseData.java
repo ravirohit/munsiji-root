@@ -46,6 +46,23 @@ public class AccExpenseData {
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
+
+	@Override
+	public boolean equals(Object obj){
+		System.out.println("comparing the accoExpense data:"+accName+"   (AccExpenseData) obj:"+(AccExpenseData) obj);
+		if (obj == null) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		if ((obj instanceof AccExpenseData) && (((AccExpenseData) obj).getAccName().equals(this.accName))) {
+			System.out.println("true executed");
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 
 }

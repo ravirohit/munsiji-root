@@ -21,6 +21,7 @@ import com.munsiji.customthread.MailThread;
 import com.munsiji.model.AccTypeMapToName;
 import com.munsiji.model.Login;
 import com.munsiji.model.PwdReset;
+import com.munsiji.persistance.daoImp.ExpenseDetailDaoImp;
 import com.munsiji.persistance.daoImp.UserDetailDaoImp;
 import com.munsiji.persistance.resource.UserAccount;
 import com.munsiji.persistance.resource.UserDetails;
@@ -33,6 +34,8 @@ import com.munsiji.reqresObject.UserProfileInfo;
 @Component
 public class UserAccountMgr {
 	
+	@Autowired
+	ExpenseDetailDaoImp expenseDetailDaoImp;
 	@Autowired
 	UserDetailDaoImp userDetailDaoImp;
 	@Autowired
@@ -171,16 +174,20 @@ public class UserAccountMgr {
 	}
 	public ResponseInfo pwdReset(PwdReset pwdReset){
 		ResponseInfo responseInfo = new ResponseInfo();
+		EncryptDecryptData encryptToHash = new EncryptDecryptData();
 		try{
 			UserDetails userDetails = UserContextUtils.getUser();
+			String oldPwd = pwdReset.getCurrentPwd();
+			String oldPwdHashValue = encryptToHash.convertTextToHashedValue(oldPwd);
+			System.out.println("old pwd hash value:"+oldPwdHashValue+" store old pwd value:"+userDetails.getPwd());
 			if(pwdReset.getCurrentPwd() == null){
 				responseInfo.setMsg(MunsijiServiceConstants.FAILURE_NEW_PWD_RESET);
 				responseInfo.setReason("");
 				responseInfo.setStatus(MunsijiServiceConstants.FAILURE);
 				responseInfo.setStatusCode(MunsijiServiceConstants.BAD_REQUEST_ERROR_CODE);
 			}
-			else if(userDetails.getPwd().equals(pwdReset.getCurrentPwd())){
-				userDetails.setPwd(pwdReset.getNewPwd1());
+			else if(userDetails.getPwd().equals(oldPwdHashValue)){  // comparing hash value of the pwd. 
+				userDetails.setPwd(encryptToHash.convertTextToHashedValue(pwdReset.getNewPwd1()));
 				userDetails.setKey("");
 				userDetails.setCurrentLoginKey("");
 				userDetailDaoImp.registerUser(userDetails, true);
@@ -335,6 +342,7 @@ public class UserAccountMgr {
 	public ResponseInfo getUserProfile(){
 		ResponseInfo responseInfo = new ResponseInfo();
 		List<UserAccount> userAccountList = null;
+		List<Object[]> userObjectExpenseList =null;
 		UserProfileInfo userProfileInfo = new UserProfileInfo();
 		//String emailId = UserContextUtils.getUser().getUsername();
 		UserDetails userDetails = UserContextUtils.getUser();
@@ -350,19 +358,44 @@ public class UserAccountMgr {
 			//}
 			System.out.println("getting user account info");
 			userAccountList = userDetailDaoImp.getAccountInfo(userDetails.getEmailId(), null, null, true);
+			userObjectExpenseList = expenseDetailDaoImp.getUsrExpense(null,null,userDetails.getEmailId(), null, null,null);
 			Map<String,List<AccExpenseData>> accountInfo = userProfileInfo.getAccountInfo();
-			for(UserAccount userAccount: userAccountList){
+			for(Object[] objectArray: userObjectExpenseList){
+				String accType = (String)objectArray[0];
+				String accName = (String)objectArray[1];
+				Float amount = (Float)objectArray[2];;
+				String date = DateUtil.convertDBStringToViewString(((Date)objectArray[3]));
+				String desc = (String)objectArray[4];
+				boolean accStatus = (Boolean)objectArray[5];
+				
+					
+				
+				if(accountInfo.get(accType) == null) {
+					accountInfo.put(accType, new ArrayList<AccExpenseData>());
+				}
+				AccExpenseData accExpenseData = new AccExpenseData(accName, amount, date, desc,accStatus);
+				List<AccExpenseData> list = accountInfo.get(accType);
+				if(list.contains(accExpenseData)){
+						Float amt = list.get(list.indexOf(accExpenseData)).getAmnt();
+						list.get(list.indexOf(accExpenseData)).setAmnt(amt + accExpenseData.getAmnt());
+				}
+				else {
+					accountInfo.get(accType).add(accExpenseData);
+				}
+			}
+			/*for(UserAccount userAccount: userAccountList){
 				if(accountInfo.get(userAccount.getType()) == null){
 					accountInfo.put(userAccount.getType(), new ArrayList<AccExpenseData>());
 				}
 				String name = userAccount.getName();
-				Float amount = userAccount.getInvestedAmnt();;
+				Float amount = userAccount.getInvestedAmnt();    // have to get from userExpense table
 			    String date = DateUtil.convertDBStringToViewString(userAccount.getCrteDate());
 			    String desc = userAccount.getDesc();
 			    boolean status = userAccount.getStatus();
 				AccExpenseData accExpenseData = new AccExpenseData(name, amount, date, desc,status);
 				accountInfo.get(userAccount.getType()).add(accExpenseData);
-			}
+			}*/
+			
 			responseInfo.setData(userProfileInfo);
 			responseInfo.setMsg(MunsijiServiceConstants.USER_PROFILE_INFO);
 			responseInfo.setReason("");
@@ -383,7 +416,7 @@ public class UserAccountMgr {
 		ResponseInfo responseInfo = new ResponseInfo();
 		List<UserAccount> userAccountList = null;
 		UserDetails userDetails = UserContextUtils.getUser();
-		userAccountList = userDetailDaoImp.getAccountInfo(userDetails.getEmailId(), null, null,false);
+		userAccountList = userDetailDaoImp.getAccountInfo(userDetails.getEmailId(), null, null,true);
 		for(UserAccount userAccount: userAccountList){
 			if(map.containsKey(userAccount.getName())){
 				userAccount.setStatus(map.get(userAccount.getName()));
@@ -404,7 +437,7 @@ public class UserAccountMgr {
 		try{
 			if(editProfileFlag.equals("accountStatus")){
 				System.out.println("Changing acount status");
-				userAccountList = userDetailDaoImp.getAccountInfo(userDetails.getEmailId(), null, null,false);
+				userAccountList = userDetailDaoImp.getAccountInfo(userDetails.getEmailId(), null, null,true);
 				for(UserAccount userAccount: userAccountList){
 					if(map.containsKey(userAccount.getName())){
 						userAccount.setStatus((boolean)map.get(userAccount.getName()));
@@ -418,7 +451,7 @@ public class UserAccountMgr {
 				System.out.println("reset password operation is getting execute");
 				String oldPwd = (String)map.get("oldPwd");
 				String oldPwdHashValue = encryptToHash.convertTextToHashedValue(oldPwd);
-				System.out.println("old pwd hash value:"+userDetails.getPwd()+" store old pwd value:"+userDetails.getPwd());
+				System.out.println("old pwd hash value:"+oldPwdHashValue+" store old pwd value:"+userDetails.getPwd());
 				if(userDetails.getPwd().equals(oldPwdHashValue)){   // need to convert enter pwd to hash and then compare
 					String newPwd = (String)map.get("newPwd1");
 					String newPwdHashValue = encryptToHash.convertTextToHashedValue(newPwd);
