@@ -15,6 +15,14 @@ public class Test {
 	String email;
 	@Column(name="name")
 	String name;
+	public Test(){
+		
+	}
+	public Test(int id, String email, String name){
+		this.id = id;
+		this.email = email;
+		this.name = name;
+	}
 	public int getId() {
 		return id;
 	}

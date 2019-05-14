@@ -6,8 +6,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
@@ -24,16 +29,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.munsiji.commonUtil.MunsijiServiceConstants;
+import com.munsiji.commonUtil.ServerSentEventUtil;
+import com.munsiji.commonUtil.ThreadPoolExecutorUtil;
 import com.munsiji.customthread.CustomExecutors;
 import com.munsiji.customthread.DocCleanThread;
 import com.munsiji.hibernateUtil.HibernateCfg;
@@ -66,11 +75,54 @@ public class MyResourceController {
 	@Autowired
 	@Qualifier("expenseResultJob")
 	Job job;
+	static AtomicInteger i = new AtomicInteger(0);
+	private static List<Integer> list = new ArrayList<>();
+	private static int b =0;
 	
 	@PostConstruct
 	public void init(){
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
+	
+	@GetMapping("/streamssemvc") //http://localhost:8080/munsiji-service/rest/myapp/streamssemvc?reqKey=rohit
+	public SseEmitter streamSseMvc(@RequestParam(value = "reqKey", required = false) String reqKey) {
+		System.out.println("server sent event resource called:"+reqKey);
+	    SseEmitter emitter = new SseEmitter(0L); // 0 or < 0 means this see timeout will for infinite time. else it's value is in millisecond
+	    ServerSentEventUtil.setEmitter(reqKey, emitter);
+	    emitter.onCompletion(() -> {
+	    	try {
+	    		if(ServerSentEventUtil.getEmitter(reqKey) != null)
+	    		   ServerSentEventUtil.removeEmitter(reqKey);
+	    		System.out.println("on completion method get called ......");
+	    	} catch (Exception e) {
+	    		System.out.println("Exception occcurrrrrrrred");
+				e.printStackTrace();
+			}
+	    });
+	    ThreadPoolExecutorUtil.getExecutorService().execute(() -> {
+	        try {
+	            for (int i = 0; true; i++) {
+	            	System.out.println("---- inside of emitter");
+	                Thread.sleep(5000);
+	                emitter.send("New message:"+i);
+	            }
+	        } catch (Exception ex) {
+	            System.out.println("------ Connection has been reset from client end -------");
+	        }
+	    });
+	    return emitter;
+	}
+	@GetMapping("/deletesseevent")
+	public void deleteSseEventForCurrentThread(@RequestParam(value = "reqKey", required = false) String reqKey){
+		System.out.println("==================="+reqKey);
+		SseEmitter emitter = ServerSentEventUtil.getEmitter(reqKey);
+		if(ServerSentEventUtil.getEmitter(reqKey) != null){
+		   emitter.complete();
+		   ServerSentEventUtil.removeEmitter(reqKey);
+		}
+	}
+	
+	
 	
 	@RequestMapping(value="startbatch", method = RequestMethod.GET)
 	public String startBatch(){
@@ -98,11 +150,41 @@ public class MyResourceController {
         List<Test> testlist = query.list();
         return ReqHoldingClass.getReqHoldingMap().get(reqKey);
     }
-	@RequestMapping(value="getdata", method = RequestMethod.GET)
+	@RequestMapping(value="checkdbindex", method = RequestMethod.GET)
     public String getTest(@RequestParam(value = "reqKey", required = false) String reqKey) {
-		System.out.println("getTest  service get callled with req param:"+reqKey);
-        return ReqHoldingClass.getReqHoldingMap().get(reqKey);
+		Session session = hibernateCfg.getSession();        
+        for(int i = 0; i < 30000; i++)
+        {
+        	Random rn = new Random();
+        	Integer id = rn.nextInt(Integer.MAX_VALUE);
+        	if(!list.contains(id)){
+        	  Test test = new Test(id, "email"+id,"name"+id);
+        	  list.add(id);
+        	  session.save(test);
+        	}
+        	
+        }
+        System.out.println("save statement exeuted");
+        session.flush();
+        System.out.println("save data flushed");
+		
+        return "added value";
     }
+	@RequestMapping(value="holdreqthread",method=RequestMethod.GET)
+	public String getNotification() throws InterruptedException{
+		System.out.println("notification method get called:"+i.getAndIncrement());
+		Thread.sleep(10000);
+		System.out.println("waiting time completed");
+		
+		return "new notification to the client";
+	}
+	@RequestMapping(value="holdreqthreadinfite",method=RequestMethod.GET)
+	public String holdReqThreadInfinte() throws InterruptedException{
+		System.out.println("infinite hold request method called:"+i.getAndIncrement());
+		Thread.sleep(60000);
+		System.out.println("Waiting time completed");
+		return "hold req infinite time";
+	}
 	@RequestMapping(value="putdata", method = RequestMethod.POST)
     public ResponseEntity<ResponseInfo> test12(@RequestBody TestEnumReq testEnumReq, HttpServletResponse response ) {
 		ObjectMapper mapper = new ObjectMapper();
@@ -316,3 +398,4 @@ public class MyResourceController {
 	}
    	
 }
+

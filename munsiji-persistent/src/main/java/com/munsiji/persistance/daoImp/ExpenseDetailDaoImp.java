@@ -51,8 +51,6 @@ public class ExpenseDetailDaoImp {
 	  return userAccountList;
 	}
 	public List<Object[]> getUsrExpense(String accType,String accName, String usrEmail, String startDate, String endDate, String[] accNameArr){
-	 // List<UserExpense> userExpenseList = null;
-		System.out.println("<<< get expense");
 	  List<Object[]> userObjectExpenseList = null;
 	  String queryStr = "";
 	  if(accNameArr != null){
@@ -69,9 +67,6 @@ public class ExpenseDetailDaoImp {
 		  queryStr = "select e.amount, e.dateOfExpnse, e.desc, e.userAccount, e.userDetails"                    // detailed exp for each account
 			  		+ "  FROM UserExpense e join e.userAccount a where a.type='" + accType +"' and  e.userAccount = a.id "
 			  		+ " and e.userDetails = '"+usrEmail + "'"+" and a.name = '"+accName+"' and a.status="+true;
-		 /* if(accName != null){
-			  queryStr = new StringBuffer(queryStr).append(" and a.name = '"+accName+"'").toString();
-		  }*/
 	  }
 	  else if(accType != null){
 		  queryStr = "select a.type, a.name, e.amount, a.crteDate, a.desc from UserAccount a, UserExpense e "             // for home page

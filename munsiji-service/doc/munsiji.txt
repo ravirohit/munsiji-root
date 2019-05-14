@@ -401,6 +401,16 @@ Example:
   "newPwd2":"Roi@gmmailjl"
 }
 
+=================== SSE api
+-> SSE api url:
+   http://localhost:8080/munsiji-service/rest/myapp/streamssemvc?reqKey=<cacheSessionId>
+   Response will be  String only for now testing purpose after 30 seconds.. later we will change this timeout value as our need.
+
+-> need to call below URL to let server know, client-connection is alive and not closed.  else automatically above connection will get closed after 30 seconds 
+   http://localhost:8080/munsiji-service/rest/myapp/keepssesessionalive?reqKey=<cacheSessionId>   
+
+
+
 =====
 for download report:
 http://localhost:8080/munsiji-service/rest/myapp/download

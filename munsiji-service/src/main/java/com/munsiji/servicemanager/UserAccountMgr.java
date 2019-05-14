@@ -440,7 +440,9 @@ public class UserAccountMgr {
 				userAccountList = userDetailDaoImp.getAccountInfo(userDetails.getEmailId(), null, null,true);
 				for(UserAccount userAccount: userAccountList){
 					if(map.containsKey(userAccount.getName())){
-						userAccount.setStatus((boolean)map.get(userAccount.getName()));
+						Boolean status = (Boolean) map.get(userAccount.getName());
+						boolean accStatus = (boolean) status;
+						userAccount.setStatus(accStatus);
 						userDetailDaoImp.saveAccountInfo(userAccount);
 					}
 				}
