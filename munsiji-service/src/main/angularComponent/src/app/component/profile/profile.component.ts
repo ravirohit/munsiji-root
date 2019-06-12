@@ -40,10 +40,10 @@ export class ProfileComponent implements OnInit {
     this.promptMessageComponent.showLoader();
     let sub = this.dataService.httpGetCall(UrlConfig.GET_PROFILE_INFO).subscribe((res)=>{
       sub.unsubscribe();
+      this.promptMessageComponent.hideLoader();
       console.log("Success:",res);
       this.profileModel = <ResultDataModel<AccountTypes<AccountInfo>>>res["data"];
       this.generateChartData(this.profileModel.accountInfo.personalexp);
-      this.promptMessageComponent.hideLoader();
       
     },(err)=>{
       sub.unsubscribe();

@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
             this.userService.setUSerData(userObj);
             this.router.navigate(['']);   
             this.promptMessageComponent.hideLoader();
+            this.dataService.triggerSSECall();
         }else{
           console.log("ERROR",res);
           this.promptMessageComponent.showToastMessage(res["msg"],"red",3000);
@@ -64,17 +65,17 @@ export class LoginComponent implements OnInit {
       });
       }
       else{
-        this.promptMessageComponent.showToastMessage("Some network issue. Kindly try after some time.","red",3000);
+        //this.promptMessageComponent.showToastMessage("Some network issue. Kindly try after some time.","red",3000);
         console.log("USERID OR PASSWORD is not correct.");
 
-      //   let userObj = {
-      //     isLogedin : true, 
-      //     name:"Raj kumar singh",
-      //     k:"@@@@@@@@@@@@@@@"
-      //   };
-      // this.userService.setUSerData(userObj);
+        let userObj = {
+          isLogedin : true, 
+          name:"Raj kumar singh",
+          k:"@@@@@@@@@@@@@@@"
+        };
+      this.userService.setUSerData(userObj);
       
-      // this.router.navigate(['']);  
+      this.router.navigate(['']);  
       }
     }
  

@@ -7,6 +7,7 @@ import {DataService } from '../app/services/data.service';
 
 
 import * as d3 from 'd3';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -38,9 +39,13 @@ export class AppComponent implements OnInit, AfterContentInit, OnChanges {
       // RoutesRecognized
     });
   }
+
+  
+private SSE_DATA : Observable<any>;
     
   ngOnInit(){
     this.userData = this.userInfo.getUserData();
+    this.SSE_DATA = this.dataService.getMessages();
   }
 
   ngOnChanges(){
