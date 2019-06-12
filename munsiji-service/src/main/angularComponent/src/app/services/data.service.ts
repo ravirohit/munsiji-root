@@ -61,7 +61,7 @@ getMessages():Observable<any> {
       });
       window.setInterval( ()=>{
         this.keepSeesionAlive();
-      },400);
+      },28000);
     }
 
     keepSeesionAlive(){
