@@ -15,9 +15,26 @@ export class DataService implements OnDestroy,OnInit{
 
     
     constructor(private http: HttpClient, private zone:NgZone){
-      let  EventSource=window['EventSource'];UrlConfig
+      //let  EventSource=window['EventSource'];
       this.SSE = new EventSource(UrlConfig.SSE_CALL);
     }
+
+    getEventSource(){
+      //let  EventSource=window['EventSource'];
+      let sse =  new EventSource(UrlConfig.SSE_CALL);
+      sse.addEventListener('message', (message) => {
+        console.log("GETEvent Source UrlConfig.SSE_CALL --> ", message);
+      })
+    }
+
+    getEventSourceComplete(){
+      //let  EventSource=window['EventSource'];
+      let sse =  new EventSource("http://localhost:8080/munsiji-service/rest/myapp/streamssemvc?reqKey");
+      sse.addEventListener('message', (message) => {
+        console.log(" http://localhost:8080/munsiji-service/rest/myapp/streamssemvc?reqKey --> ", message);
+      })
+    }
+
 
     ngOnInit(){}
 
@@ -37,10 +54,9 @@ export class DataService implements OnDestroy,OnInit{
     }
 
 
-// var EventSource=window['EventSource'];
-// this.sse=new EventSource('http://localhost:3002/api/data');
-
 getMessages():Observable<any> {
+  this.getEventSource();
+  this.getEventSourceComplete();
     return new Observable<any>(observer=> {   
     this.SSE.onmessagec= evt => {
       this.zone.run(() =>observer.next(evt.data));

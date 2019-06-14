@@ -1,4 +1,4 @@
-import { Component, AfterContentInit, OnInit, OnChanges } from '@angular/core';
+import { Component, AfterContentInit, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import {UserinfoService} from './services/userinfo.service';
 
@@ -7,14 +7,14 @@ import {DataService } from '../app/services/data.service';
 
 
 import * as d3 from 'd3';
-import { Observable } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, AfterContentInit, OnChanges {
+export class AppComponent implements OnInit, OnDestroy {
   isVisble = true;
   headerTitle:string = "";
   userData = {isLogedin:false};
@@ -40,24 +40,26 @@ export class AppComponent implements OnInit, AfterContentInit, OnChanges {
     });
   }
 
+  subscriber;
   
 private SSE_DATA : Observable<any>;
     
   ngOnInit(){
     this.userData = this.userInfo.getUserData();
-    this.SSE_DATA = this.dataService.getMessages();
+   this.subscriber=  this.dataService.getMessages().subscribe((message)=>{
+      this.SSE_DATA = message;
+      console.log("NGONINIT:--> ", this.SSE_DATA);
+    },err=>{
+      console.log("NGONINIT ERROR:--> ", err);
+    });
   }
 
-  ngOnChanges(){
-    alert("dsfsdfsd");
+  // ngAfterContentInit(){
+  //   setTimeout(()=>{
+  //     d3.select("li").style("color", "darkgrey");
+  //   },0)
 
-  }
-  ngAfterContentInit(){
-    setTimeout(()=>{
-      d3.select("li").style("color", "darkgrey");
-    },0)
-
-  }
+  // }
   logout():void{  
         this.headerTitle = "";
         let logoutURL = UrlConfig.LOGOUT;
@@ -81,4 +83,7 @@ private SSE_DATA : Observable<any>;
   }
   
 
+  ngOnDestroy(){
+    this.subscriber.unsubscribe();
+  }
 }
