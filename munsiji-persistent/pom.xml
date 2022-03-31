@@ -16,7 +16,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jersey.version>2.16</jersey.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <springframework.version>4.3.7.RELEASE</springframework.version>
+    <springframework.version>5.3.18</springframework.version>
     <munsiji-version>0.0.1-SNAPSHOT</munsiji-version>
     <springsecurity.version>4.2.4.RELEASE</springsecurity.version>
     <spring.batch.version>4.0.0.RELEASE</spring.batch.version>
